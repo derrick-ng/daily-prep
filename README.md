@@ -22,11 +22,13 @@ emails with a sender who matches name will be send to top of text
 
 
 Possible Logistic Changes:
-only send wind, humidity, etc info if above a certain %
+only send wind, humidity, etc info if above a certain % threshold
 
 
 Pre-Code Uncertainty:
 Would important/normal to-do order be handle with a priority queue or a query
+maybe put weather, email, eta to destination in a form to submit to save selection
+    initial idea: make each category a div and make checkbox results persistent
 
 
 Order of Text:
