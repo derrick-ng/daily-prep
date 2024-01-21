@@ -1,0 +1,34 @@
+#header {
+    text-align: center;
+}
+
+div {
+    border-color: beige;
+    border-style: dashed;
+}
+
+#main-content {
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+
+#additional-features-container {
+    border-color: blue;
+    border-style: solid;
+    width: 30%;
+}
+
+.additional-features {
+    border-color: black;
+    border-style: solid;
+}
+
+#additional-features-submit {
+
+}
+
+#to-do-list {
+    width: 70%;
+    display: flex;
+}

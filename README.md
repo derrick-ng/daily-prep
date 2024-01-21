@@ -23,6 +23,8 @@ emails with a sender who matches name will be send to top of text
 
 Possible Logistic Changes:
 only send wind, humidity, etc info if above a certain % threshold
+have a save button after each addition feature
+    ex. weather checkbox, email, eta all have saves 
 
 
 Pre-Code Uncertainty:

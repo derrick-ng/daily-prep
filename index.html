@@ -4,44 +4,51 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <title>Daily Prep</title>
   </head>
   <body>
-    <header>
-      <h1>Home</h1>
+    <header id="header">
+      <h1>Daily Prep</h1>
     </header>
-    <div>
-        <ul>
-            <li>To-Do 1</li>
-            <li>To-Do 2</li>
-            <li>To-Do 3</li>
-        </ul>
-    </div>
-    <div>
+
+    <div id="main-content">
+      <div id="additional-features-container">
         <!-- might need wrap in form so i can save textfields -->
         <!-- might need a name so i can grab them later -->
-        <div>
-            <input type="checkbox" id="weather-checkbox"> Weather?
+        <div class="additional-features">
+          <input type="checkbox" id="weather-checkbox" /> Weather?
         </div>
-        <div>
-            <input type="checkbox" id="email-checkbox"> Email?
-            <input type="text" placeholder="names">
-            
+        <div class="additional-features">
+          <input type="checkbox" id="email-checkbox" /> Email?
+          <input type="text" placeholder="names" />
         </div>
-        <div>
-            <input type="checkbox" id="eta-checkbox"> Eta to Destination?
-            <input type="text" placeholder="Start">
-            <input type="text" placeholder="Destination">
-            <div>
-                <p>Mode of Transportation</p>
-                <input type="checkbox">Drive
-                <input type="checkbox">Public Transportation
-                <input type="checkbox">Walk
-                <input type="checkbox">Bike
-            </div>
+        <div class="additional-features">
+          <input type="checkbox" id="eta-checkbox" /> Eta to Destination?
+          <input type="text" placeholder="Start" />
+          <input type="text" placeholder="Destination" />
+          <div>
+            <p>Mode of Transportation</p>
+            <input type="checkbox" />Drive <input type="checkbox" />Public
+            Transportation <input type="checkbox" />Walk
+            <input type="checkbox" />Bike
+          </div>
         </div>
-        <input type="submit">
+        <div class="additional-features">
+          <p>Enter time you would like to receive text (default 9:00 am)</p>
+          <input type="text" placeholder="time" />
+        </div>
+        <div class="additional-features">
+          <input type="submit" id="additional-features-submit" />
+        </div>
+      </div>
+      <div id="to-do-list">
+        <ul>
+          <li>To-Do 1</li>
+          <li>To-Do 2</li>
+          <li>To-Do 3</li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>
