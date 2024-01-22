@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
     <title>Daily Prep</title>
   </head>
   <body>
@@ -12,37 +13,49 @@
       <h1>Daily Prep</h1>
     </header>
 
-    <div id="main-content">
-      <div id="additional-features-container">
+    <div id="main-content-container">
+      <form id="additional-features-container">
+        <p>Select everything you want to be sent</p>
         <!-- might need wrap in form so i can save textfields -->
         <!-- might need a name so i can grab them later -->
         <div class="additional-features">
-          <input type="checkbox" id="weather-checkbox" /> Weather?
+          <input type="checkbox" id="weather-checkbox" />
+          <label for="weather-checkbox">Do you want to be sent the weather?</label>
         </div>
-        <div class="additional-features">
-          <input type="checkbox" id="email-checkbox" /> Email?
-          <input type="text" placeholder="names" />
+
+        <div class="additional-features" id="email-features-container">
+          <input type="checkbox" id="email-checkbox" />
+          <label for="email-checkbox">Email?</label>
+          <input type="text" placeholder="personal email" />
+          <input type="text" placeholder="name priority senders" />
         </div>
+
         <div class="additional-features">
-          <input type="checkbox" id="eta-checkbox" /> Eta to Destination?
+          <input type="checkbox" id="eta-checkbox" />
+          <label for="eta-checkbox">Eta to Destination? </label>
           <input type="text" placeholder="Start" />
           <input type="text" placeholder="Destination" />
           <div>
-            <p>Mode of Transportation</p>
-            <input type="checkbox" />Drive <input type="checkbox" />Public
-            Transportation <input type="checkbox" />Walk
-            <input type="checkbox" />Bike
+            <fieldset>
+              <legend>Mode of Transportation (default drive)</legend>
+              <label> <input type="radio" name="type-transportation" value="1" checked />Drive </label>
+              <label> <input type="radio" name="type-transportation" value="2" />Public Transport </label>
+              <label> <input type="radio" name="type-transportation" value="3" />Walk </label>
+              <label> <input type="radio" name="type-transportation" value="4" />Bike </label>
+            </fieldset>
           </div>
         </div>
+
         <div class="additional-features">
-          <p>Enter time you would like to receive text (default 9:00 am)</p>
+          <p>Enter phone number and time you would like to receive text (default 8:30 am)</p>
+          <input type="text" placeholder="phone number" />
           <input type="text" placeholder="time" />
+          <button>Save</button>
         </div>
-        <div class="additional-features">
-          <input type="submit" id="additional-features-submit" />
-        </div>
-      </div>
-      <div id="to-do-list">
+      </form>
+
+      <div id="to-do-list-container">
+        <p>Create to-dos that will be sent tomorrow</p>
         <ul>
           <li>To-Do 1</li>
           <li>To-Do 2</li>
