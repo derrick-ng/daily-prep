@@ -13,6 +13,7 @@ send text
 Main Ideas:
 main body: 
     to-do list, with important(!) checkbox, complete checkbox, edit/save, delete
+        completed checkbox will remove to-do next day
 additional features: 
     weather checkbox... sends temp range, weather conditions(rain, drizzle), wind, humidity
     eta to destination... set current location, destination, and checkbox for mode of transortation
@@ -59,10 +60,17 @@ Need to Learn:
 web scraping - email
 smtp - sending text
 django(?)
-
+python scripts
 
 
 small code notes so dont forget:
 checkbox all have individual ids, might need class
 make sure all correct things have validation, email, name priority senders, time, etc
 mode of transportation only works if theres start and end
+
+
+misc notes:
+website -> server -> database
+    I NEED SERVER   //is that what php does????
+
+on "save" button click, time get sent to do function, everything save in db
