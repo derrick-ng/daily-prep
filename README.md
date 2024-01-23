@@ -27,10 +27,6 @@ create an account                       //much later, prob last feature... would
 add a time allocation for weather to show data at given time range        //interesting... no idea how bc apis dont categorize like this. maybe webscraper?
 
 
-Logistics:
-important(!) to-dos will be sent to the top of the text
-emails with a sender who matches name will be send to top of text
-
 
 Possible Logistic Changes:
 only send wind, humidity, etc info if above a certain % threshold
@@ -74,3 +70,4 @@ website -> server -> database
     I NEED SERVER   //is that what php does????
 
 on "save" button click, time get sent to do function, everything save in db
+    if this were the case, to-dos would need to be added to database on creation
