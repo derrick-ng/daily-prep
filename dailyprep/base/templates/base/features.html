@@ -1,0 +1,45 @@
+<h1>Daily Prep</h1>
+
+<a href="{% url "tasks" %}">Go Back</a>
+
+{{form}}
+
+<form id="additional-features-container">
+    <p>Select everything you want to be sent</p>
+    <!-- might need wrap in form so i can save textfields -->
+    <!-- might need a name so i can grab them later -->
+    <div class="additional-features">
+      <input type="checkbox" id="weather-checkbox" />
+      <label for="weather-checkbox">Do you want to be sent the weather?</label>
+    </div>
+
+    <div class="additional-features" id="email-features-container">
+      <input type="checkbox" id="email-checkbox" />
+      <label for="email-checkbox">Email?</label>
+      <input type="text" placeholder="personal email" />
+      <input type="text" placeholder="name priority senders" />
+    </div>
+
+    <div class="additional-features">
+      <input type="checkbox" id="eta-checkbox" />
+      <label for="eta-checkbox">Eta to Destination? </label>
+      <input type="text" placeholder="Start" />
+      <input type="text" placeholder="Destination" />
+      <div>
+        <fieldset>
+          <legend>Mode of Transportation (default drive)</legend>
+          <label> <input type="radio" name="type-transportation" value="1" checked />Drive </label>
+          <label> <input type="radio" name="type-transportation" value="2" />Public Transport </label>
+          <label> <input type="radio" name="type-transportation" value="3" />Walk </label>
+          <label> <input type="radio" name="type-transportation" value="4" />Bike </label>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="additional-features">
+      <p>Enter phone number and time you would like to receive text (default 8:30 am)</p>
+      <input type="text" placeholder="phone number" />
+      <input type="text" placeholder="time" />
+      <button>Save</button>
+    </div>
+  </form>

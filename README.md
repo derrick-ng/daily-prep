@@ -63,6 +63,10 @@ small code notes so dont forget:
 checkbox all have individual ids, might need class
 make sure all correct things have validation, email, name priority senders, time, etc
 mode of transportation only works if theres start and end
+using beautifulsoup4 and google, query "<start> to <destination> <mode of transportation>"
+make it so AnonymousUser or non registered users can create tasks... use session id
+have task list on first page, have save at bottom, and a next page (showing additional features) which has a save button
+in Features model, maybe move all data into another model, ie: class FeaturesData
 
 
 misc notes:
@@ -71,3 +75,9 @@ website -> server -> database
 
 on "save" button click, time get sent to do function, everything save in db
     if this were the case, to-dos would need to be added to database on creation
+
+
+Learning/Future Notes:
+from django.urls import reverse_lazy - helps with redirects
+    ex: success_url = reverse_lazy("<redirect url>") 
+from django.contrib.auth import login - helps auto log in after form creation
