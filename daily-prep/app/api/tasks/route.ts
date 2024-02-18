@@ -24,5 +24,6 @@ export async function POST(request: NextRequest) {
         }
     })
     
+    return NextResponse.json(newTask, { status: 201 })
 }
 
