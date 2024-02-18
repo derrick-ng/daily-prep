@@ -3,7 +3,7 @@ import { z } from "zod";
 import prisma from "@/prisma/client"
 
 const createTaskSchema = z.object({
-    body: z.string().min(1).max(255),
+    description: z.string().min(1).max(255),
     priority: z.boolean()
 });
 
@@ -16,9 +16,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(validation.error.errors, { status: 400});
     }
 
+    // creates a new task in database
     const newTask = await prisma.task.create({
         data: {
-            body: 
+            description: body.description,
+            priority: body.priority,
         }
     })
     
