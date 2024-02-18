@@ -1,4 +1,5 @@
 import React from 'react'
+import AddForm from './AddForm';
 
 interface formContent {
   task: string;
@@ -10,6 +11,7 @@ interface formContent {
 const TaskList = () => {  
   return (
     <div>
+      <AddForm />
       <div>
        
       </div>

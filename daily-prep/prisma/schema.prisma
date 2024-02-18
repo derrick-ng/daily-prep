@@ -11,9 +11,9 @@ datasource db {
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  body      String   @db.VarChar(255)
-  priority  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(255)
+  priority    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -8,7 +8,9 @@ const AdditionalFeatures = () => {
       <form id="additional-features-container" method="POST">
         <div className="additional-features">
           <input type="checkbox" id="weather-checkbox" />
-          <label>Do you want to be sent the weather?</label>
+          <label htmlFor="weather-checkbox">
+            Do you want to be sent the weather?
+          </label>
         </div>
 
         <div className="additional-features" id="email-features-container">
@@ -27,7 +29,12 @@ const AdditionalFeatures = () => {
             <fieldset>
               <legend>Mode of Transportation (default drive)</legend>
               <label>
-                <input type="radio" name="type-transportation" value="1" checked />
+                <input
+                  type="radio"
+                  name="type-transportation"
+                  value="1"
+                  checked
+                />
                 Drive
               </label>
               <label>
@@ -47,7 +54,10 @@ const AdditionalFeatures = () => {
         </div>
 
         <div className="additional-features">
-          <p>Enter phone number and time you would like to receive text (default 8:30 am)</p>
+          <p>
+            Enter phone number and time you would like to receive text (default
+            8:30 am)
+          </p>
           <input type="text" placeholder="phone number" />
           <input type="text" placeholder="time" />
         </div>
