@@ -1,15 +1,34 @@
-import React from 'react'
+"use client";
+import { Button, Checkbox, Flex, Grid, TextField } from "@radix-ui/themes";
+import React from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
-const AddForm = () => {
-  return (
-    <div>
-        <form action="">
-            <label htmlFor="task">Enter Task</label>
-            <input type="text" id="task" name="task"/>
-            
-        </form>
-    </div>
-  )
+interface TaskForm {
+  description: string;
+  priority: boolean;
 }
 
-export default AddForm
+const AddForm = () => {
+  const { register, handleSubmit } = useForm<TaskForm>();
+
+  return (
+    <form
+      className="flex border-solid border-2 border-black justify-center"
+      onSubmit={handleSubmit(async (data) => {
+        await axios.post("/api/tasks", data);
+      })}
+    >
+      <div>
+        <label htmlFor="">priority</label>
+        <input type="checkbox" {...register("priority")} />
+      </div>
+      <TextField.Root>
+        <TextField.Input placeholder="type new task" {...register("description")} />
+      </TextField.Root>
+      <Button className="float-right">Add Task</Button>
+    </form>
+  );
+};
+
+export default AddForm;

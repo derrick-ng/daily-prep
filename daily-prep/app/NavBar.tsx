@@ -3,6 +3,7 @@ import React from "react";
 
 const NavBar = () => {
   const links = [
+    { label: "Instructions", href: "/" },
     { label: "About Me", href: "/" },
     { label: "Account", href: "/users" },
   ];

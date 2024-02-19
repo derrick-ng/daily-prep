@@ -7,9 +7,9 @@ import AdditionalFeatures from "./components/AdditionalFeatures";
 export default function Home() {
   return (
     <div>
-      <div id="main-content-container">
+      <div className="flex">
         <AdditionalFeatures />
-        <TaskList />
+        <TaskList  />
       </div>
     </div>
   );
