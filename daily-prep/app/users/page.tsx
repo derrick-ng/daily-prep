@@ -2,7 +2,12 @@ import React from 'react'
 
 const UsersPage = () => {
   return (
-    <div>UsersPage</div>
+    <div>
+      <form action="">
+        <input type="text" placeholder='Text'/>
+        <input type="submit" />
+      </form>
+    </div>
   )
 }
 
