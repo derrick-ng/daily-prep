@@ -1,6 +1,3 @@
-import Image from "next/image";
-import Header from "./components/Header";
-import Link from "next/link";
 import TaskList from "./components/TaskList"
 import AdditionalFeatures from "./components/AdditionalFeatures";
 

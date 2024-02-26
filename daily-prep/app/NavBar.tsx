@@ -5,11 +5,11 @@ const NavBar = () => {
   const links = [
     { label: "Instructions", href: "/" },
     { label: "About Me", href: "/" },
-    { label: "Account", href: "/users" },
+    { label: "Account", href: "/login" },
   ];
 
   return (
-    <nav className="flex space-x-6 mb-5 h-14 px-5 border-b items-center">
+    <nav className="flex space-x-6 mb-5 h-14 px-5 border-b items-center bg-gray-800 text-white">
       <Link href="/">Daily Prep</Link>
       <ul className="flex space-x-6">
         <a href="https://github.com/derrick-ng" target="_blank">

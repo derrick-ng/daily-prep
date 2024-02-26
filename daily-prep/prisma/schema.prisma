@@ -10,10 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id          Int    @id @default(autoincrement())
+  username    String
+  email       String @unique
+  phoneNumber String @unique
+  password    String
+  //task           Task[]
+  //additionalInfo AdditionalInfo?
+}
+
 model Task {
+  // author      User     @relation(fields: [authorId], references: [id])
+  // authorId    Int //not sure what this does
   id          Int      @id @default(autoincrement())
   description String   @db.VarChar(255)
   priority    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model AdditionalInfo {
+  id                   Int     @id @default(autoincrement()) //think this is primary key?? dont think i need an id
+  // author               User    @relation(fields: [authorId], references: [id])
+  // authorId             Int     @unique
+  weather              Boolean @default(false)
+  email                Boolean @default(false)
+  emailPriority        String  @db.VarChar(255)
+  eta                  Boolean @default(false)
+  etaStart             String  @db.VarChar(50)
+  etaEnd               String  @db.VarChar(50)
+  modeOfTransportation Int
 }
