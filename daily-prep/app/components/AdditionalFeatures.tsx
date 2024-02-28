@@ -27,14 +27,14 @@ const AdditionalFeatures = () => {
     >
       <h3 className="text-center text-2xl">Additional Features</h3>
       <div>
-        <label htmlFor="">Weather</label>
-        <input type="checkbox" {...register("weather")} />
+        <input type="checkbox" id="weather-checkbox" {...register("weather")} />
+        <label htmlFor="weather-checkbox">Weather</label>
       </div>
 
       <div>
         <div>
-          <label htmlFor="">Email</label>
-          <input type="checkbox" {...register("email")} />
+          <input type="checkbox" id="email-checkbox" {...register("email")} />
+          <label htmlFor="email-checkbox">Email</label>
         </div>
         <div>
           <TextField.Root>
@@ -45,8 +45,8 @@ const AdditionalFeatures = () => {
 
       <div>
         <div>
-          <label htmlFor="">eta</label>
-          <input type="checkbox" {...register("eta")} />
+          <input type="checkbox" id="eta-checkbox" {...register("eta")} />
+          <label htmlFor="eta-checkbox">eta</label>
         </div>
         <div>
           <TextField.Input placeholder="Start Location" {...register("etaStart")} />

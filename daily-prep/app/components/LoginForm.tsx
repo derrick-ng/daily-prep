@@ -2,21 +2,85 @@
 
 import React from "react";
 import { Button, TextField } from "@radix-ui/themes";
-import Link from "next/link";
+//import * as Form from "@radix-ui/react-form"
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,  } from "@/components/ui/form"
+import { Input } from "@/components/ui/input";
 
-//should i make an interface or use built in js auth?
+//maybe this can be done in api?
+//doesnt work, try moving to api
+const loginUser = z.object({
+  email: z.string().min(1, "email").email(),
+  password: z.string().min(1, "password"),
+});
+
+// interface LoginUser {
+//   email: string;
+//   password: number;
+// }
 
 const LoginForm = () => {
-  return (
-    <div>
-      create login form, import into users/page, create Users model, create users/routes
-      <form action="" className="w-1/2">
-        <TextField.Input placeholder="username" />
-        <TextField.Input placeholder="password" type=""/>
+  const router = useRouter();
+  const form = useForm<z.infer<typeof loginUser>>({
+    resolver: zodResolver(loginUser),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-        <Button>Login</Button>
+//values: z.infer<typeof loginUser>
+  const onSubmit = async (values: z.infer<typeof loginUser>) => {
+    const loginData = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+
+    if (loginData?.error) {
+      console.log(loginData.error);
+    } else {
+      router.push("/");
+    }
+  };
+
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>email</FormLabel>
+              <FormControl>
+                <Input placeholder="enter email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>password</FormLabel>
+              <FormControl>
+                <Input placeholder="enter password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
       </form>
-    </div>
+    </Form>
   );
 };
 

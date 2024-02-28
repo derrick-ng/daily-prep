@@ -4,8 +4,8 @@ import prisma from "@/prisma/client";
 import { hash } from "bcrypt";
 
 const createUserSchema = z.object({
-  username: z.string().min(1).max(255),
-  email: z.string().min(1).max(50), //change this later
+  username: z.string().min(1, "username required").max(255),
+  email: z.string().min(1, "email required").email(),
   phoneNumber: z.string().min(1).max(20),
   password: z.string(),
 });
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   console.log(body);
-  
+
   const validation = createUserSchema.safeParse(body);
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, { status: 400 });
@@ -27,7 +27,15 @@ export async function POST(request: NextRequest) {
   });
   if (checkRegisteredEmail) {
     //if email exists, nullify user creation
-    return NextResponse.json({ user: null, message: "Email already registered" });
+    //409 request means conflict with existing resource (email)
+    return NextResponse.json({ user: null, message: "Email already registered" }, { status: 409 });
+  }
+
+  const checkRegisteredPhoneNumber = await prisma.user.findUnique({
+    where: { phoneNumber: body.phoneNumber },
+  });
+  if (checkRegisteredPhoneNumber) {
+    return NextResponse.json({ user: null, message: "Phone Number already registered" }, { status: 409 });
   }
 
   //hash password to store in database, storing raw pw in db not safe
@@ -42,5 +50,9 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  return NextResponse.json(newUser, { status: 201 });
+  //create a rest object without password to return
+  //dont want to return password, even if hashed
+  const { password: newUserPassword, ...rest } = newUser;
+
+  return NextResponse.json({ user: rest, message: "User created" }, { status: 201 });
 }

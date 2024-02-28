@@ -1,12 +1,11 @@
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
+import { authOptions } from "./lib/auth";
+import SignOutButton from "./components/SignOutButton";
 
-const NavBar = () => {
-  const links = [
-    { label: "Instructions", href: "/" },
-    { label: "About Me", href: "/" },
-    { label: "Account", href: "/login" },
-  ];
+const NavBar = async () => {
+  const session = await getServerSession(authOptions)
 
   return (
     <nav className="flex space-x-6 mb-5 h-14 px-5 border-b items-center bg-gray-800 text-white">
@@ -15,11 +14,13 @@ const NavBar = () => {
         <a href="https://github.com/derrick-ng" target="_blank">
           GitHub
         </a>
-        {links.map((link) => (
-          <Link key={link.href} className="" href={link.href}>
-            {link.label}
-          </Link>
-        ))}
+        <Link href="/">Instructions</Link>
+        <Link href="/">About Me</Link>
+        {session?.user ? (
+          <SignOutButton />
+        ) : (
+          <Link href="/login">Account</Link>
+        )}
       </ul>
     </nav>
   );
