@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             return {
-                id: `$[findUser.id}`,       //not sure why this needs to be string
+                id: `${findUser.id}`,       //not sure why this needs to be string
                 username: findUser.username,
                 email: findUser.email,
                 phoneNumber: findUser.phoneNumber,
@@ -57,7 +57,41 @@ export const authOptions: NextAuthOptions = {
           }
         })
       ],
-    //   callbacks: {
-    //     async jwt
-    //   }
+      //all the values in authorize get sent to jwt
+      //jwt sends value to session
+      callbacks: {
+        async jwt({ token, user }) {
+            //console.log("start");
+            
+            //console.log(token, user);
+            
+            if (user) {
+                //console.log("middle");
+                return {
+                    ...token,
+                    id: user.id
+                }
+            }
+            //console.log("end");
+            
+            return token
+        },
+        async session({ session, user, token }){
+            //console.log("start");
+            
+           //console.log(token, user);
+           
+           //console.log("middle");
+           
+           //returns session, which has values of user saved
+           //id: token.sub gives authorId
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.sub,
+                }
+            }
+        }
+      }
 }

@@ -11,8 +11,7 @@ import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,  } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 
-//maybe this can be done in api?
-//doesnt work, try moving to api
+
 const loginUser = z.object({
   email: z.string().min(1, "email").email(),
   password: z.string().min(1, "password"),
@@ -23,7 +22,13 @@ const loginUser = z.object({
 //   password: number;
 // }
 
+//create an IsLoggedIn function
+  //when user successfully submits a login form, call function, prob line 52
+  //grabs the user id and stores in function
+  //can be called in route to get user id without needing jwt
+
 const LoginForm = () => {
+  
   const router = useRouter();
   const form = useForm<z.infer<typeof loginUser>>({
     resolver: zodResolver(loginUser),
@@ -33,7 +38,6 @@ const LoginForm = () => {
     },
   });
 
-//values: z.infer<typeof loginUser>
   const onSubmit = async (values: z.infer<typeof loginUser>) => {
     const loginData = await signIn("credentials", {
       email: values.email,
@@ -41,13 +45,13 @@ const LoginForm = () => {
       redirect: false,
     });
 
+
     if (loginData?.error) {
       console.log(loginData.error);
-    } else {
+    } else {      
       router.push("/");
     }
   };
-
 
   return (
     <Form {...form}>

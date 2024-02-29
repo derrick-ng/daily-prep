@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Button, RadioGroup, TextField, Text, DropdownMenu, Flex } from "@radix-ui/themes";
+import { Button, RadioGroup, TextField, Text, DropdownMenu, Flex, Callout } from "@radix-ui/themes";
 
 interface AdditionalFeatureForm {
   weather: boolean;
@@ -17,12 +17,18 @@ interface AdditionalFeatureForm {
 
 const AdditionalFeatures = () => {
   const { register, handleSubmit } = useForm<AdditionalFeatureForm>();
+  const [error, setError] = useState("");
 
   return (
+    <div className="w-1/2 border-solid border-2 border-black">
     <form
-      className="w-1/2 border-solid border-2"
+      className=""
       onSubmit={handleSubmit(async (data) => {
-        await axios.post("api/additionalInfo", data);
+        try {
+          await axios.post("api/additionalInfo", data);
+        } catch (error) {
+          setError("Error occurred, can not save")
+        }
       })}
     >
       <h3 className="text-center text-2xl">Additional Features</h3>
@@ -68,6 +74,7 @@ const AdditionalFeatures = () => {
       </div>
       <Button className="float-right">Save Preferences</Button>
     </form>
+    </div>
   );
 };
 

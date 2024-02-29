@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
 
   const newAdditionalInfo = await prisma.additionalInfo.create({
     data: {
+      authorId: body.id,
       weather: body.weather,
       email: body.email,
       emailPriority: body.emailPriority,
@@ -37,4 +38,9 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(newAdditionalInfo, { status: 201 });
+}
+
+//might need to make a PUT request to update additionalInfo subsequent saves.
+export async function PUT() {
+
 }
