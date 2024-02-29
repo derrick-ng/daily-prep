@@ -2,6 +2,7 @@
 
 import { Button, TextField } from "@radix-ui/themes";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +14,7 @@ interface RegisterForm {
 }
 
 const RegisterForm = () => {
+  const router = useRouter();
   const { register, handleSubmit } = useForm<RegisterForm>();
 
   return (
@@ -20,6 +22,7 @@ const RegisterForm = () => {
       className="w-1/2"
       onSubmit={handleSubmit(async (data) => {
         await axios.post("api/users", data)
+        router.push("/login")
       })}
     >
       <TextField.Input placeholder="username" {...register("username")} />
