@@ -17,9 +17,8 @@ model User {
   phoneNumber    String          @unique
   password       String
   task           Task[]
-  //additionalInfo AdditionalInfo?
+  additionalInfo AdditionalInfo?
 }
-
 
 model Task {
   id          Int      @id @default(autoincrement())
@@ -31,16 +30,16 @@ model Task {
   updatedAt   DateTime @updatedAt
 }
 
-
 model AdditionalInfo {
-  id                   Int     @id @default(autoincrement())
-  //authorId             Int     @unique
-  //author               User    @relation(fields: [authorId], references: [id])
-  weather              Boolean @default(false)
-  email                Boolean @default(false)
-  emailPriority        String  @db.VarChar(255)
-  eta                  Boolean @default(false)
-  etaStart             String  @db.VarChar(50)
-  etaEnd               String  @db.VarChar(50)
+  id                   Int      @id @default(autoincrement())
+  authorId             Int      @unique
+  author               User     @relation(fields: [authorId], references: [id])
+  weather              Boolean? @default(false)
+  weatherCity          String?
+  email                Boolean? @default(false)
+  emailPriority        String?  @db.VarChar(255)
+  eta                  Boolean? @default(false)
+  etaStart             String?  @db.VarChar(50)
+  etaEnd               String?  @db.VarChar(50)
   modeOfTransportation Int
 }

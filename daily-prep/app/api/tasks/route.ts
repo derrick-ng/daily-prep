@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
   //find current user by comparing their email with database
   const session = await getServerSession(authOptions);
   const currentUser = await prisma.user.findUnique({
+    //add ! after email to tell typescript var could be null
     where: { email: session?.user.email!},
   })
 

@@ -1,14 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/auth";
 
 const createAdditionalFeatureSchema = z.object({
-  weather: z.boolean(),
-  email: z.boolean(),
-  emailPriority: z.string().min(1).max(50),
-  eta: z.boolean(),
-  etaStart: z.string().min(1).max(50),
-  etaEnd: z.string().min(1).max(50),
+  weather: z.boolean().optional(),
+  weatherCity: z.string().optional(),
+  email: z.boolean().optional(),
+  emailPriority: z.string().optional(),
+  eta: z.boolean().optional(),
+  etaStart: z.string().optional(),
+  etaEnd: z.string().optional(),
   modeOfTransportation: z.number(),
 });
 
@@ -24,10 +27,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
+  const session = await getServerSession(authOptions);
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session?.user.email!,
+    },
+  });
+
   const newAdditionalInfo = await prisma.additionalInfo.create({
     data: {
-      authorId: body.id,
+      authorId: currentUser!.id,
       weather: body.weather,
+      weatherCity: body.weatherCity,
       email: body.email,
       emailPriority: body.emailPriority,
       eta: body.eta,
@@ -41,6 +52,4 @@ export async function POST(request: NextRequest) {
 }
 
 //might need to make a PUT request to update additionalInfo subsequent saves.
-export async function PUT() {
-
-}
+export async function PUT() {}
