@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse, userAgent } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/auth";
+import { getCurrentUser } from "@/app/lib/getCurrentUser";
 
 const createAdditionalFeatureSchema = z.object({
   weather: z.boolean().optional(),
@@ -16,17 +15,13 @@ const createAdditionalFeatureSchema = z.object({
 });
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      email: session?.user.email!,
-    },
-  });
+  //helper function to get current user
+  const currentUser = await getCurrentUser();
 
   const UserAdditionalInfo = await prisma.additionalInfo.findUnique({
     where: {
       authorId: currentUser?.id,
-    }
+    },
   });
 
   return NextResponse.json(UserAdditionalInfo, { status: 200 });
@@ -44,13 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
-  const session = await getServerSession(authOptions);
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      email: session?.user.email!,
-    },
-  });
-
+  const currentUser = await getCurrentUser();
   const newAdditionalInfo = await prisma.additionalInfo.create({
     data: {
       authorId: currentUser!.id,
@@ -68,7 +57,6 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(newAdditionalInfo, { status: 201 });
 }
 
-//might need to make a PUT request to update additionalInfo subsequent saves.
 export async function PUT(request: NextRequest) {
   const body = await request.json();
 
@@ -79,12 +67,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
-  const session = await getServerSession(authOptions);
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      email: session?.user.email!,
-    },
-  });
+  const currentUser = await getCurrentUser();
 
   const updateAdditionalInfo = await prisma.additionalInfo.update({
     where: {
@@ -99,7 +82,7 @@ export async function PUT(request: NextRequest) {
       etaStart: body.etaStart,
       etaEnd: body.etaEnd,
       modeOfTransportation: body.modeOfTransportation,
-    }
+    },
   });
 
   return NextResponse.json(updateAdditionalInfo, { status: 200 });
