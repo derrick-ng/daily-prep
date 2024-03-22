@@ -15,8 +15,6 @@ const TaskList = async () => {
       authorId: userId,
     },
   });
-  console.log(tasks);
-
 
   return (
     <div className="w-1/2 text-2xl border-black border-4">
@@ -31,7 +29,7 @@ const TaskList = async () => {
             {task.description}
           </li>)
           ) : 
-          <p>no tasks</p>
+          <li>no tasks</li>
           }
         </ul>
       </div>

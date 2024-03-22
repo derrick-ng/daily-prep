@@ -26,7 +26,14 @@ const AdditionalFeatures = () => {
         className=""
         onSubmit={handleSubmit(async (data) => {
           try {
-            await axios.post("api/additionalInfo", data);
+            //send a GET request to check if user already created row
+            const response = await axios.get("api/additionalInfo");
+
+            if (!response.data) {
+              await axios.post("api/additionalInfo", data);
+            } else if (response.data) {
+              await axios.put("/api/additionalInfo", data);
+            }
           } catch (error) {
             setError("Error occurred, can not save");
           }

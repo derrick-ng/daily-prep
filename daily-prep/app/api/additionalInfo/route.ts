@@ -15,6 +15,23 @@ const createAdditionalFeatureSchema = z.object({
   modeOfTransportation: z.number(),
 });
 
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session?.user.email!,
+    },
+  });
+
+  const UserAdditionalInfo = await prisma.additionalInfo.findUnique({
+    where: {
+      authorId: currentUser?.id,
+    }
+  });
+
+  return NextResponse.json(UserAdditionalInfo, { status: 200 });
+}
+
 //generic code logic in tasks/route.ts
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -52,4 +69,38 @@ export async function POST(request: NextRequest) {
 }
 
 //might need to make a PUT request to update additionalInfo subsequent saves.
-export async function PUT() {}
+export async function PUT(request: NextRequest) {
+  const body = await request.json();
+
+  body.modeOfTransportation = Number(body.modeOfTransportation);
+
+  const validation = createAdditionalFeatureSchema.safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
+  }
+
+  const session = await getServerSession(authOptions);
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session?.user.email!,
+    },
+  });
+
+  const updateAdditionalInfo = await prisma.additionalInfo.update({
+    where: {
+      authorId: currentUser?.id,
+    },
+    data: {
+      weather: body.weather,
+      weatherCity: body.weatherCity,
+      email: body.email,
+      emailPriority: body.emailPriority,
+      eta: body.eta,
+      etaStart: body.etaStart,
+      etaEnd: body.etaEnd,
+      modeOfTransportation: body.modeOfTransportation,
+    }
+  });
+
+  return NextResponse.json(updateAdditionalInfo, { status: 200 });
+}
