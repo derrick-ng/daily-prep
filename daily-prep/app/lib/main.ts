@@ -1,19 +1,27 @@
-import prisma from "@/prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./auth";
+import prisma from "../../prisma/client";
 import { getTravelTime } from "./getAPIData";
+import { getUserTasks } from "./getUserTasks";
 
-//grab all users, grab all addInfo, do stuff
+//final logic:
+//main.ts   loop through each user, grab id and phone number
+    //check Task(db) to see if user has tasks
+        //get all tasks where authorId = id, return as array
+
+    //getTravelTime(id: number)
+        //findunique where authorId = id
+            //return array of
+    //getWeather(id: number)
+        //prob same
+    //getEmail(id: number)
+        //prob same
+    //format and send all info via phone number
 async function main() {
-    //gets more recent row: filter by id in descending order and take first one
-    const userAdditionalInfo = prisma.additionalInfo.findFirst({
-        orderBy: {
-            id: "desc",
-            
-        },
-        take: 1,
-    })
-
-    //userAdditionalInfo.
-    //const travelTime = getTravelTime(userAdditionalInfo);
+    const users = await prisma.user.findMany();
+    const userCount = await prisma.user.count();
+    
+    //
+    for (let i = 0; i < userCount; i++) {
+        getUserTasks(users[i].id);  //need to store this
+    }
 }
+main();

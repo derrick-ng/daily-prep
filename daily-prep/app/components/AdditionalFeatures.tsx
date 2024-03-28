@@ -16,6 +16,10 @@ interface AdditionalFeatureForm {
   modeOfTransportation: number;
 }
 
+// look up csrf tokens, supposedly good practice for api. (related to axios?)
+// csrf tokens add a layer of security by encryping info?
+// makes it so random people cant send get,post,delete,etc requests
+
 const AdditionalFeatures = () => {
   const { register, handleSubmit } = useForm<AdditionalFeatureForm>();
   const [error, setError] = useState("");
