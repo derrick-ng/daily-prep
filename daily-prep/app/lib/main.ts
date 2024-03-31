@@ -1,5 +1,5 @@
 import prisma from "../../prisma/client";
-import { getTravelTime } from "./getAPIData";
+import { getTravelTime } from "./getTravelTime";
 import { getUserTasks } from "./getUserTasks";
 
 //final logic:
@@ -21,7 +21,12 @@ async function main() {
     
     //
     for (let i = 0; i < userCount; i++) {
-        getUserTasks(users[i].id);  //need to store this
+        let userTasks = await getUserTasks(users[i].id);
+        let travelTime = await getTravelTime(users[i].id);
+
+        console.log(`user: ${users[i].id}\n   tasks: ${userTasks}\n   travel time: ${travelTime}`);
+        
+
     }
 }
 main();

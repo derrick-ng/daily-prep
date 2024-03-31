@@ -44,19 +44,27 @@ var client_1 = require("../../prisma/client");
 //this is going to cause a problem, array is essentially random
 //might need to change functionality to return individual travel times, through ID as parameter
 //check see if it works with export
-var getTravelTime = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var apiKey, AllAdditionalInfo, AdditionalInfoCount, travelTimes, i, origin_1, destination, URL_1, response, distanceValue, durationValue, travelTime, error_1;
+var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var travelTimes, apiKey, AllAdditionalInfo, AdditionalInfoCount, i, origin_1, destination, URL_1, response, distanceValue, durationValue, travelTime, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                travelTimes = [];
                 apiKey = "niTMFb80yf7PvGir2qXKCYxtOVSZOxI2ZOFjMZPueZkfHRUpycz1RHlvaJomaROG";
-                return [4 /*yield*/, client_1.default.additionalInfo.findMany()];
+                return [4 /*yield*/, client_1.default.additionalInfo.findMany({
+                        where: {
+                            authorId: id,
+                        }
+                    })];
             case 1:
                 AllAdditionalInfo = _a.sent();
-                return [4 /*yield*/, client_1.default.additionalInfo.count()];
+                return [4 /*yield*/, client_1.default.additionalInfo.count({
+                        where: {
+                            authorId: id,
+                        }
+                    })];
             case 2:
                 AdditionalInfoCount = _a.sent();
-                travelTimes = [];
                 i = 0;
                 _a.label = 3;
             case 3:
@@ -78,7 +86,7 @@ var getTravelTime = function () { return __awaiter(void 0, void 0, void 0, funct
                 return [3 /*break*/, 7];
             case 6:
                 error_1 = _a.sent();
-                console.log("error calculating distance, prob value", error_1);
+                console.log("error calculating distance, prob invalid value (address)", error_1);
                 return [3 /*break*/, 7];
             case 7:
                 i++;
@@ -88,7 +96,7 @@ var getTravelTime = function () { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 exports.getTravelTime = getTravelTime;
-(0, exports.getTravelTime)()
-    .then(function (travelTimes) {
-    console.log("Travel Times: ", travelTimes);
-});
+// getTravelTime()
+//     .then((travelTimes) => {
+//         console.log("Travel Times: ", travelTimes);
+//     })

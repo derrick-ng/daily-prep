@@ -46,23 +46,22 @@ var getUserTasks = function (id) { return __awaiter(void 0, void 0, void 0, func
                 userTaskDescription = [];
                 return [4 /*yield*/, client_1.default.task.count({
                         where: {
-                            authorId: id
-                        }
+                            authorId: id,
+                        },
                     })];
             case 1:
                 taskCount = _a.sent();
                 return [4 /*yield*/, client_1.default.task.findMany({
                         where: {
-                            authorId: id
-                        }
+                            authorId: id,
+                        },
                     })];
             case 2:
                 UserTaskInfo = _a.sent();
                 for (i = 0; i < taskCount; i++) {
                     userTaskDescription.push(UserTaskInfo[i].description);
                 }
-                console.log(userTaskDescription);
-                return [2 /*return*/];
+                return [2 /*return*/, userTaskDescription];
         }
     });
 }); };

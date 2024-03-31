@@ -11,15 +11,23 @@ import prisma from "../../prisma/client";
 
 
 //check see if it works with export
-export const getTravelTime = async () => {
-  const apiKey = "niTMFb80yf7PvGir2qXKCYxtOVSZOxI2ZOFjMZPueZkfHRUpycz1RHlvaJomaROG";
+export const getTravelTime = async (id: number) => {
+  const travelTimes: string[] = [];
+  const apiKey = "niTMFb80yf7PvGir2qXKCYxtOVSZOxI2ZOFjMZPueZkfHRUpycz1RHlvaJomaROG";  //this should prob be hidden
 
-  const AllAdditionalInfo = await prisma.additionalInfo.findMany();
-  const AdditionalInfoCount = await prisma.additionalInfo.count();
+  const AllAdditionalInfo = await prisma.additionalInfo.findMany({
+    where: {
+      authorId: id,
+    }
+  });
+  const AdditionalInfoCount = await prisma.additionalInfo.count({
+    where: {
+      authorId: id,
+    }
+  });
 
   //hold all travel times in an array
   //failed attempts to get distance/duration will not be added to the array
-  const travelTimes: string[] = [];
 
   for (let i = 0; i < AdditionalInfoCount; i++) {
     let origin = AllAdditionalInfo[i].etaStart;
@@ -38,13 +46,13 @@ export const getTravelTime = async () => {
       //console.log(travelTime);
       travelTimes.push(travelTime);
     } catch (error) {
-      console.log("error calculating distance, prob value", error);
+      console.log("error calculating distance, prob invalid value (address)", error);
     }
   }
   return travelTimes;
 };
 
-getTravelTime()
-    .then((travelTimes) => {
-        console.log("Travel Times: ", travelTimes);
-    })
+// getTravelTime()
+//     .then((travelTimes) => {
+//         console.log("Travel Times: ", travelTimes);
+//     })
