@@ -39,11 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTravelTime = void 0;
 var axios_1 = require("axios");
 var client_1 = require("../../prisma/client");
-//can be called in another file... main.ts?
-//currently returns an array of travel times for all users, in the order of database the rows
-//this is going to cause a problem, array is essentially random
-//might need to change functionality to return individual travel times, through ID as parameter
-//check see if it works with export
 var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     var travelTimes, apiKey, AllAdditionalInfo, AdditionalInfoCount, i, origin_1, destination, URL_1, response, distanceValue, durationValue, travelTime, error_1;
     return __generator(this, function (_a) {
@@ -81,12 +76,13 @@ var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, fun
                 distanceValue = Math.round((response.data.rows[0].elements[0].distance.value / 1609.34) * 10) / 10;
                 durationValue = Math.round(response.data.rows[0].elements[0].duration.value / 60);
                 travelTime = "".concat(distanceValue, " miles, ").concat(durationValue, " minutes");
-                //console.log(travelTime);
                 travelTimes.push(travelTime);
                 return [3 /*break*/, 7];
             case 6:
                 error_1 = _a.sent();
-                console.log("error calculating distance, prob invalid value (address)", error_1);
+                //error occurs if user did not fill out additional info form
+                //invalid 
+                console.log("could not get travel time", error_1);
                 return [3 /*break*/, 7];
             case 7:
                 i++;
@@ -96,7 +92,3 @@ var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 exports.getTravelTime = getTravelTime;
-// getTravelTime()
-//     .then((travelTimes) => {
-//         console.log("Travel Times: ", travelTimes);
-//     })

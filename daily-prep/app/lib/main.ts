@@ -23,10 +23,9 @@ async function main() {
     for (let i = 0; i < userCount; i++) {
         let userTasks = await getUserTasks(users[i].id);
         let travelTime = await getTravelTime(users[i].id);
+        //let weather = await getWeather(users[i].id);
 
         console.log(`user: ${users[i].id}\n   tasks: ${userTasks}\n   travel time: ${travelTime}`);
-        
-
     }
 }
 main();

@@ -1,16 +1,7 @@
 import axios from "axios";
 import prisma from "../../prisma/client";
 
-//can be called in another file... main.ts?
 
-//currently returns an array of travel times for all users, in the order of database the rows
-    //this is going to cause a problem, array is essentially random
-//might need to change functionality to return individual travel times, through ID as parameter
-
-
-
-
-//check see if it works with export
 export const getTravelTime = async (id: number) => {
   const travelTimes: string[] = [];
   const apiKey = "niTMFb80yf7PvGir2qXKCYxtOVSZOxI2ZOFjMZPueZkfHRUpycz1RHlvaJomaROG";  //this should prob be hidden
@@ -26,9 +17,6 @@ export const getTravelTime = async (id: number) => {
     }
   });
 
-  //hold all travel times in an array
-  //failed attempts to get distance/duration will not be added to the array
-
   for (let i = 0; i < AdditionalInfoCount; i++) {
     let origin = AllAdditionalInfo[i].etaStart;
     let destination = AllAdditionalInfo[i].etaEnd;
@@ -43,16 +31,12 @@ export const getTravelTime = async (id: number) => {
 
       const travelTime = `${distanceValue} miles, ${durationValue} minutes`;
 
-      //console.log(travelTime);
       travelTimes.push(travelTime);
     } catch (error) {
-      console.log("error calculating distance, prob invalid value (address)", error);
+      //invalid addresses do not reach here, they return null or empty string
+      //error occurs if user did not fill out additional info form
+      console.log("could not get travel time", error);
     }
   }
   return travelTimes;
 };
-
-// getTravelTime()
-//     .then((travelTimes) => {
-//         console.log("Travel Times: ", travelTimes);
-//     })
