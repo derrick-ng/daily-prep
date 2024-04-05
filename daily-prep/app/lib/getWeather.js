@@ -36,23 +36,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTravelTime = void 0;
+exports.getWeather = void 0;
 var axios_1 = require("axios");
 var client_1 = require("../../prisma/client");
-var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-    var travelTime, apiKey, AllAdditionalInfo, AdditionalInfoCount, i, origin_1, destination, URL_1, response, distanceValue, durationValue, error_1;
+var getWeather = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var weather, apiKey, apiUrl, apiUrl2, AdditionalInfo, AdditionalInfoCount, i, weatherCity, URL_1, currentWeatherResponse, currentWeather, URL2, forecastWeatherResponse, forecastWeather, minTemp, maxTemp, weatherCondition, wind, sendWind, rainyHours, i_1, hourlyForecast, hourInPST, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                travelTime = "";
-                apiKey = "niTMFb80yf7PvGir2qXKCYxtOVSZOxI2ZOFjMZPueZkfHRUpycz1RHlvaJomaROG";
+                weather = "";
+                apiKey = "0f519fb83d4e4e8407dc01c9311395ef";
+                apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=";
+                apiUrl2 = "https://pro.openweathermap.org/data/2.5/forecast/hourly?q=";
                 return [4 /*yield*/, client_1.default.additionalInfo.findMany({
                         where: {
                             authorId: id,
                         }
                     })];
             case 1:
-                AllAdditionalInfo = _a.sent();
+                AdditionalInfo = _a.sent();
                 return [4 /*yield*/, client_1.default.additionalInfo.count({
                         where: {
                             authorId: id,
@@ -63,31 +65,56 @@ var getTravelTime = function (id) { return __awaiter(void 0, void 0, void 0, fun
                 i = 0;
                 _a.label = 3;
             case 3:
-                if (!(i < AdditionalInfoCount)) return [3 /*break*/, 8];
-                origin_1 = AllAdditionalInfo[i].etaStart;
-                destination = AllAdditionalInfo[i].etaEnd;
+                if (!(i < AdditionalInfoCount)) return [3 /*break*/, 9];
+                weatherCity = AdditionalInfo[i].weatherCity;
                 _a.label = 4;
             case 4:
-                _a.trys.push([4, 6, , 7]);
-                URL_1 = "https://api.distancematrix.ai/maps/api/distancematrix/json?origins=".concat(origin_1, "&destinations=").concat(destination, "&key=").concat(apiKey);
+                _a.trys.push([4, 7, , 8]);
+                URL_1 = "".concat(apiUrl).concat(weatherCity, "&appid=").concat(apiKey);
                 return [4 /*yield*/, axios_1.default.get(URL_1)];
             case 5:
-                response = _a.sent();
-                distanceValue = Math.round((response.data.rows[0].elements[0].distance.value / 1609.34) * 10) / 10;
-                durationValue = Math.round(response.data.rows[0].elements[0].duration.value / 60);
-                travelTime = "".concat(distanceValue, " miles, ").concat(durationValue, " minutes");
-                return [3 /*break*/, 7];
+                currentWeatherResponse = _a.sent();
+                currentWeather = currentWeatherResponse.data;
+                URL2 = "".concat(apiUrl2).concat(weatherCity, "&appid=").concat(apiKey);
+                return [4 /*yield*/, axios_1.default.get(URL2)];
             case 6:
-                error_1 = _a.sent();
-                //invalid addresses do not reach here, they return null or empty string
-                //error occurs if user did not fill out additional info form
-                console.log("could not get travel time", error_1);
-                return [3 /*break*/, 7];
+                forecastWeatherResponse = _a.sent();
+                forecastWeather = forecastWeatherResponse.data;
+                minTemp = Math.round(currentWeather.main.temp_min);
+                maxTemp = Math.round(currentWeather.main.temp_max);
+                weatherCondition = currentWeather.weather[0].main;
+                wind = currentWeather.wind.speed;
+                sendWind = wind > 20 ? true : false;
+                rainyHours = [];
+                for (i_1 = 0; i_1 < 10; i_1++) {
+                    hourlyForecast = forecastWeather.list[i_1].weather[0].main;
+                    if (hourlyForecast === "Rain") {
+                        hourInPST = (i_1 + 8) % 12;
+                        rainyHours.push(hourInPST);
+                    }
+                }
+                weather = "".concat(minTemp, "-").concat(maxTemp, "\u00B0F, ").concat(weatherCondition);
+                if (rainyHours.length > 0) {
+                    weather += ", raining at ".concat(rainyHours);
+                }
+                if (sendWind) {
+                    weather += ", wind: ".concat(wind, " mph");
+                }
+                return [3 /*break*/, 8];
             case 7:
+                error_1 = _a.sent();
+                console.log("ffail");
+                return [3 /*break*/, 8];
+            case 8:
                 i++;
                 return [3 /*break*/, 3];
-            case 8: return [2 /*return*/, travelTime];
+            case 9: return [2 /*return*/, weather];
         }
     });
 }); };
-exports.getTravelTime = getTravelTime;
+exports.getWeather = getWeather;
+// const weather = async () => {
+//     const a = await getWeather(21);
+//     console.log(a);
+// }
+// weather();

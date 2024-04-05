@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var client_1 = require("../../prisma/client");
 var getTravelTime_1 = require("./getTravelTime");
 var getUserTasks_1 = require("./getUserTasks");
+var getWeather_1 = require("./getWeather");
 //final logic:
 //main.ts   loop through each user, grab id and phone number
 //check Task(db) to see if user has tasks
@@ -53,7 +54,7 @@ var getUserTasks_1 = require("./getUserTasks");
 //format and send all info via phone number
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var users, userCount, i, userTasks, travelTime;
+        var users, userCount, i, userTasks, travelTime, weather;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, client_1.default.user.findMany()];
@@ -65,19 +66,23 @@ function main() {
                     i = 0;
                     _a.label = 3;
                 case 3:
-                    if (!(i < userCount)) return [3 /*break*/, 7];
+                    if (!(i < userCount)) return [3 /*break*/, 8];
                     return [4 /*yield*/, (0, getUserTasks_1.getUserTasks)(users[i].id)];
                 case 4:
                     userTasks = _a.sent();
                     return [4 /*yield*/, (0, getTravelTime_1.getTravelTime)(users[i].id)];
                 case 5:
                     travelTime = _a.sent();
-                    console.log("user: ".concat(users[i].id, "\n   tasks: ").concat(userTasks, "\n   travel time: ").concat(travelTime));
-                    _a.label = 6;
+                    return [4 /*yield*/, (0, getWeather_1.getWeather)(users[i].id)];
                 case 6:
+                    weather = _a.sent();
+                    //on deployment/finish with apis, change id to username
+                    console.log("user: ".concat(users[i].id, "\n   tasks: ").concat(userTasks, "\n   travel time: ").concat(travelTime, "\n   weather: ").concat(weather, "\n"));
+                    _a.label = 7;
+                case 7:
                     i++;
                     return [3 /*break*/, 3];
-                case 7: return [2 /*return*/];
+                case 8: return [2 /*return*/];
             }
         });
     });
