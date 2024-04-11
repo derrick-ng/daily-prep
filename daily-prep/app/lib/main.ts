@@ -2,7 +2,7 @@ import prisma from "../../prisma/client";
 import { getTravelTime } from "./getTravelTime";
 import { getUserTasks } from "./getUserTasks";
 import { getWeather } from "./getWeather";
-
+import { getEmails } from "./getEmails";
 //final logic:
 //main.ts   loop through each user, grab id and phone number
     //check Task(db) to see if user has tasks
@@ -25,6 +25,7 @@ async function main() {
         let userTasks = await getUserTasks(users[i].id);
         let travelTime = await getTravelTime(users[i].id);
         let weather = await getWeather(users[i].id);
+        //let emails = await getEmails(users[i].id);
 
         //on deployment/finish with apis, change id to username
         console.log(`user: ${users[i].id}\n   tasks: ${userTasks}\n   travel time: ${travelTime}\n   weather: ${weather}\n`);
