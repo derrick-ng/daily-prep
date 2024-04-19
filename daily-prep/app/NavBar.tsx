@@ -15,7 +15,7 @@ const NavBar = async () => {
           GitHub
         </a>
         <Link href="/">Instructions</Link>
-        <Link href="/">About Me</Link>
+        <Link href="/">About</Link>
         {session?.user ? (
           <SignOutButton />
         ) : (
