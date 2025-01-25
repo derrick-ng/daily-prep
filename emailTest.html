@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Test</title>
+    <script src="emailScript.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  </head>
+  <body>
+    <h1>Gmail & OAuth2 Test</h1>
+    <div>
+      <button id="authorizeButton">Authorize</button>
+      <button id="signoutButton">Sign Out</button>
+
+      <div id="content"></div>
+    </div>
+  </body>
+</html>
