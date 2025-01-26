@@ -1,4 +1,3 @@
-//test client and api key
 let OAUTH_CLIENT_ID;
 let GMAIL_KEY;
 
