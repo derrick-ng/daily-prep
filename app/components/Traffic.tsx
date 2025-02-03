@@ -3,12 +3,17 @@
 import axios from "axios";
 import { useState } from "react";
 
+interface trafficData {
+  distance: number,
+  duration: number
+}
+
 const Traffic = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [mode, setMode] = useState("");
   const [avoid, setAvoid] = useState("");
-  const [trafficData, setTrafficData] = useState<any>(null);
+  const [trafficData, setTrafficData] = useState<trafficData | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -81,7 +86,7 @@ const Traffic = () => {
       {trafficData && (
         <div>
           <p>
-            {trafficData.distance} miles, {trafficData.duration} minutes
+            {trafficData?.distance} miles, {trafficData?.duration} minutes
           </p>
         </div>
       )}
