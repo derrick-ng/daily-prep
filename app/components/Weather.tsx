@@ -2,9 +2,15 @@
 import axios from "axios";
 import { useState } from "react";
 
+interface weatherData {
+  temp: number,
+  tempMin: number,
+  tempMax: number
+}
+
 const Weather = () => {
   const [cityName, setCityName] = useState("");
-  const [weatherData, setWeatherData] = useState<any>(null);
+  const [weatherData, setWeatherData] = useState<weatherData | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -28,7 +34,7 @@ const Weather = () => {
 
       {weatherData && (
         <div>
-          <p>{weatherData.temp}°F</p>
+          <p>{weatherData?.temp}°F</p>
           <div>
             <p>Min-Max temp</p>
             <p>
