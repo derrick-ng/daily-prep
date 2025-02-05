@@ -1,5 +1,6 @@
 import Traffic from "./Traffic"
 import Weather from "./Weather"
+import Email from "./Email"
 
 const Form = () => {
   return (
@@ -10,6 +11,9 @@ const Form = () => {
       </div>
       <div>
         <Traffic />
+      </div>
+      <div>
+        <Email />
       </div>
     </div>
   )
