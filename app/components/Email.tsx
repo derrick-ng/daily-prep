@@ -15,6 +15,7 @@ const Email = () => {
   const [clientId, setClientId] = useState("");
   const [gapiKey, setgapiKey] = useState("");
   const [clientSecret, setClientSecret] = useState("");
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     async function fetchCredentials() {
@@ -41,6 +42,13 @@ const Email = () => {
     // [isAuthenticated] would mean this is called every time the isAuthenticated changes
   }, []);
 
+  //on accessToken value change, fetch messages
+  useEffect(() => {
+    if (accessToken) {
+      fetchMessages(accessToken);
+    }
+  }, [accessToken]);
+
   const handleLoginSuccess = async (response: any) => {
     //this is just an authorization code, not an access token
     //need to exchange auth code for access token
@@ -58,8 +66,11 @@ const Email = () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
       setAccessToken(tokenResponse.data.access_token);
+      //cant immediately use accessToken even though it has been set
+      //state variables dont change instantly, react does it in batches
+      //accessToken state is prob changing in next batch, after function call
       console.log("access token:", tokenResponse.data.access_token);
-
+      //console.log("access token check: ", accessToken)
       setIsAuthenticated(true);
     } catch (error) {
       console.log("error exchanging auth code", error);
@@ -78,6 +89,31 @@ const Email = () => {
       apiKey: gapiKey,
       discoveryDocs: [DISCOVERY_DOC],
     });
+  }
+
+  async function fetchMessages(accessToken: string) {
+    const response = await gapi.client.gmail.users.messages.list({
+      userId: "me",
+      maxResults: 10,
+      access_token: accessToken,
+    });
+
+    // || is variable version of a fallback function
+    // if response.results.messages fails, null, etc, will fallback to []
+    const messages = response.result.messages || [];
+
+    const allMessages = await Promise.all(
+      messages.map(async (msg: any) => {
+        const message = await gapi.client.gmail.users.messages.get({
+          userId: "me",
+          id: msg.id,
+          access_token: accessToken,
+        });
+        return message.result;
+      })
+    );
+    console.log(allMessages);
+    setMessages(allMessages);
   }
 
   return (
