@@ -1,5 +1,4 @@
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 interface LoginComponentProps {
   //   clientId: string;
