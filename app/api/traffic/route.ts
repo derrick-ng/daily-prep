@@ -7,20 +7,20 @@ export async function GET(req: Request) {
   const mode = url.searchParams.get("mode");
   const avoid = url.searchParams.get("avoid");
 
-  const APIKey = process.env.DISTANCEMATRIX_KEY;
+  const apiKey = process.env.DISTANCEMATRIX_KEY;
 
   let APIurl = ``;
 
   //   if (avoid == "none") {
-  //     APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&key=${APIKey}`;
+  //     APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&key=${apiKey}`;
   //   } else {
-  //     APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&avoid=${avoid}&key=${APIKey}`;
+  //     APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&avoid=${avoid}&key=${apiKey}`;
   //   }
 
   if (avoid && avoid !== "none") {
-    APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&avoid=${avoid}&key=${APIKey}`;
+    APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&avoid=${avoid}&key=${apiKey}`;
   } else {
-    APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&key=${APIKey}`;
+    APIurl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&key=${apiKey}`;
   }
 
   try {

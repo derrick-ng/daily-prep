@@ -3,8 +3,8 @@ import axios from "axios";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const cityName: string | null = url.searchParams.get("city");
-  const APIKey: string | undefined = process.env.OPENWEATHERMAP_KEY;
-  const APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKey}`;
+  const apiKey: string | undefined = process.env.OPENWEATHERMAP_KEY;
+  const APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 
   try {
     const response = await axios.get(APIUrl);
