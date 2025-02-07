@@ -5,6 +5,7 @@ import LoginComponent from "./LoginComponent";
 import axios from "axios";
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
+import MessageList from "./MessageList";
 
 //https://www.youtube.com/watch?v=N5fiL6fwvbU
 const Email = () => {
@@ -116,6 +117,10 @@ const Email = () => {
     setMessages(allMessages);
   }
 
+  const openMessage = () => {
+
+  }
+
   return (
     <div>
       <h3>Gmail API & OAuth2 Test</h3>
@@ -125,7 +130,13 @@ const Email = () => {
             <LoginComponent onSuccess={handleLoginSuccess} onError={handleLoginFailure} />
           </GoogleOAuthProvider>
         ) : (
-          <p>logged in</p>
+          <div>
+            <p>logged in</p>
+            <MessageList 
+                messages={messages}
+                openMessage= {openMessage}
+            />
+          </div>
         )}
       </div>
     </div>
