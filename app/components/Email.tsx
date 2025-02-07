@@ -117,8 +117,9 @@ const Email = () => {
     setMessages(allMessages);
   }
 
-  const openMessage = () => {
-
+  const openMessage = (messageId: number) => {
+    const url = `https://mail.google.com/mail/u/0/#all/${messageId}`
+    window.open(url, "_blank")
   }
 
   return (
@@ -134,7 +135,7 @@ const Email = () => {
             <p>logged in</p>
             <MessageList 
                 messages={messages}
-                openMessage= {openMessage}
+                openMessage={openMessage}
             />
           </div>
         )}

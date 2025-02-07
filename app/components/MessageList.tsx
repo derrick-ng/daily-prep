@@ -3,7 +3,7 @@ import MessageItem from "./MessageItem";
 
 interface MessageListProps {
   messages: any[];
-  openMessage: () => void;
+  openMessage: (messageId: number) => void;
 }
 
 function MessageList({ messages, openMessage }: MessageListProps): any {

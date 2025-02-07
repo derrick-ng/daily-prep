@@ -2,7 +2,7 @@ import { ListGroupItem } from "react-bootstrap";
 
 interface MessageItemProps {
   message: any;
-  openMessage: () => void;
+  openMessage: (messageId: number) => void;
 }
 
 function MessageItem({ message, openMessage }: MessageItemProps): any {
@@ -17,6 +17,7 @@ function MessageItem({ message, openMessage }: MessageItemProps): any {
         <p>{subject}</p>
         <p>{from}</p>
         <p>{date}</p>
+        <button onClick={() => openMessage(message.id)}>Open Email</button>
         <br />
       </ListGroupItem>
     </div>
