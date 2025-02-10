@@ -95,8 +95,12 @@ const Email = () => {
   async function fetchMessages(accessToken: string) {
     const response = await gapi.client.gmail.users.messages.list({
       userId: "me",
-      maxResults: 10,
+      maxResults: 5,
       access_token: accessToken,
+      // q = query
+      // follows the same format as the gmail search box, space separated parameters
+      // (add later) labels:unread
+      q: "category:primary"
     });
 
     // || is variable version of a fallback function
