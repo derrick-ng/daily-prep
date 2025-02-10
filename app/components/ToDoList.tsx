@@ -3,10 +3,11 @@ import ToDoItem from "./ToDoItem"
 
 interface ToDoListProps {
     toDos: string[]
+    setToDos: any
 }
 
 
-function ToDoList({toDos}: ToDoListProps): any {
+function ToDoList({toDos, setToDos}: ToDoListProps): any {
   return (
     <div>
         <strong>To Do List:</strong>
@@ -15,6 +16,8 @@ function ToDoList({toDos}: ToDoListProps): any {
                 <ToDoItem
                 key={index}
                 toDo={toDo}
+                toDos={toDos}
+                setToDos={setToDos}
                 />
             ))}
         </ListGroup>
