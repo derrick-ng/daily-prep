@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     let traffic = response.data;
 
     let distanceResponse = traffic.rows[0].elements[0].distance.value;
-    let distance = distanceResponse / 1609.344;
+    let distance = Math.round(distanceResponse / 1609.344);
 
     let durationResponse = traffic.rows[0].elements[0].duration.value;
     let duration = Math.round(durationResponse / 60);
