@@ -1,9 +1,12 @@
 "use client";
 
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import axios from "axios";
 
 const RegisterForm = () => {
+  const [errors, setErrors] = useState([]);
+  const [success, setSuccess] = useState("");
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -15,9 +18,19 @@ const RegisterForm = () => {
     };
     try {
       const response = await axios.post("../../api/auth/register", data);
-      console.log("response:\n", response.data);
+      setSuccess("Registration Success");
+      setErrors([])
+      console.log("Registration success:\n", response);
     } catch (error) {
-      console.error("error sending registration info:\n", error);
+      if (axios.isAxiosError(error)) {
+        const errors = error.response?.data.errors;
+
+        setErrors(errors);
+        errors.map((err: any) => console.log("error:", err));
+        // console.error("error sending registration info:\n", error.response?.data.errors[1]);
+      } else {
+        console.error("error sending registration: info\n", error);
+      }
     }
   }
   return (
@@ -29,13 +42,24 @@ const RegisterForm = () => {
 
         <label htmlFor="email">email</label>
         <input type="text" name="email" />
+        {/* <input type="email" name="email"/> */}
         <br />
 
-        <label htmlFor="register">register</label>
-        <input type="text" name="password" />
+        <label htmlFor="register">password</label>
+        <input type="password" name="password" />
         <br />
 
         <button type="submit">Register</button>
+        {(success || errors.length > 0) && (
+          <div>
+            {success && (
+              <p>{success}</p>
+            )}
+            {errors.map((err, index) => (
+              <p key={index}>{err}</p>
+            ))}
+          </div>
+        )}
       </form>
     </div>
   );
