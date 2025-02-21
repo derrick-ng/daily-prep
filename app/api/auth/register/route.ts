@@ -1,5 +1,6 @@
 import prisma from "@/lib/prismaClient";
 import z from "zod";
+import { genSaltSync, hashSync } from "bcrypt-ts";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const createUserSchema = z.object({
@@ -32,11 +33,16 @@ export async function POST(request: Request) {
     //assign variables using the "validated" versions of the request
     const { username, email, password } = parsedBody;
 
+    //hash password
+    const salt = genSaltSync(10)
+    const hashedPassword = hashSync(password, salt)
+    console.log("hashed pw: ", hashedPassword)
+
     const user = await prisma.user.create({
       data: {
         username,
         email,
-        password,
+        password: hashedPassword,
       },
     });
 
