@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "./GoogleLogin";
 import axios from "axios";
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";

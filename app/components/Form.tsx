@@ -1,7 +1,7 @@
-import Traffic from "./Traffic"
-import Weather from "./Weather"
-import Email from "./Email"
-import ToDoArea from "./ToDoArea"
+import Traffic from "./Traffic";
+import Weather from "./Weather";
+import Email from "./Email";
+import ToDoArea from "./todo/ToDoArea";
 
 const Form = () => {
   return (
@@ -17,10 +17,10 @@ const Form = () => {
         <Email />
       </div>
       <div>
-        <ToDoArea/>
+        <ToDoArea />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;

@@ -8,7 +8,7 @@ interface LoginComponentProps {
 
 //
 // https://www.npmjs.com/package/@react-oauth/google
-function LoginComponent({ onSuccess, onError }: LoginComponentProps): any {
+function GoogleLogin({ onSuccess, onError }: LoginComponentProps): any {
   const login = useGoogleLogin({
     onSuccess: (response) => {
       console.log("OAuth success: ", response);
@@ -26,4 +26,4 @@ function LoginComponent({ onSuccess, onError }: LoginComponentProps): any {
   );
 }
 
-export default LoginComponent;
+export default GoogleLogin;
