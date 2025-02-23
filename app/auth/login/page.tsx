@@ -1,12 +1,18 @@
-import React from 'react'
-import LoginForm from '@/app/components/auth/LoginForm'
+import React from "react";
+import LoginForm from "@/app/components/auth/LoginForm";
+import { getSession, logout } from "@/lib/session";
 
-const Login = () => {
+export default async function Page() {
+  const session = await getSession();
   return (
     <div>
+      {session && (
+        <div>
+          <p>{session.user}</p>
+          <button onClick={await logout}>logout</button>
+        </div>
+      )}
       <LoginForm />
     </div>
-  )
+  );
 }
-
-export default Login

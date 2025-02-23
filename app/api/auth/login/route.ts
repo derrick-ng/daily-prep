@@ -1,5 +1,6 @@
 import { compareSync } from "bcrypt-ts";
 import prisma from "@/lib/prismaClient";
+import { login } from "@/lib/session";
 
 export async function POST(request: Request) {
   try {
@@ -21,6 +22,8 @@ export async function POST(request: Request) {
     if (!passwordCheck) {
       return Response.json({ errors: "invalid password" }, { status: 401 });
     }
+
+    await login(username);
 
     return Response.json({ message: "login success" }, { status: 200 });
   } catch (error) {
