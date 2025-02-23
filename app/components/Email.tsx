@@ -5,7 +5,7 @@ import LoginComponent from "./GoogleLogin";
 import axios from "axios";
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
-import MessageList from "./MessageList";
+import MessageList from "./message/MessageList";
 
 //https://www.youtube.com/watch?v=N5fiL6fwvbU
 const Email = () => {
