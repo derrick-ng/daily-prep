@@ -20,8 +20,8 @@ export async function decrypt(input: string): Promise<any> {
   return payload;
 }
 
-export async function login(username: string) {
-  const user = username;
+export async function login({username, userId}: any) {
+  const user = {username, userId};
 
   const expires = new Date(Date.now() + 60 * 60 * 1000);
   const session = await encrypt({ user, expires });
@@ -38,7 +38,8 @@ export async function getSession() {
   if (!session) {
     return;
   }
-  return await decrypt(session);
+  const user = await decrypt(session);
+  return([user])
 }
 
 export async function updateSession(request: NextRequest) {

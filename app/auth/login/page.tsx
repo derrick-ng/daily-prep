@@ -4,11 +4,12 @@ import { getSession, logout } from "@/lib/session";
 
 export default async function Page() {
   const session = await getSession();
+  
   return (
     <div>
       {session && (
         <div>
-          <p>{session.user}</p>
+          <p>{session?.[0].user.username}</p>
           <button onClick={await logout}>logout</button>
         </div>
       )}
