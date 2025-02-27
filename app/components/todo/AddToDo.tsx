@@ -18,7 +18,7 @@ function AddToDo({ userId, onAdd }: AddToDoProp) {
   const router = useRouter();
   const [toDo, setToDo] = useState("");
 
-  const handleSubmit = async () => {
+  const handleAddTodo = async () => {
     try {
       const data = {
         userId: userId,
@@ -43,7 +43,7 @@ function AddToDo({ userId, onAdd }: AddToDoProp) {
           setToDo(e.target.value);
         }}
       />
-      <button onClick={handleSubmit}>Add</button>
+      <button onClick={handleAddTodo}>Add</button>
     </div>
   );
 }

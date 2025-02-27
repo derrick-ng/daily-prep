@@ -2,16 +2,20 @@ import prisma from "@/lib/prismaClient";
 import z from "zod";
 
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const userId = url.searchParams.get("userId");
+  try {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("userId");
 
-  const todos = await prisma.todo.findMany({
-    where: {
-      userId: parseInt(userId as string),
-    },
-  });
+    const todos = await prisma.todo.findMany({
+      where: {
+        userId: parseInt(userId as string),
+      },
+    });
 
-  return Response.json({ todos });
+    return Response.json({ todos }, { status: 200 });
+  } catch (error) {
+    return Response.json({ error }, { status: 400 });
+  }
 }
 
 const createTaskSchema = z.object({
@@ -34,6 +38,24 @@ export async function POST(request: Request) {
       },
     });
     return Response.json({ todo }, { status: 201 });
+  } catch (error) {
+    return Response.json({ error }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const id = Number(url.searchParams.get("id"));
+
+    const deletedTodo = await prisma.todo.delete({
+      where: {
+        id,
+      },
+    });
+
+    //204 = success with no return content
+    return Response.json({ deletedTodo }, { status: 200 });
   } catch (error) {
     return Response.json({ error }, { status: 400 });
   }

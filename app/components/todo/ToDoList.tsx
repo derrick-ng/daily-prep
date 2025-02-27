@@ -8,15 +8,16 @@ interface ToDo {
 
 interface ToDoListProps {
   toDos: ToDo[];
+  onDelete: (id: number) => void;
 }
 
-function ToDoList({ toDos }: ToDoListProps): any {
+function ToDoList({ toDos, onDelete }: ToDoListProps): any {
   return (
     <div>
       <strong>To Do List:</strong>
       <ListGroup>
         {toDos.map((toDo) => (
-          <ToDoItem key={toDo.id} toDo={toDo} />
+          <ToDoItem key={toDo.id} toDo={toDo} onDelete={onDelete} />
         ))}
       </ListGroup>
     </div>
