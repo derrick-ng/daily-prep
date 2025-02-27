@@ -1,21 +1,17 @@
 import { ListGroupItem } from "react-bootstrap";
 
 interface ToDoItemInterface {
-  toDo: string;
-  toDos: string[];
-  setToDos: any;
+  toDo: { id: number; task: string };
 }
 
-function ToDoItem({ toDo, toDos, setToDos }: ToDoItemInterface): any {
-  const handleSubmit = () => {
-    setToDos(toDos.filter((item) => item !== toDo));
-  };
+function ToDoItem({ toDo }: ToDoItemInterface): any {
+  const handleSubmit = () => {};
 
   return (
     <div>
       <ListGroupItem>
         <p>To Do Item:</p>
-        <p>{toDo}</p>
+        <p>{toDo.task}</p>
         <button onClick={handleSubmit}>delete</button>
       </ListGroupItem>
     </div>

@@ -3,19 +3,21 @@ import { getSession, logout } from "@/lib/session";
 
 export default async function Home() {
   const session = await getSession();
+  const username = session ? session[0].user.username : null
+  const userId = session ? session[0].user.userId : null
 
   return (
     <div>
       {session && (
         <div>
           <p>
-            user: {session?.[0].user.username}, id: {session?.[0].user.userId}
+            user: {username}, id: {userId}
           </p>
         </div>
       )}
 
       <div>
-        <Form />
+        <Form userId={userId}/>
       </div>
     </div>
   );

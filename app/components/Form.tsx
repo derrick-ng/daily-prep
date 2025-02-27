@@ -3,7 +3,11 @@ import Weather from "./Weather";
 import Email from "./Email";
 import ToDoArea from "./todo/ToDoArea";
 
-const Form = () => {
+interface FormProps {
+  userId: string | null
+}
+
+const Form = ({userId}: FormProps) => {
   return (
     <div>
       <h2>Form</h2>
@@ -17,7 +21,7 @@ const Form = () => {
         <Email />
       </div>
       <div>
-        <ToDoArea />
+        <ToDoArea userId={userId}/>
       </div>
     </div>
   );

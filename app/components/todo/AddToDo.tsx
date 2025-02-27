@@ -7,14 +7,14 @@ interface AddToDoProps {
   setToDos: any;
 }
 
-function AddToDo({ toDos, setToDos }: AddToDoProps): any {
+function AddToDo() {
   const [toDo, setToDo] = useState("");
 
   //... is a spread operator
   /// creates a new array using toDos, adds toDo
   // cant use .push bc react needs states to be immutable
   const handleSubmit = () => {
-    setToDos([...toDos, toDo]);
+
   };
   return (
     <div>

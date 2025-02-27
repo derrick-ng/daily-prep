@@ -1,28 +1,26 @@
-import { ListGroup } from "react-bootstrap"
-import ToDoItem from "./ToDoItem"
+import { ListGroup } from "react-bootstrap";
+import ToDoItem from "./ToDoItem";
+
+interface ToDo {
+  id: number;
+  task: string;
+}
 
 interface ToDoListProps {
-    toDos: string[]
-    setToDos: any
+  toDos: ToDo[];
 }
 
-
-function ToDoList({toDos, setToDos}: ToDoListProps): any {
+function ToDoList({ toDos }: ToDoListProps): any {
   return (
     <div>
-        <strong>To Do List:</strong>
-        <ListGroup>
-            {toDos.map((toDo, index) => (
-                <ToDoItem
-                key={index}
-                toDo={toDo}
-                toDos={toDos}
-                setToDos={setToDos}
-                />
-            ))}
-        </ListGroup>
+      <strong>To Do List:</strong>
+      <ListGroup>
+        {toDos.map((toDo) => (
+          <ToDoItem key={toDo.id} toDo={toDo} />
+        ))}
+      </ListGroup>
     </div>
-  )
+  );
 }
 
-export default ToDoList
+export default ToDoList;
