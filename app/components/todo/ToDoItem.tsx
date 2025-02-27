@@ -1,12 +1,22 @@
 import axios from "axios";
+import { useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 
-interface ToDoItemInterface {
-  toDo: { id: number; task: string };
-  onDelete: (id: number) => void;
+interface ToDo {
+  id: number,
+  task: string
 }
 
-function ToDoItem({ toDo, onDelete }: ToDoItemInterface): any {
+interface ToDoItemInterface {
+  toDo: ToDo;
+  onDelete: (id: number) => void;
+  onEdit: (todo: ToDo) => void
+}
+
+function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): any {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTask, setEditTask] = useState(toDo.task);
+
   const handleDeleteTodo = async () => {
     try {
       const response = await axios.delete(`/api/todos?id=${toDo.id}`);
@@ -16,12 +26,50 @@ function ToDoItem({ toDo, onDelete }: ToDoItemInterface): any {
     }
   };
 
+  const handleEditToggle = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const data = {
+        id: toDo.id,
+        task: editTask,
+      };
+      const response = await axios.put("/api/todos", data);
+      const editTodo = response.data.editTodo
+      setIsEditing(false);
+      onEdit(editTodo)
+    } catch (error) {
+      console.error("error save edit:", error);
+    }
+  };
+  
+  const handleCancelEdit = () => {
+    setEditTask(toDo.task);
+    setIsEditing(false);
+  };
+
   return (
     <div>
       <ListGroupItem>
         <p>To Do Item:</p>
-        <p>{toDo.task}</p>
-        <button onClick={handleDeleteTodo}>delete</button>
+        {!isEditing ? (
+          <div>
+            <p>{toDo.task}</p>
+            <button onClick={handleEditToggle}>Edit</button>
+            <button onClick={handleDeleteTodo}>Delete</button>
+          </div>
+        ) : (
+          <div>
+            <input
+              type="text" 
+              value={editTask}
+              onChange={(e) => setEditTask(e.target.value)}/>
+              <button onClick={handleSaveEdit}>Save</button>
+              <button onClick={handleCancelEdit}>Cancel</button>
+          </div>
+        )}
       </ListGroupItem>
     </div>
   );

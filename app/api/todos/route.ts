@@ -61,4 +61,28 @@ export async function DELETE(request: Request) {
   }
 }
 
-export async function PUT() {}
+const editTaskSchema = z.object({
+  id: z.number(),
+  task: z.string().min(1, { message: "task is empty" }),
+});
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const parsedBody = editTaskSchema.parse(body);
+    const { id, task } = parsedBody;
+
+    const editTodo = await prisma.todo.update({
+      where: {
+        id,
+      },
+      data: {
+        task,
+      },
+    });
+
+    return Response.json({ editTodo }, { status: 200 });
+  } catch (error) {
+    return Response.json({ error }, { status: 400 });
+  }
+}

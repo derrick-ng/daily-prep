@@ -44,10 +44,15 @@ const ToDoArea = ({ userId }: ToDoAreaProps) => {
     setToDos((previousTodos) => previousTodos.filter((todo) => todo.id !== id));
   };
 
+  const handleEditTodo = (editTodo: ToDo) => {
+    console.log("edit todo:", editTodo)
+    setToDos((previousTodos) => previousTodos.map((todo) => (todo.id === editTodo.id ? editTodo : todo)));
+  };
+
   return (
     <div>
       <AddToDo userId={userId} onAdd={handleAddTodo} />
-      <ToDoList toDos={toDos} onDelete={handleDeleteTodo} />
+      <ToDoList toDos={toDos} onDelete={handleDeleteTodo} onEdit={handleEditTodo} />
     </div>
   );
 };
