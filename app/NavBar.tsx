@@ -1,6 +1,7 @@
 import { getSession, logout } from "@/lib/session";
 import Link from "next/link";
 import React from "react";
+import LogoutButton from "./components/auth/LogoutButton";
 
 const NavBar = async () => {
   const session = await getSession();
@@ -26,7 +27,7 @@ const NavBar = async () => {
           </div>
         ) : (
           <div>
-            <button onClick={logout}>Logout</button>
+            <LogoutButton />
           </div>
         )}
       </div>

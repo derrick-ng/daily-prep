@@ -17,9 +17,11 @@ interface ToDoAreaProps {
 const ToDoArea = ({ userId }: ToDoAreaProps) => {
   const [toDos, setToDos] = useState<ToDo[]>([]);
 
+  // fetch user's tasks on load
   useEffect(() => {
     async function getToDos() {
       if (!userId) {
+        setToDos([]);
         return;
       }
       try {

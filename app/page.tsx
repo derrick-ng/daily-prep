@@ -1,5 +1,5 @@
 import Form from "./components/Form";
-import { getSession, logout } from "@/lib/session";
+import { getSession } from "@/lib/session";
 
 export default async function Home() {
   const session = await getSession();
