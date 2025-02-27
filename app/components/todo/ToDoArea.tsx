@@ -36,9 +36,13 @@ const ToDoArea = ({ userId }: ToDoAreaProps) => {
     getToDos();
   }, [userId]); //not sure if this is needed
 
+  const handleAddTodo = (newTodo: ToDo) => {
+    setToDos((previousTodos) => [...previousTodos, newTodo])
+  }
+
   return (
     <div>
-      <AddToDo />
+      <AddToDo userId={userId} onAdd={handleAddTodo} />
       <ToDoList toDos={toDos} />
     </div>
   );

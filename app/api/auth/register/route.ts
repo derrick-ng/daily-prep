@@ -1,7 +1,6 @@
 import prisma from "@/lib/prismaClient";
 import z from "zod";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { NextApiRequest, NextApiResponse } from "next";
 
 const createUserSchema = z.object({
   username: z

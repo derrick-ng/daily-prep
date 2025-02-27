@@ -1,24 +1,48 @@
 "use client";
 
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface AddToDoProps {
-  toDos: string[];
-  setToDos: any;
+interface Todo {
+  id: number;
+  task: string;
 }
 
-function AddToDo() {
+interface AddToDoProp {
+  userId: number | null;
+  onAdd: (newTodo: Todo) => void;
+}
+
+function AddToDo({ userId, onAdd }: AddToDoProp) {
+  const router = useRouter();
   const [toDo, setToDo] = useState("");
 
-  //... is a spread operator
-  /// creates a new array using toDos, adds toDo
-  // cant use .push bc react needs states to be immutable
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    try {
+      const data = {
+        userId: userId,
+        task: toDo,
+      };
 
+      const response = await axios.post("/api/todos", data);
+      const newTodo = response.data.todo;
+      setToDo("");
+      onAdd(newTodo);
+    } catch (error) {
+      console.error("error in add to do", error);
+    }
   };
   return (
     <div>
-      <input type="text" placeholder="Add Task" value={toDo} onChange={(e) => setToDo(e.target.value)} />
+      <input
+        type="text"
+        placeholder="Add Task"
+        value={toDo}
+        onChange={(e) => {
+          setToDo(e.target.value);
+        }}
+      />
       <button onClick={handleSubmit}>Add</button>
     </div>
   );
