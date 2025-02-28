@@ -17,7 +17,7 @@ const LoginForm = () => {
     };
 
     try {
-      const response = await axios.post("../../api/auth/login", data);
+      const response = await axios.post("/api/auth/login", data);
       console.log("login response: ", response);
 
       // sends to home page and refreshes to show proper page content (logout button & user info)

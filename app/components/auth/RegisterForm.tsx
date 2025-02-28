@@ -17,7 +17,7 @@ const RegisterForm = () => {
       password: formData.get("password"),
     };
     try {
-      const response = await axios.post("../../api/auth/register", data);
+      const response = await axios.post("/api/auth/register", data);
       setSuccess("Registration Success");
       setErrors([]);
       console.log("Registration success:\n", response);
