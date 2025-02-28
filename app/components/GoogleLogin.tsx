@@ -1,14 +1,19 @@
 import { useGoogleLogin } from "@react-oauth/google";
+import { JSX } from 'react';
+
+interface AuthCodeResponse {
+  code: string
+}
 
 interface LoginComponentProps {
   //   clientId: string;
-  onSuccess: (response: any) => void;
+  onSuccess: (response: AuthCodeResponse) => void;
   onError: () => void;
 }
 
 //
 // https://www.npmjs.com/package/@react-oauth/google
-function GoogleLogin({ onSuccess, onError }: LoginComponentProps): any {
+function GoogleLogin({ onSuccess }: LoginComponentProps): JSX.Element {
   const login = useGoogleLogin({
     onSuccess: (response) => {
       console.log("OAuth success: ", response);

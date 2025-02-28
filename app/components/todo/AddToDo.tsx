@@ -15,7 +15,6 @@ interface AddToDoProp {
 }
 
 function AddToDo({ userId, onAdd }: AddToDoProp) {
-  const router = useRouter();
   const [toDo, setToDo] = useState("");
 
   const handleAddTodo = async () => {

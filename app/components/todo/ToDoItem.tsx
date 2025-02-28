@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 
 interface ToDo {
@@ -13,13 +13,14 @@ interface ToDoItemInterface {
   onEdit: (todo: ToDo) => void
 }
 
-function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): any {
+function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
   const [isEditing, setIsEditing] = useState(false);
   const [editTask, setEditTask] = useState(toDo.task);
 
   const handleDeleteTodo = async () => {
     try {
       const response = await axios.delete(`/api/todos?id=${toDo.id}`);
+      console.log("successful delete response:", response)
       onDelete(toDo.id);
     } catch (error) {
       console.error("error deleting:", error);

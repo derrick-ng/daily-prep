@@ -1,4 +1,4 @@
-import { getSession, logout } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import Link from "next/link";
 import React from "react";
 import LogoutButton from "./components/auth/LogoutButton";

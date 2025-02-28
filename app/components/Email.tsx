@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import LoginComponent from "./GoogleLogin";
 import axios from "axios";
-import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import MessageList from "./message/MessageList";
 
@@ -50,7 +50,7 @@ const Email = () => {
     }
   }, [accessToken]);
 
-  const handleLoginSuccess = async (response: any) => {
+  const handleLoginSuccess = async (response: { code: string; }) => {
     //this is just an authorization code, not an access token
     //need to exchange auth code for access token
     console.log("authorization code: ", response.code);
@@ -108,7 +108,7 @@ const Email = () => {
     const messages = response.result.messages || [];
 
     const allMessages = await Promise.all(
-      messages.map(async (msg: any) => {
+      messages.map(async (msg: { id: string }) => {
         const message = await gapi.client.gmail.users.messages.get({
           userId: "me",
           id: msg.id,

@@ -26,7 +26,7 @@ const RegisterForm = () => {
         const errors = error.response?.data.errors;
 
         setErrors(errors);
-        errors.map((err: any) => console.log("error:", err));
+        errors.map((err: string) => console.log("error:", err));
         // console.error("error sending registration info:\n", error.response?.data.errors[1]);
       } else {
         console.error("error sending registration: info\n", error);

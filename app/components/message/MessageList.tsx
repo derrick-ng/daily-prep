@@ -2,7 +2,13 @@ import { ListGroup } from "react-bootstrap";
 import MessageItem from "./MessageItem";
 
 interface MessageListProps {
-  messages: any[];
+  messages: {
+    id: number;
+    payload: {
+      headers: { name: string; value: string }[];
+    };
+    [key: string]: any;
+  }[];
   openMessage: (messageId: number) => void;
 }
 

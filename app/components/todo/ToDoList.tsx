@@ -1,5 +1,6 @@
 import { ListGroup } from "react-bootstrap";
 import ToDoItem from "./ToDoItem";
+import { JSX } from "react";
 
 interface ToDo {
   id: number;
@@ -12,7 +13,7 @@ interface ToDoListProps {
   onEdit: (editTodo: ToDo) => void
 }
 
-function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): any {
+function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): JSX.Element {
   return (
     <div>
       <strong>To Do List:</strong>

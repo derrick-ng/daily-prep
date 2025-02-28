@@ -25,13 +25,13 @@ export async function GET(req: Request) {
 
   try {
     const response = await axios.get(APIurl);
-    let traffic = response.data;
+    const traffic = response.data;
 
-    let distanceResponse = traffic.rows[0].elements[0].distance.value;
-    let distance = Math.round(distanceResponse / 1609.344);
+    const distanceResponse = traffic.rows[0].elements[0].distance.value;
+    const distance = Math.round(distanceResponse / 1609.344);
 
-    let durationResponse = traffic.rows[0].elements[0].duration.value;
-    let duration = Math.round(durationResponse / 60);
+    const durationResponse = traffic.rows[0].elements[0].duration.value;
+    const duration = Math.round(durationResponse / 60);
 
     return Response.json({ distance, duration });
   } catch (error) {
