@@ -15,6 +15,6 @@ export async function GET(req: Request) {
     const tempMax = Math.round(((weather.main.temp_max - 273.15) * 9) / 5 + 32);
     return Response.json({ temp, tempMin, tempMax });
   } catch (error) {
-    return Response.json({error}, {status: 500})
+    return Response.json({ error }, { status: 500 });
   }
 }

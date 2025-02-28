@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       return Response.json({ errors: "invalid password" }, { status: 401 });
     }
 
-    await login({ username: user.username, userId: user.id });
+    await login({ username: user.username, userId: user.id.toString() });
 
     return Response.json({ message: "login success" }, { status: 200 });
   } catch (error) {

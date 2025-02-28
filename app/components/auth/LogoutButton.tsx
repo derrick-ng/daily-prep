@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
   const router = useRouter();
-  
+
   const handleLogout = () => {
     logout();
     router.refresh();

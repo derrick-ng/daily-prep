@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 
 interface weatherData {
-  temp: number,
-  tempMin: number,
-  tempMax: number
+  temp: number;
+  tempMin: number;
+  tempMax: number;
 }
 
 const Weather = () => {

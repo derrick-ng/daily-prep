@@ -50,7 +50,7 @@ const Email = () => {
     }
   }, [accessToken]);
 
-  const handleLoginSuccess = async (response: { code: string; }) => {
+  const handleLoginSuccess = async (response: { code: string }) => {
     //this is just an authorization code, not an access token
     //need to exchange auth code for access token
     console.log("authorization code: ", response.code);
@@ -100,7 +100,7 @@ const Email = () => {
       // q = query
       // follows the same format as the gmail search box, space separated parameters
       // (add later) labels:unread
-      q: "category:primary"
+      q: "category:primary",
     });
 
     // || is variable version of a fallback function
@@ -122,9 +122,9 @@ const Email = () => {
   }
 
   const openMessage = (messageId: number) => {
-    const url = `https://mail.google.com/mail/u/0/#all/${messageId}`
-    window.open(url, "_blank")
-  }
+    const url = `https://mail.google.com/mail/u/0/#all/${messageId}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <div>
@@ -137,10 +137,7 @@ const Email = () => {
         ) : (
           <div>
             <p>logged in</p>
-            <MessageList 
-                messages={messages}
-                openMessage={openMessage}
-            />
+            <MessageList messages={messages} openMessage={openMessage} />
           </div>
         )}
       </div>

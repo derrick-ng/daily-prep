@@ -33,9 +33,9 @@ export async function POST(request: Request) {
     const { username, email, password } = parsedBody;
 
     //hash password
-    const salt = genSaltSync(10)
-    const hashedPassword = hashSync(password, salt)
-    console.log("hashed pw: ", hashedPassword)
+    const salt = genSaltSync(10);
+    const hashedPassword = hashSync(password, salt);
+    console.log("hashed pw: ", hashedPassword);
 
     const user = await prisma.user.create({
       data: {
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return Response.json({ user }, {status: 201});
+    return Response.json({ user }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessages = error.issues.map((err) => `${err.path.join(".")}: ${err.message}`);

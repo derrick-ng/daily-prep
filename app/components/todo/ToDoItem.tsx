@@ -3,14 +3,14 @@ import { JSX, useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 
 interface ToDo {
-  id: number,
-  task: string
+  id: number;
+  task: string;
 }
 
 interface ToDoItemInterface {
   toDo: ToDo;
   onDelete: (id: number) => void;
-  onEdit: (todo: ToDo) => void
+  onEdit: (todo: ToDo) => void;
 }
 
 function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
@@ -20,7 +20,7 @@ function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
   const handleDeleteTodo = async () => {
     try {
       const response = await axios.delete(`/api/todos?id=${toDo.id}`);
-      console.log("successful delete response:", response)
+      console.log("successful delete response:", response);
       onDelete(toDo.id);
     } catch (error) {
       console.error("error deleting:", error);
@@ -38,14 +38,14 @@ function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
         task: editTask,
       };
       const response = await axios.put("/api/todos", data);
-      const editTodo = response.data.editTodo
+      const editTodo = response.data.editTodo;
       setIsEditing(false);
-      onEdit(editTodo)
+      onEdit(editTodo);
     } catch (error) {
       console.error("error save edit:", error);
     }
   };
-  
+
   const handleCancelEdit = () => {
     setEditTask(toDo.task);
     setIsEditing(false);
@@ -63,12 +63,9 @@ function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
           </div>
         ) : (
           <div>
-            <input
-              type="text" 
-              value={editTask}
-              onChange={(e) => setEditTask(e.target.value)}/>
-              <button onClick={handleSaveEdit}>Save</button>
-              <button onClick={handleCancelEdit}>Cancel</button>
+            <input type="text" value={editTask} onChange={(e) => setEditTask(e.target.value)} />
+            <button onClick={handleSaveEdit}>Save</button>
+            <button onClick={handleCancelEdit}>Cancel</button>
           </div>
         )}
       </ListGroupItem>

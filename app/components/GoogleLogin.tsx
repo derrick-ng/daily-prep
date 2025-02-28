@@ -1,8 +1,8 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { JSX } from 'react';
+import { JSX } from "react";
 
 interface AuthCodeResponse {
-  code: string
+  code: string;
 }
 
 interface LoginComponentProps {

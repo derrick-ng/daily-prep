@@ -45,7 +45,7 @@ const ToDoArea = ({ userId }: ToDoAreaProps) => {
   };
 
   const handleEditTodo = (editTodo: ToDo) => {
-    console.log("edit todo:", editTodo)
+    console.log("edit todo:", editTodo);
     setToDos((previousTodos) => previousTodos.map((todo) => (todo.id === editTodo.id ? editTodo : todo)));
   };
 

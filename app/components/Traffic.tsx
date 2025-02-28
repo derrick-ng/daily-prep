@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import axios from "axios";
 import { useState } from "react";
 
 interface trafficData {
-  distance: number,
-  duration: number
+  distance: number;
+  duration: number;
 }
 
 const Traffic = () => {

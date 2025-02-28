@@ -19,7 +19,7 @@ const RegisterForm = () => {
     try {
       const response = await axios.post("../../api/auth/register", data);
       setSuccess("Registration Success");
-      setErrors([])
+      setErrors([]);
       console.log("Registration success:\n", response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -52,9 +52,7 @@ const RegisterForm = () => {
         <button type="submit">Register</button>
         {(success || errors.length > 0) && (
           <div>
-            {success && (
-              <p>{success}</p>
-            )}
+            {success && <p>{success}</p>}
             {errors.map((err, index) => (
               <p key={index}>{err}</p>
             ))}

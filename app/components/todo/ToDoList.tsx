@@ -10,7 +10,7 @@ interface ToDo {
 interface ToDoListProps {
   toDos: ToDo[];
   onDelete: (id: number) => void;
-  onEdit: (editTodo: ToDo) => void
+  onEdit: (editTodo: ToDo) => void;
 }
 
 function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): JSX.Element {
@@ -19,7 +19,7 @@ function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): JSX.Element {
       <strong>To Do List:</strong>
       <ListGroup>
         {toDos.map((toDo) => (
-          <ToDoItem key={toDo.id} toDo={toDo} onDelete={onDelete} onEdit={onEdit}/>
+          <ToDoItem key={toDo.id} toDo={toDo} onDelete={onDelete} onEdit={onEdit} />
         ))}
       </ListGroup>
     </div>
