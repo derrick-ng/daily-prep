@@ -1,10 +1,21 @@
+import { JWTPayload } from "jose";
 import Form from "./components/Form";
 import { getSession } from "@/lib/session";
 
+interface SessionData {
+  user: {
+    username: string;
+    userId: string;
+  };
+  expires: string | number | Date;
+}
+
+
 export default async function Home() {
-  const session = await getSession();
-  const username = session ? (session as any)[0].user.username : null
-  const userId = session ? (session as any)[0].user.userId : null
+  // const session = await getSession();
+  const session = await getSession() as SessionData[] | undefined;
+  const username = session ? session[0].user.username : null
+  const userId = session ? session[0].user.userId : null
 
   return (
     <div>
