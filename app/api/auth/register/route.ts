@@ -53,5 +53,8 @@ export async function POST(request: Request) {
       console.log("errorMessages created", errorMessages);
       return Response.json({ errors: errorMessages }, { status: 400 });
     }
+    else {
+      return Response.json({ error }, { status: 400})
+    }
   }
 }
