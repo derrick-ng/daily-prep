@@ -16,6 +16,7 @@ const Email = () => {
   const [clientId, setClientId] = useState("");
   const [gapiKey, setgapiKey] = useState("");
   const [clientSecret, setClientSecret] = useState("");
+  const [redirect_uri, setredirect_uri] = useState("");
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Email = () => {
         setClientId(data.clientId);
         setgapiKey(data.apiKey);
         setClientSecret(data.clientSecret);
+        setredirect_uri(data.redirect_uri);
       } catch (error) {
         console.log("error fetching client id: ", error);
       }
@@ -60,7 +62,7 @@ const Email = () => {
     params.append("client_id", clientId);
     params.append("client_secret", clientSecret);
     // params.append("redirect_uri", "http://localhost:3000");
-    params.append("redirect_uri", "https://daily-prep.vercel.app");
+    params.append("redirect_uri", redirect_uri);
     params.append("grant_type", "authorization_code");
 
     try {
