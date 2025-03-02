@@ -53,8 +53,9 @@ export async function POST(request: Request) {
       console.log("errorMessages created", errorMessages);
       return Response.json({ errors: errorMessages }, { status: 400 });
     }
-    else {
-      return Response.json({ error }, { status: 400})
+    else if (error instanceof Error) {
+      return Response.json({ errors: [error.message] }, { status: 400})
     }
+    return Response.json({ errors: ["unexpected error in registration"]}, { status: 400})
   }
 }

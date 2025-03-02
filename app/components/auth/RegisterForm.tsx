@@ -4,7 +4,7 @@ import React, { FormEvent, useState } from "react";
 import axios from "axios";
 
 const RegisterForm = () => {
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -23,10 +23,12 @@ const RegisterForm = () => {
       console.log("Registration success:\n", response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const errors = error.response?.data.errors;
+        const errorData = error.response?.data;
 
-        setErrors(errors);
-        errors.map((err: string) => console.log("error:", err));
+        const errors = errorData?.errors || [errorData?.error]
+        setErrors(Array.isArray(errors) ? errors : [errors])
+        // setErrors(errors);
+        // errors.map((err: string) => console.log("error:", err));
         // console.error("error sending registration info:\n", error.response?.data.errors[1]);
       } else {
         console.error("error sending registration: info\n", error);
