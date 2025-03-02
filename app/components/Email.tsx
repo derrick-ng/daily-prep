@@ -60,7 +60,7 @@ const Email = () => {
     params.append("client_id", clientId);
     params.append("client_secret", clientSecret);
     // params.append("redirect_uri", "http://localhost:3000");
-    params.append("redirect_uri", "https://daily-prep.vercel.app/");
+    params.append("redirect_uri", "https://daily-prep.vercel.app");
     params.append("grant_type", "authorization_code");
 
     try {
