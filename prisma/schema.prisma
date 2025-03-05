@@ -19,6 +19,7 @@ model User {
   email String @unique
   password  String
   todos Todo[]
+  formData FormData?
 }
 
 model Todo {
@@ -28,4 +29,15 @@ model Todo {
   userId  Int
   user  User  @relation(fields: [userId], references: [id])
 
+}
+
+model FormData {
+  id Int @id @default(autoincrement())
+  city String?
+  traffic_start String?
+  traffic_end String?
+  traffic_transportation String?
+  // email_refresh_token String? // believe i have to store auth code, access, or refresh token to access gapi 
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
 }
