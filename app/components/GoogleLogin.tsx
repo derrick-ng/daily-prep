@@ -16,7 +16,7 @@ interface LoginComponentProps {
 function GoogleLogin({ onSuccess }: LoginComponentProps): JSX.Element {
   const login = useGoogleLogin({
     onSuccess: (response) => {
-      console.log("OAuth success: ", response);
+      console.log("OAuth success: ");
       onSuccess(response);
     },
     onError: (error) => console.log(error),

@@ -55,7 +55,7 @@ const Email = () => {
   const handleLoginSuccess = async (response: { code: string }) => {
     //this is just an authorization code, not an access token
     //need to exchange auth code for access token
-    console.log("authorization code: ", response.code);
+    // console.log("authorization code: ", response.code);
 
     const params = new URLSearchParams();
     params.append("code", response.code);
@@ -73,7 +73,7 @@ const Email = () => {
       //cant immediately use accessToken even though it has been set
       //state variables dont change instantly, react does it in batches
       //accessToken state is prob changing in next batch, after function call
-      console.log("access token:", tokenResponse.data.access_token);
+      // console.log("access token:", tokenResponse.data.access_token);
       //console.log("access token check: ", accessToken)
       setIsAuthenticated(true);
     } catch (error) {
@@ -120,7 +120,7 @@ const Email = () => {
         return message.result;
       })
     );
-    console.log(allMessages);
+    // console.log(allMessages);
     setMessages(allMessages);
   }
 
