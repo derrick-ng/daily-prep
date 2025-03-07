@@ -1,24 +1,11 @@
 "use client";
 
-// import Traffic from "./Traffic";
-// import Weather from "./Weather";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import Email from "./Email";
 import axios from "axios";
 
 interface FormProps {
   userId: string | null;
-}
-
-interface trafficData {
-  distance: number;
-  duration: number;
-}
-
-interface weatherData {
-  temp: number;
-  tempMin: number;
-  tempMax: number;
 }
 
 const Form = ({ userId }: FormProps) => {
