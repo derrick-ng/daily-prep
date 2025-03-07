@@ -22,10 +22,6 @@ interface weatherData {
 }
 
 const Form = ({ userId }: FormProps) => {
-  //to display data later
-  const [weatherData, setWeatherData] = useState<weatherData | null>(null);
-  const [trafficData, setTrafficData] = useState<trafficData | null>(null);
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     const formData = new FormData(event.currentTarget);
 
