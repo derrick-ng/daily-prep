@@ -4,7 +4,6 @@
 // import Weather from "./Weather";
 import { FormEvent, useState } from "react";
 import Email from "./Email";
-import ToDoArea from "./todo/ToDoArea";
 import axios from "axios";
 
 interface FormProps {
@@ -81,9 +80,6 @@ const Form = ({ userId }: FormProps) => {
       </form>
       <div>
         <Email />
-      </div>
-      <div>
-        <ToDoArea userId={userId ? Number(userId) : null} />
       </div>
     </div>
   );

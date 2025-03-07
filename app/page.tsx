@@ -1,5 +1,7 @@
 import Form from "./components/Form";
 import { getSession } from "@/lib/session";
+import ToDoArea from "./components/todo/ToDoArea";
+import SampleButton from "./components/sample/SampleButton";
 
 interface SessionData {
   user: {
@@ -28,6 +30,12 @@ export default async function Home() {
 
       <div>
         <Form userId={userId}/>
+      </div>
+      <div>
+        <ToDoArea userId={userId ? Number(userId) : null} />
+      </div>
+      <div>
+        <SampleButton userId={userId ? Number(userId) : null}/>
       </div>
     </div>
   );

@@ -3,9 +3,29 @@
 
 import { getTraffic, getWeather } from "@/lib/apiHelper";
 import prisma from "@/lib/prismaClient";
-import axios from "axios";
 
-export async function GET(request: Request) {}
+export async function GET(request: Request) {
+  const url = new URL(request.url)
+
+  const userId = url.searchParams.get("userId")
+
+  const userFormData = await prisma.formData.findUnique({
+    where: {
+      userId: userId ? parseInt(userId) : undefined
+    }
+  })
+
+  if (!userFormData) {
+    console.error("error retrieving form data from user")
+  }
+
+  const cityName = userFormData?.city
+  const origin = userFormData?.traffic_start
+  const destination = userFormData?.traffic_end
+  const mode = userFormData?.traffic_transportation
+
+  return Response.json({cityName, origin, destination, mode}, {status: 200})
+}
 
 //create FormData entry
 export async function POST(request: Request) {
