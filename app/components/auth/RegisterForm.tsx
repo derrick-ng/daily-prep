@@ -2,10 +2,12 @@
 
 import React, { FormEvent, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState("");
+  const router = useRouter()
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -21,6 +23,7 @@ const RegisterForm = () => {
       setSuccess("Registration Success");
       setErrors([]);
       console.log("Registration success:\n", response);
+      router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorData = error.response?.data;

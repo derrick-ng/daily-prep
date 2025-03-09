@@ -1,6 +1,7 @@
 import prisma from "@/lib/prismaClient";
 import z from "zod";
 import { genSaltSync, hashSync } from "bcrypt-ts";
+import { login } from "@/lib/session";
 
 const createUserSchema = z.object({
   username: z
@@ -45,6 +46,9 @@ export async function POST(request: Request) {
       },
     });
 
+    const userId = String(user.id);
+    await login({ username, userId });
+    
     return Response.json({ user }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -52,10 +56,9 @@ export async function POST(request: Request) {
 
       console.log("errorMessages created", errorMessages);
       return Response.json({ errors: errorMessages }, { status: 400 });
+    } else if (error instanceof Error) {
+      return Response.json({ errors: [error.message] }, { status: 400 });
     }
-    else if (error instanceof Error) {
-      return Response.json({ errors: [error.message] }, { status: 400})
-    }
-    return Response.json({ errors: ["unexpected error in registration"]}, { status: 400})
+    return Response.json({ errors: ["unexpected error in registration"] }, { status: 400 });
   }
 }
