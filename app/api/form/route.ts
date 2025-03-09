@@ -3,28 +3,29 @@
 
 import { getTraffic, getWeather } from "@/lib/apiHelper";
 import prisma from "@/lib/prismaClient";
+import z from "zod";
 
 export async function GET(request: Request) {
-  const url = new URL(request.url)
+  const url = new URL(request.url);
 
-  const userId = url.searchParams.get("userId")
+  const userId = url.searchParams.get("userId");
 
   const userFormData = await prisma.formData.findUnique({
     where: {
-      userId: userId ? parseInt(userId) : undefined
-    }
-  })
+      userId: userId ? parseInt(userId) : undefined,
+    },
+  });
 
   if (!userFormData) {
-    console.error("error retrieving form data from user")
+    console.error("error retrieving form data from user");
   }
 
-  const cityName = userFormData?.city
-  const origin = userFormData?.traffic_start
-  const destination = userFormData?.traffic_end
-  const mode = userFormData?.traffic_transportation
+  const cityName = userFormData?.city;
+  const origin = userFormData?.traffic_start;
+  const destination = userFormData?.traffic_end;
+  const mode = userFormData?.traffic_transportation;
 
-  return Response.json({cityName, origin, destination, mode}, {status: 200})
+  return Response.json({ cityName, origin, destination, mode }, { status: 200 });
 }
 
 //create FormData entry
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   //create a /lib/apiHelper.ts
-    //will have the main code logic of weather/traffic
+  //will have the main code logic of weather/traffic
   //route.ts files will call this function
   try {
     const [weatherData, trafficData] = await Promise.all([getWeather(cityName), getTraffic(origin, destination, mode)]);
@@ -56,5 +57,38 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     return Response.json({ error }, { status: 400 });
+  }
+}
+
+const editFormSchema = z.object({
+  userId: z.string(),
+  cityName: z.string(),
+  origin: z.string(),
+  destination: z.string(),
+  mode: z.string(),
+});
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const parsedBody = editFormSchema.parse(body);
+
+    const { userId, cityName, origin, destination, mode } = parsedBody;
+
+    const editForm = await prisma.formData.update({
+      where: {
+        userId: Number(userId),
+      },
+      data: {
+        city: cityName,
+        traffic_start: origin,
+        traffic_end: destination,
+        traffic_transportation: mode,
+      },
+    });
+
+    return Response.json({ editForm }, { status: 200 });
+  } catch (error) {
+    return Response.json({ error: `error editing form: ${error}` }, { status: 400 });
   }
 }

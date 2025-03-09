@@ -13,6 +13,7 @@ const Form = ({ userId }: FormProps) => {
   const [origin, setOrigin] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
   const [mode, setMode] = useState<string>("");
+  const [hasFormData, setHasFormData] = useState<boolean>(false);
 
   useEffect(() => {
     async function getFormData() {
@@ -24,10 +25,17 @@ const Form = ({ userId }: FormProps) => {
             },
           });
           const userFormData = response.data;
-          setCityName(userFormData.cityName);
-          setOrigin(userFormData.origin);
-          setDestination(userFormData.destination);
-          setMode(userFormData.mode);
+          const formCity = userFormData.cityName;
+          const formOrigin = userFormData.origin;
+          const formDestination = userFormData.destination;
+          const formMode = userFormData.mode;
+          if (formCity || formOrigin || formDestination || formMode) {
+            setCityName(formCity);
+            setOrigin(formOrigin);
+            setDestination(formDestination);
+            setMode(formMode);
+            setHasFormData(true);
+          }
         } catch (error) {
           console.error("error in Form useEffect:", error);
         }
@@ -53,9 +61,14 @@ const Form = ({ userId }: FormProps) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("/api/form", data);
-      console.log("successful FormData entry created", response);
-      console.log("successful form save");
+      if (hasFormData) {
+        const editResponse = await axios.put("/api/form", data);
+        console.log("successful FormData edit", editResponse)
+      }
+      else {
+        const postResponse = await axios.post("/api/form", data);
+        console.log("successful FormData entry created", postResponse);
+      }
     } catch (error) {
       console.error("form save failure", error);
     }
