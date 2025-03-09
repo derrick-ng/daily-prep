@@ -16,7 +16,7 @@ interface MessageListProps {
 function MessageList({ messages, openMessage }: MessageListProps): JSX.Element {
   return (
     <div>
-      <p>messages list:</p>
+      {/* <p>messages list:</p> */}
       <ListGroup>
         {messages.map((message) => (
           <MessageItem key={message.id} message={message} openMessage={openMessage} />

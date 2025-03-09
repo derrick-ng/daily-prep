@@ -139,7 +139,7 @@ const Email = () => {
           </GoogleOAuthProvider>
         ) : (
           <div>
-            <p>logged in</p>
+            {/* <p>logged in</p> */}
             <MessageList messages={messages} openMessage={openMessage} />
           </div>
         )}
