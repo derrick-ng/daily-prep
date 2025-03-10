@@ -2,10 +2,8 @@
 
 import React from "react";
 import { logout } from "@/lib/session";
-import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
-  const router = useRouter();
 
   const handleLogout = async () => {
     await logout();
