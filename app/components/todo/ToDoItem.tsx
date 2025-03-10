@@ -53,19 +53,36 @@ function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {
 
   return (
     <div>
-      <ListGroupItem>
-        <p>To Do Item:</p>
+      <ListGroupItem className="mb-2 p-0 border-0">
         {!isEditing ? (
-          <div>
-            <p>{toDo.task}</p>
-            <button onClick={handleEditToggle}>Edit</button>
-            <button onClick={handleDeleteTodo}>Delete</button>
+          <div className="flex items-center border border-gray-300 p-2 rounded-md">
+              {/* <span onClick={handleEditToggle} className="block px-2 py-1">
+                {toDo.task}
+              </span> */}
+              <input
+              type="text"
+              value={toDo.task}
+              readOnly
+              onClick={handleEditToggle}
+              className="border border-gray-300 px-2 py-1 rounded-md w-full"
+              />
+              {/* <button onClick={handleEditToggle}>Edit</button> */}
+              <button className="" onClick={handleDeleteTodo}>
+                Delete
+              </button>
           </div>
         ) : (
-          <div>
-            <input type="text" value={editTask} onChange={(e) => setEditTask(e.target.value)} />
-            <button onClick={handleSaveEdit}>Save</button>
-            <button onClick={handleCancelEdit}>Cancel</button>
+          <div className="flex items-center border border-gray-300 p-2 rounded-md">
+              <input
+                type="text"
+                value={editTask}
+                onChange={(e) => {
+                  setEditTask(e.target.value);
+                }}
+                className="border border-gray-300 px-2 py-1 rounded-md w-full"
+              />
+                <button onClick={handleSaveEdit} className="ml-2">Save</button>
+                <button onClick={handleCancelEdit} className="ml-2">Cancel</button>
           </div>
         )}
       </ListGroupItem>

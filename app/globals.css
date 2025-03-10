@@ -1,3 +1,56 @@
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base Styles */
+body {
+  @apply bg-gray-200 text-gray-900;
+}
+
+/* Links */
+a {
+  @apply text-gray-700 hover:text-gray-900;
+}
+
+/* Buttons */
+button {
+  @apply px-4 py-2 rounded-md font-medium transition-all duration-200 border-2 border-gray-300;
+}
+
+button.primary {
+  @apply bg-gray-700 text-white border-gray-800 hover:bg-gray-800 hover:border-gray-900 focus:ring-2 focus:ring-gray-500;
+}
+
+button.secondary {
+  @apply bg-gray-400 text-gray-900 border-gray-500 hover:bg-gray-500 hover:border-gray-600 focus:ring-2 focus:ring-gray-400;
+}
+
+button.ghost {
+  @apply bg-transparent text-gray-800 border-gray-500 hover:bg-gray-300 focus:ring-2 focus:ring-gray-500;
+}
+
+/* Forms */
+input, textarea, select {
+  @apply w-full px-4 py-2 border border-gray-400 rounded-md bg-gray-100 text-gray-900 
+  focus:outline-none focus:ring-2 focus:ring-gray-500;
+}
+
+/* Labels */
+label {
+  @apply block font-medium text-gray-800;
+}
+
+/* Form Errors */
+.error {
+  @apply text-red-500 text-sm;
+}
+
+/* Cards */
+.card {
+  @apply bg-gray-100 shadow-md rounded-lg p-6 border border-gray-400;
+}
+
+/* Utility: Center content */
+.flex-center {
+  @apply flex items-center justify-center;
+}

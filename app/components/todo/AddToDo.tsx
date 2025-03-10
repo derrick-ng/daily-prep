@@ -32,7 +32,7 @@ function AddToDo({ userId, onAdd }: AddToDoProp) {
     }
   };
   return (
-    <div>
+    <div className="flex items-center gap-2">
       <input
         type="text"
         placeholder="Add Task"

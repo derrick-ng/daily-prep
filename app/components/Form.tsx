@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import Email from "./Email";
 import axios from "axios";
+import SampleButton from "./sample/SampleButton";
 
 interface FormProps {
   userId: string | null;
@@ -63,9 +64,8 @@ const Form = ({ userId }: FormProps) => {
     try {
       if (hasFormData) {
         const editResponse = await axios.put("/api/form", data);
-        console.log("successful FormData edit", editResponse)
-      }
-      else {
+        console.log("successful FormData edit", editResponse);
+      } else {
         const postResponse = await axios.post("/api/form", data);
         console.log("successful FormData entry created", postResponse);
       }
@@ -99,8 +99,15 @@ const Form = ({ userId }: FormProps) => {
         </select>
         <br />
 
-        <button type="submit">save</button>
+        <div className="flex items-center gap-2 mt-2">
+          <button type="submit">save</button>
+          <SampleButton userId={userId ? Number(userId) : null} />
+        </div>
       </form>
+
+      <br />
+      <br />
+      <p>gotta change this for later</p>
       <div>
         <Email />
       </div>

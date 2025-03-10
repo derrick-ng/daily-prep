@@ -11,31 +11,32 @@ interface SessionData {
   expires: string | number | Date;
 }
 
-
 export default async function Home() {
   // const session = await getSession();
-  const session = await getSession() as SessionData[] | undefined;
-  const username = session ? session[0].user.username : null
-  const userId = session ? session[0].user.userId : null
+  const session = (await getSession()) as SessionData[] | undefined;
+  const username = session ? session[0].user.username : null;
+  const userId = session ? session[0].user.userId : null;
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto p-4">
       {session && (
-        <div>
+        <div className="mb-4">
           <p>
             user: {username}, id: {userId}
           </p>
         </div>
       )}
 
-      <div>
-        <Form userId={userId}/>
-      </div>
-      <div>
-        <ToDoArea userId={userId ? Number(userId) : null} />
-      </div>
-      <div>
-        <SampleButton userId={userId ? Number(userId) : null}/>
+      <div className="flex gap-8">
+        <div className="w-1/2">
+          <Form userId={userId} />
+        </div>
+        <div className="w-1/2">
+          <ToDoArea userId={userId ? Number(userId) : null} />
+        </div>
+        <div>
+          {/* <SampleButton userId={userId ? Number(userId) : null} /> */}
+        </div>
       </div>
     </div>
   );
