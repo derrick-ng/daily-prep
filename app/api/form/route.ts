@@ -5,25 +5,33 @@ import { getTraffic, getWeather } from "@/lib/apiHelper";
 import prisma from "@/lib/prismaClient";
 import z from "zod";
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
-
-  const userId = url.searchParams.get("userId");
-
+async function getFormData(userId: number) {
   const userFormData = await prisma.formData.findUnique({
     where: {
-      userId: userId ? parseInt(userId) : undefined,
+      userId,
     },
   });
-
   if (!userFormData) {
     console.error("error retrieving form data from user");
   }
-
   const cityName = userFormData?.city;
   const origin = userFormData?.traffic_start;
   const destination = userFormData?.traffic_end;
   const mode = userFormData?.traffic_transportation;
+
+  return { cityName, origin, destination, mode };
+}
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+
+  const userIdParam = url.searchParams.get("userId");
+  const userId = userIdParam ? parseInt(userIdParam) : undefined;
+
+  if (userId === undefined) {
+    return Response.json({ error: "invalid userId" }, { status: 400 });
+  }
+  const { cityName, origin, destination, mode } = await getFormData(userId);
 
   return Response.json({ cityName, origin, destination, mode }, { status: 200 });
 }

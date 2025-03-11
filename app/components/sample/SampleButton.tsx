@@ -5,10 +5,16 @@ import { trafficData } from "@/app/types/Traffic";
 import axios from "axios";
 import SampleDisplay from "./SampleDisplay";
 
+interface Todo {
+  id: number;
+  task: string;
+}
+
 const SampleButton = ({ userId }: { userId: number | null }) => {
   const [weatherData, setWeatherData] = useState<weatherData | null>(null);
   const [trafficData, setTrafficData] = useState<trafficData | null>(null)
-  const [test, setTest] = useState(false)
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [displayOn, setDisplayOn] = useState(false)
 
   const handleSampleClick = async () => {
     if (!userId) {
@@ -23,7 +29,14 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
         },
       });
       const { cityName, origin, destination, mode } = formResponse.data
-      setTest(true)
+
+      const todosResponse = await axios.get("/api/todos", {
+        params: {
+          userId,
+        }
+      })
+      setTodos(todosResponse.data.todos)
+      setDisplayOn(true)
 
       const weatherResponse = await axios.get("/api/weather", {
         params: {
@@ -47,9 +60,9 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
   return (
     <div>
       <button onClick={handleSampleClick}>Sample</button>
-      {test && (
+      {displayOn && (
 
-          <SampleDisplay weatherData={weatherData} trafficData={trafficData}/>
+          <SampleDisplay weatherData={weatherData} trafficData={trafficData} todos={todos}/>
       )
       }
     </div>
