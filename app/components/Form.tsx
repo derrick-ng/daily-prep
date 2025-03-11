@@ -76,7 +76,6 @@ const Form = ({ userId }: FormProps) => {
 
   return (
     <div>
-      <h2>Form</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="cityName">City Name:</label>
         <input type="text" id="cityName" name="cityName" defaultValue={cityName} />

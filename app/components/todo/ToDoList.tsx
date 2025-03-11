@@ -16,7 +16,6 @@ interface ToDoListProps {
 function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): JSX.Element {
   return (
     <div>
-      <strong>Task List:</strong>
       <ListGroup>
         {toDos.map((toDo) => (
           <ToDoItem key={toDo.id} toDo={toDo} onDelete={onDelete} onEdit={onEdit} />

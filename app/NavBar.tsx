@@ -17,6 +17,12 @@ const NavBar = async () => {
       <div className="flex">
         {!session ? (
           <div>
+            <a href="https://www.linkedin.com/in/derrick-ng-b3768527b/" target="_blank">
+              <button>LinkedIn</button>
+            </a>
+            <a href="https://github.com/derrick-ng/daily-prep" target="_blank">
+              <button>GitHub</button>
+            </a>
             <Link href="/auth/register">
               <button>Register</button>
             </Link>
@@ -26,7 +32,13 @@ const NavBar = async () => {
             </Link>
           </div>
         ) : (
-          <div>
+          <div className="flex">
+            <a href="https://www.linkedin.com/in/derrick-ng-b3768527b/" target="_blank">
+              <button>LinkedIn</button>
+            </a>
+            <a href="https://github.com/derrick-ng/daily-prep" target="_blank">
+              <button>GitHub</button>
+            </a>
             <LogoutButton />
           </div>
         )}

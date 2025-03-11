@@ -26,11 +26,12 @@ export default async function Home() {
         </div>
       )}
 
-      <div className="flex gap-8">
-        <div className="w-1/2">
+      <div className="flex gap-8 border border-black">
+        <div className="w-1/2 p-2">
           <Form userId={userId} />
         </div>
-        <div className="w-1/2">
+        <div className="w-1/2 p-2">
+          <strong>Task List:</strong>
           <ToDoArea userId={userId ? Number(userId) : null} />
         </div>
         <div>
