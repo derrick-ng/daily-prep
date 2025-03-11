@@ -24,6 +24,7 @@ const RegisterForm = () => {
       setErrors([]);
       console.log("Registration success:\n", response);
       router.push("/")
+      router.refresh()
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorData = error.response?.data;
