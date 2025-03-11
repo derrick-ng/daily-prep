@@ -1,5 +1,5 @@
-export interface weatherData {
-    temp: number;
-    tempMin: number;
-    tempMax: number;
+export interface WeatherData {
+  temp: number;
+  tempMin: number;
+  tempMax: number;
 }

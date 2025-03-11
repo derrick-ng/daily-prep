@@ -1,20 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { weatherData } from "@/app/types/Weather";
-import { trafficData } from "@/app/types/Traffic";
+import { WeatherData } from "@/app/types/Weather";
+import { TrafficData } from "@/app/types/Traffic";
 import axios from "axios";
 import SampleDisplay from "./SampleDisplay";
-
-interface Todo {
-  id: number;
-  task: string;
-}
+import { Todo } from "@/app/types/Todo";
 
 const SampleButton = ({ userId }: { userId: number | null }) => {
-  const [weatherData, setWeatherData] = useState<weatherData | null>(null);
-  const [trafficData, setTrafficData] = useState<trafficData | null>(null)
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [displayOn, setDisplayOn] = useState(false)
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [trafficData, setTrafficData] = useState<TrafficData | null>(null);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [displayOn, setDisplayOn] = useState(false);
 
   const handleSampleClick = async () => {
     if (!userId) {
@@ -28,31 +24,31 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
           userId,
         },
       });
-      const { cityName, origin, destination, mode } = formResponse.data
+      const { cityName, origin, destination, mode } = formResponse.data;
 
       const todosResponse = await axios.get("/api/todos", {
         params: {
           userId,
-        }
-      })
-      setTodos(todosResponse.data.todos)
-      setDisplayOn(true)
+        },
+      });
+      setTodos(todosResponse.data.todos);
+      setDisplayOn(true);
 
       const weatherResponse = await axios.get("/api/weather", {
         params: {
-            cityName
-        }
-      })
-        setWeatherData(weatherResponse.data.weatherData)
+          cityName,
+        },
+      });
+      setWeatherData(weatherResponse.data.weatherData);
 
       const trafficResponse = await axios.get("/api/traffic", {
         params: {
-            origin,
-            destination,
-            mode,
-        }
-      })
-        setTrafficData(trafficResponse.data.trafficData)
+          origin,
+          destination,
+          mode,
+        },
+      });
+      setTrafficData(trafficResponse.data.trafficData);
     } catch (error) {
       console.error("error finding form data", error);
     }
@@ -60,11 +56,7 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
   return (
     <div>
       <button onClick={handleSampleClick}>Sample</button>
-      {displayOn && (
-
-          <SampleDisplay weatherData={weatherData} trafficData={trafficData} todos={todos}/>
-      )
-      }
+      {displayOn && <SampleDisplay weatherData={weatherData} trafficData={trafficData} todos={todos} />}
     </div>
   );
 };

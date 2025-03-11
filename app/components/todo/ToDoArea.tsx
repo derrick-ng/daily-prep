@@ -4,18 +4,14 @@ import ToDoList from "./ToDoList";
 import AddToDo from "./AddToDo";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-interface ToDo {
-  id: number;
-  task: string;
-}
+import { Todo } from "@/app/types/Todo";
 
 interface ToDoAreaProps {
   userId: number | null;
 }
 
 const ToDoArea = ({ userId }: ToDoAreaProps) => {
-  const [toDos, setToDos] = useState<ToDo[]>([]);
+  const [toDos, setToDos] = useState<Todo[]>([]);
 
   // fetch user's tasks on load
   useEffect(() => {
@@ -36,7 +32,7 @@ const ToDoArea = ({ userId }: ToDoAreaProps) => {
     getToDos();
   }, [userId]); //not sure if this is needed
 
-  const handleAddTodo = (newTodo: ToDo) => {
+  const handleAddTodo = (newTodo: Todo) => {
     setToDos((previousTodos) => [...previousTodos, newTodo]);
   };
 
@@ -44,7 +40,7 @@ const ToDoArea = ({ userId }: ToDoAreaProps) => {
     setToDos((previousTodos) => previousTodos.filter((todo) => todo.id !== id));
   };
 
-  const handleEditTodo = (editTodo: ToDo) => {
+  const handleEditTodo = (editTodo: Todo) => {
     console.log("edit todo:", editTodo);
     setToDos((previousTodos) => previousTodos.map((todo) => (todo.id === editTodo.id ? editTodo : todo)));
   };

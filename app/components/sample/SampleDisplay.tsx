@@ -1,11 +1,7 @@
 import React from "react";
 import { weatherData } from "@/app/types/Weather";
 import { trafficData } from "@/app/types/Traffic";
-
-interface Todo {
-  id: number;
-  task: string;
-}
+import { Todo } from "@/app/types/Todo";
 
 interface SampleDisplayProp {
   weatherData: weatherData | null;

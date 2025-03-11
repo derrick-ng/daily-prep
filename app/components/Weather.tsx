@@ -1,16 +1,11 @@
 "use client";
 import axios from "axios";
 import { useState } from "react";
-
-interface weatherData {
-  temp: number;
-  tempMin: number;
-  tempMax: number;
-}
+import { WeatherData } from "../types/Weather";
 
 const Weather = () => {
   const [cityName, setCityName] = useState("");
-  const [weatherData, setWeatherData] = useState<weatherData | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const handleSubmit = async () => {
     try {

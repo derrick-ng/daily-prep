@@ -1,4 +1,4 @@
-export interface trafficData {
-    distance: number;
-    duration: number;
+export interface TrafficData {
+  distance: number;
+  duration: number;
 }

@@ -2,11 +2,8 @@
 
 import axios from "axios";
 import { useState } from "react";
+import { Todo } from "@/app/types/Todo";
 
-interface Todo {
-  id: number;
-  task: string;
-}
 
 interface AddToDoProp {
   userId: number | null;

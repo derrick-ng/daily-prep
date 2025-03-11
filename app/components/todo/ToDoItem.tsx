@@ -1,16 +1,12 @@
 import axios from "axios";
 import { JSX, useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
-
-interface ToDo {
-  id: number;
-  task: string;
-}
+import { Todo } from "@/app/types/Todo";
 
 interface ToDoItemInterface {
-  toDo: ToDo;
+  toDo: Todo;
   onDelete: (id: number) => void;
-  onEdit: (todo: ToDo) => void;
+  onEdit: (todo: Todo) => void;
 }
 
 function ToDoItem({ toDo, onDelete, onEdit }: ToDoItemInterface): JSX.Element {

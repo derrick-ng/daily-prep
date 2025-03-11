@@ -1,8 +1,8 @@
 import axios from "axios";
-import { weatherData } from "@/app/types/Weather";
-import { trafficData } from "@/app/types/Traffic";
+import { WeatherData } from "@/app/types/Weather";
+import { TrafficData } from "@/app/types/Traffic";
 
-export async function getWeather(cityName: string | null): Promise<weatherData> {
+export async function getWeather(cityName: string | null): Promise<WeatherData> {
   const apiKey = process.env.OPENWEATHERMAP_KEY;
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 
@@ -23,12 +23,7 @@ export async function getWeather(cityName: string | null): Promise<weatherData> 
   }
 }
 
-// interface TrafficResponse {
-//   distance: number;
-//   duration: number;
-// }
-
-export async function getTraffic(origin: string | null, destination: string | null, mode: string | null): Promise<trafficData> {
+export async function getTraffic(origin: string | null, destination: string | null, mode: string | null): Promise<TrafficData> {
   const apiKey = process.env.DISTANCEMATRIX_KEY;
   const apiUrl = `https://api.distancematrix.ai/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=${mode}&key=${apiKey}`;
 

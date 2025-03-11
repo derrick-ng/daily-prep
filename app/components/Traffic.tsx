@@ -2,18 +2,14 @@
 
 import axios from "axios";
 import { useState } from "react";
-
-interface trafficData {
-  distance: number;
-  duration: number;
-}
+import { TrafficData } from "../types/Traffic";
 
 const Traffic = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [mode, setMode] = useState("");
   const [avoid, setAvoid] = useState("");
-  const [trafficData, setTrafficData] = useState<trafficData | null>(null);
+  const [trafficData, setTrafficData] = useState<TrafficData | null>(null);
 
   const handleSubmit = async () => {
     try {

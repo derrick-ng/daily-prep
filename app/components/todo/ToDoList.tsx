@@ -1,16 +1,12 @@
 import { ListGroup } from "react-bootstrap";
 import ToDoItem from "./ToDoItem";
 import { JSX } from "react";
-
-interface ToDo {
-  id: number;
-  task: string;
-}
+import { Todo } from "@/app/types/Todo";
 
 interface ToDoListProps {
-  toDos: ToDo[];
+  toDos: Todo[];
   onDelete: (id: number) => void;
-  onEdit: (editTodo: ToDo) => void;
+  onEdit: (editTodo: Todo) => void;
 }
 
 function ToDoList({ toDos, onDelete, onEdit }: ToDoListProps): JSX.Element {
