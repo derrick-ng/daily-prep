@@ -25,8 +25,8 @@ const SampleDisplay = ({ weatherData, trafficData, todos }: SampleDisplayProp) =
         <p>{distance} miles, {duration} minutes</p>
       </div>
       <div>
-        {todos.map((todo, index) => 
-        <p key={index}>{todo.task}</p>)}
+        {todos.map((todo) => 
+        <p key={todo.id}>{todo.task}</p>)}
       </div>
     </div>
   );

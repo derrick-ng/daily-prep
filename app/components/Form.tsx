@@ -100,10 +100,9 @@ const Form = ({ userId }: FormProps) => {
 
         <div className="flex items-center gap-2 mt-2">
           <button type="submit">save</button>
-          <SampleButton userId={userId ? Number(userId) : null} />
         </div>
       </form>
-
+      
       <br />
       <br />
       <p>gotta change this for later</p>

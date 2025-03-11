@@ -1,5 +1,7 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { WeatherData } from "@/app/types/Weather";
 import { TrafficData } from "@/app/types/Traffic";
 import axios from "axios";
@@ -10,7 +12,14 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [trafficData, setTrafficData] = useState<TrafficData | null>(null);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [displayOn, setDisplayOn] = useState(false);
+  const [sampleDisplayPressed, setSampleDisplayPressed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  //react portal
+  //makes sure portal is only rendered when DOM is ready
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSampleClick = async () => {
     if (!userId) {
@@ -32,7 +41,7 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
         },
       });
       setTodos(todosResponse.data.todos);
-      setDisplayOn(true);
+      setSampleDisplayPressed(true);
 
       const weatherResponse = await axios.get("/api/weather", {
         params: {
@@ -56,7 +65,19 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
   return (
     <div>
       <button onClick={handleSampleClick}>Sample</button>
-      {displayOn && <SampleDisplay weatherData={weatherData} trafficData={trafficData} todos={todos} />}
+      {mounted &&
+        sampleDisplayPressed &&
+        createPortal(
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <SampleDisplay weatherData={weatherData} trafficData={trafficData} todos={todos} />
+              <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={() => setSampleDisplayPressed(false)}>
+                close
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

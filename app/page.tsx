@@ -1,6 +1,7 @@
 import Form from "./components/Form";
 import { getSession } from "@/lib/session";
 import ToDoArea from "./components/todo/ToDoArea";
+import SampleButton from "./components/sample/SampleButton";
 
 interface SessionData {
   user: {
@@ -26,15 +27,18 @@ export default async function Home() {
         </div>
       )}
 
-      <div className="flex gap-8 border border-black">
-        <div className="w-1/2 p-2">
-          <Form userId={userId} />
+      <div className="border border-black">
+        <div className="flex gap-8">
+          <div className="w-1/2 p-2">
+            <Form userId={userId} />
+          </div>
+          <div className="w-1/2 p-2">
+            <strong>Task List:</strong>
+            <ToDoArea userId={userId ? Number(userId) : null} />
+          </div>
         </div>
-        <div className="w-1/2 p-2">
-          <strong>Task List:</strong>
-          <ToDoArea userId={userId ? Number(userId) : null} />
-        </div>
-        <div>
+        <div className="mt-4 flex justify-center">
+          <SampleButton userId={userId ? Number(userId) : null} />
         </div>
       </div>
     </div>
