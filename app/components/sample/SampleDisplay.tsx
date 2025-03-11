@@ -1,11 +1,11 @@
 import React from "react";
-import { weatherData } from "@/app/types/Weather";
-import { trafficData } from "@/app/types/Traffic";
+import { WeatherData } from "@/app/types/Weather";
+import { TrafficData } from "@/app/types/Traffic";
 import { Todo } from "@/app/types/Todo";
 
 interface SampleDisplayProp {
-  weatherData: weatherData | null;
-  trafficData: trafficData | null;
+  weatherData: WeatherData | null;
+  trafficData: TrafficData | null;
   todos: Todo[]
 }
 
