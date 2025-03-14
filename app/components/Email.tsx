@@ -58,13 +58,16 @@ const Email = ({ userId }: EmailProp) => {
     async function initAccessToken() {
       if (!accessToken && userId) {
         const newAccessToken = await getNewAccessToken(userId);
-        setAccessToken(newAccessToken);
-        setHasRefreshToken(true)
+        if (newAccessToken) {
+          setAccessToken(newAccessToken);
+          setHasRefreshToken(true);
+        } else {
+          // a little redundant, but makes it easier to read
+          setHasRefreshToken(false);
+        }
       }
     }
-
-      initAccessToken();
-    
+    initAccessToken();
   }, [userId, accessToken]);
 
   async function getNewAccessToken(userId: string) {
@@ -74,8 +77,8 @@ const Email = ({ userId }: EmailProp) => {
       };
       const tokenResponse = await axios.post("/api/email/token", data);
       if (tokenResponse.status == 500) {
-        setHasRefreshToken(false)
-        return
+        setHasRefreshToken(false);
+        return;
       }
       const accessToken = tokenResponse.data.newAccessToken;
       console.log("access token retrieved");
