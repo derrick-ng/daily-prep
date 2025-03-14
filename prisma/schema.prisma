@@ -37,7 +37,7 @@ model FormData {
   traffic_start String?
   traffic_end String?
   traffic_transportation String?
-  // email_refresh_token String? // believe i have to store auth code, access, or refresh token to access gapi 
+  email_refresh_token String?
   userId Int @unique
   user User @relation(fields: [userId], references: [id])
 }

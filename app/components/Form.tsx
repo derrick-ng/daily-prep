@@ -3,7 +3,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import Email from "./Email";
 import axios from "axios";
-import SampleButton from "./sample/SampleButton";
 
 interface FormProps {
   userId: string | null;
@@ -107,7 +106,7 @@ const Form = ({ userId }: FormProps) => {
       <br />
       <p>gotta change this for later</p>
       <div>
-        <Email />
+        <Email userId={userId}/>
       </div>
     </div>
   );

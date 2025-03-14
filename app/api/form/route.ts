@@ -18,8 +18,9 @@ async function getFormData(userId: number) {
   const origin = userFormData?.traffic_start;
   const destination = userFormData?.traffic_end;
   const mode = userFormData?.traffic_transportation;
+  const refreshToken = userFormData?.email_refresh_token
 
-  return { cityName, origin, destination, mode };
+  return { cityName, origin, destination, mode, refreshToken };
 }
 
 export async function GET(request: Request) {
@@ -31,9 +32,9 @@ export async function GET(request: Request) {
   if (userId === undefined) {
     return Response.json({ error: "invalid userId" }, { status: 400 });
   }
-  const { cityName, origin, destination, mode } = await getFormData(userId);
+  const { cityName, origin, destination, mode, refreshToken } = await getFormData(userId);
 
-  return Response.json({ cityName, origin, destination, mode }, { status: 200 });
+  return Response.json({ cityName, origin, destination, mode, refreshToken }, { status: 200 });
 }
 
 //create FormData entry

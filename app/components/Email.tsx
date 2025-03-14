@@ -7,16 +7,18 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import MessageList from "./message/MessageList";
 
+interface EmailProp {
+  userId: string | null;
+}
+
 //https://www.youtube.com/watch?v=N5fiL6fwvbU
-const Email = () => {
+const Email = ({ userId }: EmailProp) => {
   const DISCOVERY_DOC = "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest";
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [hasRefreshToken, setHasRefreshToken] = useState(false);
   const [accessToken, setAccessToken] = useState("");
   const [clientId, setClientId] = useState("");
   const [gapiKey, setgapiKey] = useState("");
-  const [clientSecret, setClientSecret] = useState("");
-  const [redirect_uri, setredirect_uri] = useState("");
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -26,8 +28,8 @@ const Email = () => {
         const data = await response.data;
         setClientId(data.clientId);
         setgapiKey(data.apiKey);
-        setClientSecret(data.clientSecret);
-        setredirect_uri(data.redirect_uri);
+        // setClientSecret(data.clientSecret);
+        // setredirect_uri(data.redirect_uri);
       } catch (error) {
         console.log("error fetching client id: ", error);
       }
@@ -42,7 +44,7 @@ const Email = () => {
     // the point of the [] is to tell nextjs when to run this effect
     // an empty array means it is called only once
     // adding a variable would tell next that this effect *depends* on that variable
-    // [isAuthenticated] would mean this is called every time the isAuthenticated changes
+    // [hasRefreshToken] would mean this is called every time the hasRefreshToken changes
   }, []);
 
   //on accessToken value change, fetch messages
@@ -52,30 +54,54 @@ const Email = () => {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+    async function initAccessToken() {
+      if (!accessToken && userId) {
+        const newAccessToken = await getNewAccessToken(userId);
+        setAccessToken(newAccessToken);
+        setHasRefreshToken(true)
+      }
+    }
+
+      initAccessToken();
+    
+  }, [userId, accessToken]);
+
+  async function getNewAccessToken(userId: string) {
+    try {
+      const data = {
+        userId,
+      };
+      const tokenResponse = await axios.post("/api/email/token", data);
+      if (tokenResponse.status == 500) {
+        setHasRefreshToken(false)
+        return
+      }
+      const accessToken = tokenResponse.data.newAccessToken;
+      console.log("access token retrieved");
+      // setAccessToken(accessToken);
+      return accessToken;
+    } catch (error) {
+      console.error("fail getting new access token", error);
+    }
+  }
+
   const handleLoginSuccess = async (response: { code: string }) => {
     //this is just an authorization code, not an access token
     //need to exchange auth code for access token
     // console.log("authorization code: ", response.code);
 
-    const params = new URLSearchParams();
-    params.append("code", response.code);
-    params.append("client_id", clientId);
-    params.append("client_secret", clientSecret);
-    // params.append("redirect_uri", "http://localhost:3000");
-    params.append("redirect_uri", redirect_uri);
-    params.append("grant_type", "authorization_code");
+    const data = {
+      code: response.code,
+      userId: userId ? parseInt(userId) : null,
+    };
 
     try {
-      const tokenResponse = await axios.post("https://oauth2.googleapis.com/token", params, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      });
-      setAccessToken(tokenResponse.data.access_token);
-      //cant immediately use accessToken even though it has been set
-      //state variables dont change instantly, react does it in batches
-      //accessToken state is prob changing in next batch, after function call
-      // console.log("access token:", tokenResponse.data.access_token);
-      //console.log("access token check: ", accessToken)
-      setIsAuthenticated(true);
+      const tokenResponse = await axios.post("/api/email", data);
+      console.log("email api response", tokenResponse);
+      const accessToken = tokenResponse.data.accessToken;
+      setAccessToken(accessToken);
+      setHasRefreshToken(true);
     } catch (error) {
       console.log("error exchanging auth code", error);
     }
@@ -133,7 +159,7 @@ const Email = () => {
     <div>
       <h3>Gmail API & OAuth2 Test</h3>
       <div>
-        {!isAuthenticated && clientId ? (
+        {!hasRefreshToken && clientId ? (
           <GoogleOAuthProvider clientId={clientId}>
             <LoginComponent onSuccess={handleLoginSuccess} onError={handleLoginFailure} />
           </GoogleOAuthProvider>
