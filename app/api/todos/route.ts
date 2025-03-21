@@ -1,16 +1,15 @@
 import prisma from "@/lib/prismaClient";
 import z from "zod";
+import { getTodos } from "@/lib/apiHelper";
 
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    const userId = url.searchParams.get("userId");
+    const userIdParam = url.searchParams.get("userId");
+    const userId = parseInt(userIdParam as string);
 
-    const todos = await prisma.todo.findMany({
-      where: {
-        userId: parseInt(userId as string),
-      },
-    });
+    const todos = await getTodos(userId);
+    console.log("todos:", todos);
 
     return Response.json({ todos }, { status: 200 });
   } catch (error) {
