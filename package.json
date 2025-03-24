@@ -20,6 +20,7 @@
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
+    "web-push": "^3.6.7",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19.0.4",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",

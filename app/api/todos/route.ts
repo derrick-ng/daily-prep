@@ -9,7 +9,6 @@ export async function GET(request: Request) {
     const userId = parseInt(userIdParam as string);
 
     const todos = await getTodos(userId);
-    console.log("todos:", todos);
 
     return Response.json({ todos }, { status: 200 });
   } catch (error) {
