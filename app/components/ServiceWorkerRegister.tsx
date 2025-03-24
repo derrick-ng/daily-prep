@@ -35,7 +35,7 @@ const ServiceWorkerRegister = () => {
     registerPushSubscription();
   }, []);
 
-  navigator.serviceWorker.oncontrollerchange = (event) => {
+  navigator.serviceWorker.oncontrollerchange = () => {
     console.log("new service worker activated");
   };
 
