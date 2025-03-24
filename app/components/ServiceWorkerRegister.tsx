@@ -33,11 +33,11 @@ const ServiceWorkerRegister = () => {
       }
     }
     registerPushSubscription();
+    
+    navigator.serviceWorker.oncontrollerchange = () => {
+      console.log("new service worker activated");
+    };
   }, []);
-
-  navigator.serviceWorker.oncontrollerchange = () => {
-    console.log("new service worker activated");
-  };
 
   return null;
 };
