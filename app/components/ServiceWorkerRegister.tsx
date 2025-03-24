@@ -16,6 +16,7 @@ const ServiceWorkerRegister = () => {
           .then((registration) => {
             return registration.pushManager.getSubscription().then((subscription) => {
               if (subscription) {
+                new Notification("Hello World");
                 // console.log(subscription);
                 return subscription;
               }
@@ -33,7 +34,7 @@ const ServiceWorkerRegister = () => {
       }
     }
     registerPushSubscription();
-    
+
     navigator.serviceWorker.oncontrollerchange = () => {
       console.log("new service worker activated");
     };
