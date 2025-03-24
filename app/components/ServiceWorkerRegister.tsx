@@ -16,7 +16,6 @@ const ServiceWorkerRegister = () => {
           .then((registration) => {
             return registration.pushManager.getSubscription().then((subscription) => {
               if (subscription) {
-                new Notification("Hello World");
                 // console.log(subscription);
                 return subscription;
               }
