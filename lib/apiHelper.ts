@@ -1,6 +1,7 @@
 import axios from "axios";
 import { WeatherData } from "@/app/types/Weather";
 import { TrafficData } from "@/app/types/Traffic";
+import prisma from "./prismaClient";
 
 export async function getWeather(cityName: string | null): Promise<WeatherData> {
   const apiKey = process.env.OPENWEATHERMAP_KEY;
@@ -44,5 +45,19 @@ export async function getTraffic(origin: string | null, destination: string | nu
     } else {
       throw new Error("unknown error in getTraffic");
     }
+  }
+}
+
+export async function getTodos(userId: number) {
+  try {
+    const todos = await prisma.todo.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return todos;
+  } catch (error) {
+    console.error("error getting todos in helper", error);
   }
 }
