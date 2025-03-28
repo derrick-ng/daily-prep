@@ -2,14 +2,8 @@ import Form from "./components/Form";
 import { getSession } from "@/lib/session";
 import ToDoArea from "./components/todo/ToDoArea";
 import SampleButton from "./components/sample/SampleButton";
-
-interface SessionData {
-  user: {
-    username: string;
-    userId: string;
-  };
-  expires: string | number | Date;
-}
+import { SessionData } from "./types/Session";
+import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
 export default async function Home() {
   // const session = await getSession();
@@ -24,6 +18,7 @@ export default async function Home() {
           <p>
             user: {username}, id: {userId}
           </p>
+          <ServiceWorkerRegister userId={userId}/>
         </div>
       )}
 

@@ -11,13 +11,11 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("push", async (event) => {
   const data = event.data ? event.data.json() : {};
-  console.log("data: ", data);
   const title = data.title;
   const options = {
     body: data.body,
     data: data,
   };
-  console.log("pre push");
   self.registration
     .showNotification(title, options)
     .then(() => {
@@ -29,12 +27,9 @@ self.addEventListener("push", async (event) => {
 
   try {
     event.waitUntil(self.registration.showNotification(title, options));
-    console.log("pass");
   } catch (error) {
     console.error(error);
   }
-
-  console.log("post push");
 });
 
 // self.addEventListener("fetch", async (event) => {

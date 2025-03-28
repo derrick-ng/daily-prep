@@ -20,6 +20,7 @@ model User {
   password  String
   todos Todo[]
   formData FormData?
+  pushSubscription PushSubscription?
 }
 
 model Todo {
@@ -38,6 +39,15 @@ model FormData {
   traffic_end String?
   traffic_transportation String?
   email_refresh_token String?
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+}
+
+model PushSubscription {
+  id Int @id @default(autoincrement())
+  endpoint_url String
+  p256dh String
+  auth String
   userId Int @unique
   user User @relation(fields: [userId], references: [id])
 }
