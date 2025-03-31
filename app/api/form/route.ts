@@ -4,24 +4,7 @@
 import { getTraffic, getWeather } from "@/lib/apiHelper";
 import prisma from "@/lib/prismaClient";
 import z from "zod";
-
-async function getFormData(userId: number) {
-  const userFormData = await prisma.formData.findUnique({
-    where: {
-      userId,
-    },
-  });
-  if (!userFormData) {
-    console.error("error retrieving form data from user");
-  }
-  const cityName = userFormData?.city;
-  const origin = userFormData?.traffic_start;
-  const destination = userFormData?.traffic_end;
-  const mode = userFormData?.traffic_transportation;
-  const refreshToken = userFormData?.email_refresh_token
-
-  return { cityName, origin, destination, mode, refreshToken };
-}
+import { getFormData } from "@/lib/apiHelper";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

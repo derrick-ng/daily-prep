@@ -1,33 +1,44 @@
-import axios from "axios";
 import webPush from "web-push";
-import { getWeather } from "./apiHelper";
+import { getFormData, getPushNotificationDetails, getTodos, getTraffic, getWeather } from "./apiHelper";
 
-const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
-const vapidPrivateKey = "I8baGRzte4DjxjHd_G73qXCY5vW_LkEm5zRRMYrbvNo";
-
-webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
-
-(async () => {
+export async function sendPushNotificationToUser(userId: number) {
   try {
-    const response = await axios.get("http://localhost:3000/api/form", {
-      params: {
-        userId: 28,
-      },
-    });
-    const weather = await getWeather(response.data.cityName);
-    console.log(weather);
+    const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+    const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+
+    if (!vapidPublicKey || !vapidPrivateKey) {
+      throw new Error("vapid keys are not defined in the environment variables");
+    }
+    webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
+
+    const formResponse = await getFormData(userId);
+    const { cityName, origin, destination, mode } = formResponse;
+
+    const weather = await getWeather(cityName);
+    const traffic = await getTraffic(origin, destination, mode);
+    const tasks = await getTodos(userId);
+    const pushNotificationDetails = await getPushNotificationDetails(userId);
+
+    if (!pushNotificationDetails) {
+      throw new Error("Push notification details are missing");
+    }
+
+    const tasksDisplay = tasks?.map((task) => `${task.task}`).join("\n");
+
+    const { endpoint, p256dh, auth } = pushNotificationDetails;
+
     const pushSubscription = {
-      endpoint:
-        "https://fcm.googleapis.com/fcm/send/cGGpyZUID0w:APA91bG2Ql5O90Avv2ILVI-y7DHOZiHQKbD9Mt7j-sbZ2pllT6-gKMDQNdn5CBIM8T3_GrukrnUgGTqmTMjWcb_bdy1Rcg-oj8rWn917SItb9fiWQGcE48ourzTTKjLfvorh6_NzsRkf",
+      endpoint: endpoint,
       keys: {
-        p256dh: "BIno8M_U9REoDrCy0IU3U-Kf-p_NsoQ1b_R_DBRHlFKPNd8hAJHbvMlauYQH5DpSgUY7iIP0xCSR9ldKS4UNJq8",
-        auth: "49TclcRucbELvqxqKWireQ",
+        p256dh: p256dh,
+        auth: auth,
       },
     };
 
     const payload = JSON.stringify({
       title: "Daily Prep Message",
-      body: `${weather.temp}`,
+      body: `Weather: ${weather.temp}°F, ${weather.tempMin}-${weather.tempMax}°F\nTraffic: ${traffic.duration} mins to travel ${traffic.distance} miles\nTasks for the day:\n${tasksDisplay}
+      `,
     });
 
     webPush
@@ -39,4 +50,4 @@ webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidP
   } catch (error) {
     console.error("push service error", error);
   }
-})();
+}

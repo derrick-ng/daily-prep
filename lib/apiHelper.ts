@@ -48,6 +48,24 @@ export async function getTraffic(origin: string | null, destination: string | nu
   }
 }
 
+export async function getFormData(userId: number) {
+  const userFormData = await prisma.formData.findUnique({
+    where: {
+      userId,
+    },
+  });
+  if (!userFormData) {
+    console.error("error retrieving form data from user");
+  }
+  const cityName = userFormData?.city ?? null;
+  const origin = userFormData?.traffic_start ?? null;
+  const destination = userFormData?.traffic_end ?? null;
+  const mode = userFormData?.traffic_transportation ?? null;
+  const refreshToken = userFormData?.email_refresh_token ?? null;
+
+  return { cityName, origin, destination, mode, refreshToken };
+}
+
 export async function getTodos(userId: number) {
   try {
     const todos = await prisma.todo.findMany({
@@ -59,5 +77,18 @@ export async function getTodos(userId: number) {
     return todos;
   } catch (error) {
     console.error("error getting todos in helper", error);
+  }
+}
+
+export async function getPushNotificationDetails(userId: number) {
+  try {
+    const pushNotificationDetails = await prisma.pushSubscription.findUnique({
+      where: {
+        userId,
+      },
+    });
+    return pushNotificationDetails
+  } catch (error) {
+    console.error("error finding push noti info", error);
   }
 }

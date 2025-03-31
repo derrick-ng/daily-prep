@@ -36,7 +36,6 @@ export async function POST(request: Request) {
     //hash password
     const salt = genSaltSync(10);
     const hashedPassword = hashSync(password, salt);
-    console.log("hashed pw: ", hashedPassword);
 
     const user = await prisma.user.create({
       data: {

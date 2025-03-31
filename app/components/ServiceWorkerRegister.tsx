@@ -10,7 +10,6 @@ interface ServiceWorkerRegisterProp {
 //
 const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
-  //   const vapidPrivateKey = "I8baGRzte4DjxjHd_G73qXCY5vW_LkEm5zRRMYrbvNo";
 
   function bufferToBase64(buffer: ArrayBuffer | null) {
     if (!buffer) return null;
@@ -36,20 +35,25 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
         await navigator.serviceWorker.ready;
 
         const subscription = await registration.pushManager.getSubscription();
-        if (!subscription) {
+        const dbSubscription = await axios.get("/api/push-notification", {
+          params: {
+            userId,
+          },
+        });
+        if (!subscription || !dbSubscription) {
           const pushSubscriptionResult = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidPublicKey,
           });
 
-          const endpointUrl = pushSubscriptionResult.endpoint;
+          const endpoint = pushSubscriptionResult.endpoint;
           const p256dh = bufferToBase64(pushSubscriptionResult.getKey("p256dh"));
           const auth = bufferToBase64(pushSubscriptionResult.getKey("auth"));
 
           try {
             const data = {
               userId,
-              endpointUrl,
+              endpoint,
               p256dh,
               auth,
             };
