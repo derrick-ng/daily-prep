@@ -80,11 +80,11 @@ export async function getTodos(userId: number) {
   }
 }
 
-export async function getPushNotificationDetails(userId: number) {
+export async function getPushSubscriptions(endpoint: string) {
   try {
     const pushNotificationDetails = await prisma.pushSubscription.findUnique({
       where: {
-        userId,
+        endpoint,
       },
     });
     return pushNotificationDetails

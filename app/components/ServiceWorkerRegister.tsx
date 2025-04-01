@@ -35,12 +35,8 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
         await navigator.serviceWorker.ready;
 
         const subscription = await registration.pushManager.getSubscription();
-        const dbSubscription = await axios.get("/api/push-notification", {
-          params: {
-            userId,
-          },
-        });
-        if (!subscription || !dbSubscription) {
+
+        if (!subscription) {
           const pushSubscriptionResult = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: vapidPublicKey,
@@ -57,15 +53,40 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
               p256dh,
               auth,
             };
-            const response = await axios.post("/api/push-notification", data);
+            const response = await axios.post("/api/push-subscription", data);
             console.log("push noti to db success:", response);
           } catch (error) {
             console.error("error sending push notification object to backend", error);
           }
-          return pushSubscriptionResult;
+          return;
         }
-        console.log("user already subscribed to notifications");
-        return subscription;
+
+        // (edge case) client side already agreed to notifications by default, doesnt prompt "allow notifications popup"
+        // check if client side endpoint is already in db
+        const dbSubscription = await axios.get("/api/push-subscription", {
+          params: {
+            endpoint: subscription.endpoint,
+          },
+        });
+
+        const dbEndpoint = dbSubscription.data.response.endpoint;
+
+        if (subscription?.endpoint != dbEndpoint) {
+          try {
+            const data = {
+              userId,
+              endpoint: subscription.endpoint,
+              p256dh: bufferToBase64(subscription.getKey("p256dh")),
+              auth: bufferToBase64(subscription.getKey("auth")),
+            };
+            const response = await axios.post("/api/push-subscription", data);
+            console.log("response: ", response);
+          } catch (error) {
+            console.error("error in loop comparing endpoints", error);
+          }
+        }
+
+        return;
       } catch (error) {
         console.log("user blocked notifications", error);
       }

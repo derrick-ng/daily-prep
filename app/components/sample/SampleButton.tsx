@@ -11,9 +11,13 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
     }
 
     try {
-      const sendPushNotification = await axios.get("/api/cron", {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+
+      const sendPushNotification = await axios.get("/api/push-notification/single", {
         params: {
           userId,
+          endpoint: subscription?.endpoint,
         },
       });
       console.log("result of send push noti", sendPushNotification);

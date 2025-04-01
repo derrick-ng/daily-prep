@@ -1,12 +1,15 @@
-import { getPushNotificationDetails } from "@/lib/apiHelper";
+import { getPushSubscriptions } from "@/lib/apiHelper";
 import prisma from "@/lib/prismaClient";
 
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    const userId = url.searchParams.get("userId");
+    const endpoint = url.searchParams.get("endpoint");
+    if (!endpoint) {
+      throw new Error("no endpoint found")
+    }
 
-    const response = await getPushNotificationDetails(parseInt(userId as string));
+    const response = await getPushSubscriptions(endpoint);
 
     return Response.json({ response }, { status: 200 });
   } catch (error) {
@@ -18,7 +21,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { userId, endpoint, p256dh, auth } = body;
-
+    console.log(body);
     console.log(body);
     const response = await prisma.pushSubscription.create({
       data: {

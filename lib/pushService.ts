@@ -1,7 +1,12 @@
 import webPush from "web-push";
-import { getFormData, getPushNotificationDetails, getTodos, getTraffic, getWeather } from "./apiHelper";
+import { getFormData, getPushSubscriptions, getTodos, getTraffic, getWeather } from "./apiHelper";
 
-export async function sendPushNotificationToUser(userId: number) {
+interface sendPushNotificationToUserProp {
+  userId: number;
+  endpoint: string;
+}
+
+export async function sendPushNotificationToUser({userId, endpoint}: sendPushNotificationToUserProp) {
   try {
     const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
     const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
@@ -17,18 +22,18 @@ export async function sendPushNotificationToUser(userId: number) {
     const weather = await getWeather(cityName);
     const traffic = await getTraffic(origin, destination, mode);
     const tasks = await getTodos(userId);
-    const pushNotificationDetails = await getPushNotificationDetails(userId);
+    const pushSubscriptionDetails = await getPushSubscriptions(endpoint);
 
-    if (!pushNotificationDetails) {
+    if (!pushSubscriptionDetails) {
       throw new Error("Push notification details are missing");
     }
 
     const tasksDisplay = tasks?.map((task) => `${task.task}`).join("\n");
 
-    const { endpoint, p256dh, auth } = pushNotificationDetails;
+    const { p256dh, auth } = pushSubscriptionDetails;
 
     const pushSubscription = {
-      endpoint: endpoint,
+      endpoint,
       keys: {
         p256dh: p256dh,
         auth: auth,
