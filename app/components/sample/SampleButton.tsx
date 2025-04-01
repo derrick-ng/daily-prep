@@ -1,10 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { WeatherData } from "@/app/types/Weather";
-import { TrafficData } from "@/app/types/Traffic";
+import React from "react";
 import axios from "axios";
-import { Todo } from "@/app/types/Todo";
 
 const SampleButton = ({ userId }: { userId: number | null }) => {
   const handleSampleClick = async () => {
@@ -19,6 +16,7 @@ const SampleButton = ({ userId }: { userId: number | null }) => {
           userId,
         },
       });
+      console.log("result of send push noti", sendPushNotification);
     } catch (error) {
       console.error("error finding form data", error);
     }
