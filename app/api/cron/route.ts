@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const userIdParam = url.searchParams.get("userId");
   const userId = parseInt(userIdParam as string);
 
-  const sendPushNotification = sendPushNotificationToUser(userId);
+  const sendPushNotification = await sendPushNotificationToUser(userId);
 
   return Response.json({ sendPushNotification }, { status: 200 });
 }
