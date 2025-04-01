@@ -20,7 +20,7 @@ model User {
   password  String
   todos Todo[]
   formData FormData?
-  pushSubscription PushSubscription?
+  pushSubscription PushSubscription[]
 }
 
 model Todo {
@@ -45,9 +45,9 @@ model FormData {
 
 model PushSubscription {
   id Int @id @default(autoincrement())
-  endpoint String
+  endpoint String @unique
   p256dh String
   auth String
-  userId Int @unique
+  userId Int
   user User @relation(fields: [userId], references: [id])
 }
