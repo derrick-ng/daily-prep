@@ -6,7 +6,7 @@ interface sendPushNotificationToUserProp {
   endpoint: string;
 }
 
-export async function sendPushNotificationToUser({userId, endpoint}: sendPushNotificationToUserProp) {
+export async function sendPushNotificationToUser({ userId, endpoint }: sendPushNotificationToUserProp) {
   try {
     const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
     const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
@@ -46,12 +46,9 @@ export async function sendPushNotificationToUser({userId, endpoint}: sendPushNot
       `,
     });
 
-    webPush
-      .sendNotification(pushSubscription, payload)
-      .then(() => {
-        console.log("Push sent succesffuly");
-      })
-      .catch((err) => console.error("push fail", err));
+    try {
+      await webPush.sendNotification(pushSubscription, payload);
+    } catch (error) {}
   } catch (error) {
     console.error("push service error", error);
   }
