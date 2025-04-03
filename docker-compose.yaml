@@ -5,10 +5,10 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - PORT=3000
     ports:
-     - "3000:3000"
+      - "3000:3000"
     depends_on:
       - db
     volumes:
