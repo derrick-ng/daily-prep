@@ -71,7 +71,7 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
 
         const dbEndpoint = dbSubscription.data.response.endpoint;
 
-        if (subscription?.endpoint != dbEndpoint) {
+        if (!dbEndpoint) {
           try {
             const data = {
               userId,
