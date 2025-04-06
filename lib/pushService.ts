@@ -30,13 +30,14 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
 
     const tasksDisplay = tasks?.map((task) => `${task.task}`).join("\n");
 
+    const dbEndpoint = pushSubscriptionDetails.endpoint;
     const { p256dh, auth } = pushSubscriptionDetails;
 
     const pushSubscription = {
-      endpoint,
+      endpoint: dbEndpoint,
       keys: {
-        p256dh: p256dh,
-        auth: auth,
+        p256dh,
+        auth,
       },
     };
 
@@ -49,7 +50,7 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     try {
       await webPush.sendNotification(pushSubscription, payload);
     } catch (error) {
-      console.error("notification did not send", error)
+      console.error("notification did not send", error);
     }
   } catch (error) {
     console.error("push service error", error);

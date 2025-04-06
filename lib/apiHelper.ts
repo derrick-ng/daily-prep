@@ -87,8 +87,8 @@ export async function getPushSubscriptions(endpoint: string) {
         endpoint,
       },
     });
-    return pushNotificationDetails
+    return pushNotificationDetails;
   } catch (error) {
-    console.error("error finding push noti info", error);
+    console.error("either found another user with same endpoint or no match", error);
   }
 }

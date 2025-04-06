@@ -69,9 +69,10 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
           },
         });
 
-        const dbEndpoint = dbSubscription.data.response.endpoint;
+        console.log("dbsub:", dbSubscription);
+        const existingSubscription = dbSubscription.data.response;
 
-        if (!dbEndpoint) {
+        if (!existingSubscription) {
           try {
             const data = {
               userId,
@@ -83,6 +84,19 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
             console.log("response: ", response);
           } catch (error) {
             console.error("error in loop comparing endpoints", error);
+          }
+        } else if (existingSubscription.userId != parseInt(userId as string)) {
+          try {
+            const data = {
+              userId,
+              endpoint: subscription.endpoint,
+              p256dh: bufferToBase64(subscription.getKey("p256dh")),
+              auth: bufferToBase64(subscription.getKey("auth")),
+            };
+            const response = await axios.put("/api/push-subscription", data);
+            console.log("update userid to match endpoint", response);
+          } catch (error) {
+            console.error("could not update userId to match endpoint", error);
           }
         }
 
