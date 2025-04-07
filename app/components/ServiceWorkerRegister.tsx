@@ -117,7 +117,7 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
     navigator.serviceWorker.oncontrollerchange = () => {
       console.log("new service worker activated");
     };
-  }, []);
+  }, [userId]);
 
   return null;
 };
