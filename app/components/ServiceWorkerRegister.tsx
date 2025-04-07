@@ -12,6 +12,19 @@ const ServiceWorkerRegister = ({ userId }: ServiceWorkerRegisterProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
 
   useEffect(() => {
+    async function requestNotification() {
+      if (Notification.permission === "default") {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          console.error("Notification permission not granted");
+          return;
+        }
+      }
+    }
+    requestNotification();
+  }, []);
+
+  useEffect(() => {
     if (!userId) {
       return;
     }
