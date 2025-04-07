@@ -1,9 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 
 const SampleButton = ({ userId }: { userId: number | null }) => {
+  useEffect(() => {
+    async function requestNotification() {
+      if (Notification.permission === "default") {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          console.error("Notification permission not granted");
+          return;
+        }
+      }
+    }
+    requestNotification();
+  }, []);
+
   const handleSampleClick = async () => {
     if (!userId) {
       console.error("need to be logged in to see a sample of the data");
