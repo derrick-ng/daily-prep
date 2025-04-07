@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import Email from "./Email";
 import axios from "axios";
+import NotificationBell from "./NotificationBell";
 
 interface FormProps {
   userId: string | null;
@@ -101,6 +102,7 @@ const Form = ({ userId }: FormProps) => {
           <button type="submit">save</button>
         </div>
       </form>
+      <NotificationBell userId={userId}/>
       
       <br />
       <br />
