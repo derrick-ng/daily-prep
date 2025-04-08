@@ -103,7 +103,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
     <div>
       <p>{registered ? "registered" : "not registered"}</p>
       <p>{ready ? "ready" : "not ready"}</p>
-      <p>{registered ? "registered" : "not registered"}</p>
+      <p>{getSubscription ? "subscribed" : "not subscribed"}</p>
       <button onClick={handleNotificationClick}>Notification</button>
     </div>
   );
