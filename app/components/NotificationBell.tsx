@@ -11,6 +11,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   const [registered, setRegistered] = useState(false);
   //   const [ready, setReady] = useState(false);
   const [getSubscription, setGetSubscription] = useState(false);
+  const [sub, setsub] = useState<PushSubscription | null>(null);
 
   const handleNotificationClick = async () => {
     try {
@@ -27,6 +28,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
 
       const subscription = await serviceWorker.pushManager.getSubscription();
       setGetSubscription(true);
+      setsub(subscription);
 
       if (!subscription) {
         const pushSubscriptionResult = await serviceWorker.pushManager.subscribe({
@@ -100,9 +102,11 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
 
   return (
     <div>
-      <p>{registered ? "registered" : "not registered"}</p>
-      {/* <p>{ready ? "ready" : "not ready"}</p> */}
-      <p>{getSubscription ? "subscribed" : "not subscribed"}</p>
+      <p>
+        {getSubscription
+          ? `ENDPOINT: ${sub?.endpoint} AUTH: ${bufferToBase64(sub?.getKey("auth") || null)} P256DH: ${bufferToBase64(sub?.getKey("p256dh") || null)}`
+          : "not subscribed"}
+      </p>
       <button onClick={handleNotificationClick}>Notification</button>
     </div>
   );
