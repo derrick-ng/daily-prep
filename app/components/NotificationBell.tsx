@@ -8,7 +8,6 @@ interface NotificationBellProp {
 
 const NotificationBell = ({ userId }: NotificationBellProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
-  const [registered, setRegistered] = useState(false);
   //   const [ready, setReady] = useState(false);
   const [getSubscription, setGetSubscription] = useState(false);
   const [sub, setsub] = useState<PushSubscription | null>(null);
@@ -22,7 +21,6 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
       const serviceWorker = await navigator.serviceWorker.register("/sw.js", {
         scope: "/",
       });
-      setRegistered(true);
 
       //   const serviceworkerready = await navigator.serviceWorker.ready;
 
