@@ -10,7 +10,6 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
   const [registered, setRegistered] = useState(false);
   //   const [ready, setReady] = useState(false);
-  const [idk, setidk] = useState<ServiceWorkerRegistration | undefined>();
   const [getSubscription, setGetSubscription] = useState(false);
 
   const handleNotificationClick = async () => {
@@ -24,10 +23,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
       });
       setRegistered(true);
 
-      const serviceworkerready = await navigator.serviceWorker.ready;
-      setidk(serviceworkerready);
-      console.log(serviceworkerready);
-      //   setReady(true);
+      //   const serviceworkerready = await navigator.serviceWorker.ready;
 
       const subscription = await serviceWorker.pushManager.getSubscription();
       setGetSubscription(true);
@@ -106,7 +102,6 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
     <div>
       <p>{registered ? "registered" : "not registered"}</p>
       {/* <p>{ready ? "ready" : "not ready"}</p> */}
-      <p>{idk ? `active: ${idk.active?.state} install:${idk.installing} waiting:${idk.waiting} scope:${idk.scope}` : "not idk"}</p>
       <p>{getSubscription ? "subscribed" : "not subscribed"}</p>
       <button onClick={handleNotificationClick}>Notification</button>
     </div>
