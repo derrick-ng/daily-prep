@@ -1,4 +1,5 @@
 import webPush from "web-push";
+import webpush from "web-push";
 import { getFormData, getPushSubscriptions, getTodos, getTraffic, getWeather } from "./apiHelper";
 
 interface sendPushNotificationToUserProp {
@@ -14,7 +15,8 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     if (!vapidPublicKey || !vapidPrivateKey) {
       throw new Error("vapid keys are not defined in the environment variables");
     }
-    webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
+    // webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
+    webpush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
 
     const formResponse = await getFormData(userId);
     const { cityName, origin, destination, mode } = formResponse;
@@ -48,7 +50,8 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     });
 
     try {
-      await webPush.sendNotification(pushSubscription, payload);
+      // await webPush.sendNotification(pushSubscription, payload);
+      await webpush.sendNotification(pushSubscription, payload);
     } catch (error) {
       console.error("notification did not send", error);
     }

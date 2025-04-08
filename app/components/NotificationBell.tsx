@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { bufferToBase64, urlBase64ToUint8Array } from "@/lib/notification";
 import axios from "axios";
 
@@ -8,6 +8,9 @@ interface NotificationBellProp {
 
 const NotificationBell = ({ userId }: NotificationBellProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
+  const [registered, setRegistered] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [getSubscription, setGetSubscription] = useState(false);
 
   const handleNotificationClick = async () => {
     try {
@@ -18,10 +21,13 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
       const serviceWorker = await navigator.serviceWorker.register("/sw.js", {
         scope: "/",
       });
+      setRegistered(true);
 
       await navigator.serviceWorker.ready;
+      setReady(true);
 
       const subscription = await serviceWorker.pushManager.getSubscription();
+      setGetSubscription(true);
 
       if (!subscription) {
         const pushSubscriptionResult = await serviceWorker.pushManager.subscribe({
@@ -95,6 +101,9 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
 
   return (
     <div>
+      <p>{registered ? "registered" : "not registered"}</p>
+      <p>{ready ? "ready" : "not ready"}</p>
+      <p>{registered ? "registered" : "not registered"}</p>
       <button onClick={handleNotificationClick}>Notification</button>
     </div>
   );
