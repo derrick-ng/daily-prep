@@ -1,7 +1,9 @@
 {
   "name": "Daily Prep",
   "short_name": "Daily Prep",
+  "description": "app to improve morning routine",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
