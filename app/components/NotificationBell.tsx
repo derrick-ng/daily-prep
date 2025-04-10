@@ -93,8 +93,8 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
         auth: bufferToBase64(pushSubscription.getKey("auth")),
         enabled: true,
       };
-      console.log("data:", data);
 
+      setsub(pushSubscription);
       if (!existingSubscription) {
         const response = await axios.post("/api/push-subscription", data);
         console.log("moved push subscription to db success:", response);
