@@ -48,6 +48,7 @@ model PushSubscription {
   endpoint String @unique
   p256dh String
   auth String
+  enabled Boolean @default(false)
   userId Int
   user User @relation(fields: [userId], references: [id])
 }
