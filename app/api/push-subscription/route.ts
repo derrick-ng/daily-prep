@@ -32,7 +32,13 @@ export async function POST(request: Request) {
       },
     });
 
-    return Response.json({ response }, { status: 201 });
+    return Response.json(
+      {
+        success: true,
+        message: "Push Subscription Added to Database",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     return Response.json({ error }, { status: 400 });
   }
@@ -56,8 +62,20 @@ export async function PUT(request: Request) {
         enabled,
       },
     });
-    return Response.json({ response }, { status: 200 });
+    return Response.json(
+      {
+        success: true,
+        message: "Notifications Enabled Successfully",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return Response.json({ error }, { status: 400 });
+    return Response.json(
+      {
+        success: false,
+        message: "Notifications Disabled Successfully",
+      },
+      { status: 400 }
+    );
   }
 }

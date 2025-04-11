@@ -14,7 +14,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   const [existingSubscription, setExistingSubscription] = useState<boolean>(false);
   const [sub, setsub] = useState<PushSubscription | null>(null);
 
-  //registers service workers, grabs checks if notification bell is on or off
+  //registers service workers, checks if notification bell is on or off
   useEffect(() => {
     async function checkPushSubscription() {
       try {
@@ -56,6 +56,14 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
     checkPushSubscription();
   }, []);
 
+  const prepareSubscriptionData = (subscription: PushSubscription, enabled: boolean) => ({
+    userId,
+    endpoint: subscription.endpoint,
+    p256dh: bufferToBase64(subscription.getKey("p256dh")),
+    auth: bufferToBase64(subscription.getKey("auth")),
+    enabled: enabled,
+  });
+
   const handleAllowNotificationClick = async () => {
     try {
       if (!pushSubscription) {
@@ -66,41 +74,24 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
           applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
         });
 
-        const endpoint = subscription.endpoint;
-        const p256dh = bufferToBase64(subscription.getKey("p256dh"));
-        const auth = bufferToBase64(subscription.getKey("auth"));
-
         try {
-          const data = {
-            userId,
-            endpoint,
-            p256dh,
-            auth,
-            enabled: true,
-          };
-          const response = await axios.post("/api/push-subscription", data);
-          console.log("new push subscription to db success:", response);
+          const subscriptionData = prepareSubscriptionData(subscription, true);
+          const { data } = await axios.post("/api/push-subscription", subscriptionData);
+          console.log(data.message);
         } catch (error) {
           console.error("error sending push notification object to backend", error);
         }
         return;
       }
 
-      const data = {
-        userId,
-        endpoint: pushSubscription.endpoint,
-        p256dh: bufferToBase64(pushSubscription.getKey("p256dh")),
-        auth: bufferToBase64(pushSubscription.getKey("auth")),
-        enabled: true,
-      };
-
+      const data = prepareSubscriptionData(pushSubscription, true);
       setsub(pushSubscription);
       if (!existingSubscription) {
         const response = await axios.post("/api/push-subscription", data);
         console.log("moved push subscription to db success:", response);
       } else {
         const response = await axios.put("/api/push-subscription", data);
-        console.log("toggle push subscription enable to true", response);
+        console.log("enabled notifications", response.data.message);
       }
 
       setNotificationEnabled(true);
@@ -114,14 +105,8 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
     if (!pushSubscription) {
       return;
     }
-    const data = {
-      userId,
-      endpoint: pushSubscription.endpoint,
-      p256dh: bufferToBase64(pushSubscription.getKey("p256dh")),
-      auth: bufferToBase64(pushSubscription.getKey("auth")),
-      enabled: false,
-    };
 
+    const data = prepareSubscriptionData(pushSubscription, false);
     try {
       const response = await axios.put("/api/push-subscription", data);
       setNotificationEnabled(false);
@@ -132,11 +117,11 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   };
   return (
     <div>
-      <p>
+      {/* <p>
         {sub
           ? `ENDPOINT: ${sub?.endpoint} AUTH: ${bufferToBase64(sub?.getKey("auth") || null)} P256DH: ${bufferToBase64(sub?.getKey("p256dh") || null)}`
           : "not subscribed"}
-      </p>
+      </p> */}
       {notificationEnabled ? (
         <button onClick={handleDisableNotificationClick}>Disable Notification</button>
       ) : (
