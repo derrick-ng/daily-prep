@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { bufferToBase64, urlBase64ToUint8Array } from "@/lib/notification";
 import axios from "axios";
+import { toast } from "sonner";
+import { showToastResponse } from "@/lib/toast";
 
 interface NotificationBellProp {
   userId: string | null;
@@ -12,7 +14,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   const [notificationEnabled, setNotificationEnabled] = useState<boolean>(false);
   const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>();
   const [existingSubscription, setExistingSubscription] = useState<boolean>(false);
-  const [sub, setsub] = useState<PushSubscription | null>(null);
+  // const [sub, setsub] = useState<PushSubscription | null>(null);
 
   //registers service workers, checks if notification bell is on or off
   useEffect(() => {
@@ -77,21 +79,26 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
         try {
           const subscriptionData = prepareSubscriptionData(subscription, true);
           const { data } = await axios.post("/api/push-subscription", subscriptionData);
-          console.log(data.message);
+
+          if (data.success) {
+            toast.success(data.message);
+          } else {
+            toast.error(data.message);
+          }
         } catch (error) {
           console.error("error sending push notification object to backend", error);
         }
         return;
       }
 
-      const data = prepareSubscriptionData(pushSubscription, true);
-      setsub(pushSubscription);
+      const subscriptionData = prepareSubscriptionData(pushSubscription, true);
+      // setsub(pushSubscription);
       if (!existingSubscription) {
-        const response = await axios.post("/api/push-subscription", data);
-        console.log("moved push subscription to db success:", response);
+        const { data } = await axios.post("/api/push-subscription", subscriptionData);
+        showToastResponse(data);
       } else {
-        const response = await axios.put("/api/push-subscription", data);
-        console.log("enabled notifications", response.data.message);
+        const { data } = await axios.put("/api/push-subscription", subscriptionData);
+        showToastResponse(data);
       }
 
       setNotificationEnabled(true);
@@ -106,11 +113,11 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
       return;
     }
 
-    const data = prepareSubscriptionData(pushSubscription, false);
+    const subscriptionData = prepareSubscriptionData(pushSubscription, false);
     try {
-      const response = await axios.put("/api/push-subscription", data);
+      const { data } = await axios.put("/api/push-subscription", subscriptionData);
+      showToastResponse(data);
       setNotificationEnabled(false);
-      console.log("disabled notifications", response);
     } catch (error) {
       console.error("error disabling notifications", error);
     }

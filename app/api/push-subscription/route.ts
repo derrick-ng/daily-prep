@@ -40,7 +40,13 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    return Response.json({ error }, { status: 400 });
+    return Response.json(
+      {
+        success: false,
+        message: "Push Subscription Failed to Add to Database",
+      },
+      { status: 400 }
+    );
   }
 }
 
@@ -50,7 +56,7 @@ export async function PUT(request: Request) {
     const { userId, endpoint, p256dh, auth, enabled } = body;
     const userIdParam = parseInt(userId as string);
 
-    const response = await prisma.pushSubscription.update({
+    await prisma.pushSubscription.update({
       where: {
         endpoint,
       },
@@ -62,10 +68,12 @@ export async function PUT(request: Request) {
         enabled,
       },
     });
+    const message = enabled ? "Notification Enabled" : "Notification Disabled";
+
     return Response.json(
       {
         success: true,
-        message: "Notifications Enabled Successfully",
+        message,
       },
       { status: 200 }
     );
@@ -73,7 +81,7 @@ export async function PUT(request: Request) {
     return Response.json(
       {
         success: false,
-        message: "Notifications Disabled Successfully",
+        message: "Failed to Change Notification Setting",
       },
       { status: 400 }
     );

@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Email from "./Email";
 import axios from "axios";
 import NotificationBell from "./NotificationBell";
+import { showToastResponse } from "@/lib/toast";
 
 interface FormProps {
   userId: string | null;
@@ -46,31 +47,33 @@ const Form = ({ userId }: FormProps) => {
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    const formData = new FormData(event.currentTarget);
+    const form = new FormData(event.currentTarget);
 
-    const data = {
+    const formData = {
       userId: userId,
-      cityName: formData.get("cityName"),
-      origin: formData.get("origin"),
-      destination: formData.get("destination"),
-      mode: formData.get("mode"),
+      cityName: form.get("cityName"),
+      origin: form.get("origin"),
+      destination: form.get("destination"),
+      mode: form.get("mode"),
     };
 
-    //post request -> Form api endpoint
-    // userId, cityName, origin, destination, mode
-    // Form api endpoint = create FormData entry
     event.preventDefault();
 
     try {
       if (hasFormData) {
-        const editResponse = await axios.put("/api/form", data);
-        console.log("successful FormData edit", editResponse);
+        const { data } = await axios.put("/api/form", formData);
+        showToastResponse(data);
       } else {
-        const postResponse = await axios.post("/api/form", data);
-        console.log("successful FormData entry created", postResponse);
+        const { data } = await axios.post("/api/form", formData);
+        showToastResponse(data);
       }
     } catch (error) {
-      console.error("form save failure", error);
+      // console.error("form save failure", error);
+      if (axios.isAxiosError(error) && error.response) {
+        showToastResponse(error.response.data);
+      } else {
+        console.error("Unexpected error:", error);
+      }
     }
   }
 
@@ -102,13 +105,13 @@ const Form = ({ userId }: FormProps) => {
           <button type="submit">save</button>
         </div>
       </form>
-      <NotificationBell userId={userId}/>
-      
+      <NotificationBell userId={userId} />
+
       <br />
       <br />
       <p>gotta change this for later</p>
       <div>
-        <Email userId={userId}/>
+        <Email userId={userId} />
       </div>
     </div>
   );

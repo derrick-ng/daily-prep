@@ -7,13 +7,16 @@ export async function GET() {
   const clientSecret = process.env.CLIENT_SECRET;
   const redirect_uri = process.env.REDIRECT_URI;
 
-  
-
   return Response.json({ clientId, apiKey, clientSecret, redirect_uri });
 }
 
 export async function POST(request: Request) {
   const { code, userId } = await request.json();
+
+  const messages = {
+    success: "Gmail Login Success",
+    failure: "Gmail Login Fail",
+  };
 
   try {
     const params = new URLSearchParams({
@@ -27,7 +30,7 @@ export async function POST(request: Request) {
     const tokenResponse = await axios.post("https://oauth2.googleapis.com/token", params, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
-    const accessToken = tokenResponse.data.access_token;
+    // const accessToken = tokenResponse.data.access_token;
     const refreshToken = tokenResponse.data.refresh_token;
     await prisma.formData.upsert({
       where: {
@@ -42,8 +45,22 @@ export async function POST(request: Request) {
       },
     });
 
-    return Response.json({ accessToken }, { status: 200 });
+    // const message = "Gmail Login Successful";
+
+    return Response.json(
+      {
+        success: true,
+        message: messages.success,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    return Response.json(
+      {
+        success: false,
+        message: messages.failure,
+      },
+      { status: 500 }
+    );
   }
 }

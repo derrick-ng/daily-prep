@@ -6,6 +6,11 @@ import prisma from "@/lib/prismaClient";
 import z from "zod";
 import { getFormData } from "@/lib/apiHelper";
 
+const messages = {
+  success: "Form Saved",
+  failure: "Invalid Input",
+};
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
 
@@ -20,23 +25,26 @@ export async function GET(request: Request) {
   return Response.json({ cityName, origin, destination, mode, refreshToken }, { status: 200 });
 }
 
-//create FormData entry
 export async function POST(request: Request) {
   const { userId, cityName, origin, destination, mode } = await request.json();
 
-  if (!cityName || !origin || !destination || !mode) {
-    console.log(`city: ${cityName}\norigin:${origin}\ndestination:${destination}\nmode:${mode}`);
-    return Response.json({ error: "Enter at least one input to save" }, { status: 400 });
+  if (!cityName && !origin && !destination) {
+    return Response.json(
+      {
+        success: false,
+        message: "Enter at least one input to save",
+      },
+      { status: 400 }
+    );
   }
 
-  //create a /lib/apiHelper.ts
-  //will have the main code logic of weather/traffic
-  //route.ts files will call this function
   try {
-    const [weatherData, trafficData] = await Promise.all([getWeather(cityName), getTraffic(origin, destination, mode)]);
+    const weatherData = cityName ? await getWeather(cityName) : null;
+    const trafficData = origin && destination && mode ? await getTraffic(origin, destination, mode) : null;
+    // const [weatherData, trafficData] = await Promise.all([getWeather(cityName), getTraffic(origin, destination, mode)]);
 
-    if (weatherData && trafficData) {
-      const FormDataEntry = await prisma.formData.create({
+    if (weatherData || trafficData) {
+      await prisma.formData.create({
         data: {
           userId: parseInt(userId as string),
           city: cityName,
@@ -45,10 +53,24 @@ export async function POST(request: Request) {
           traffic_transportation: mode,
         },
       });
-      return Response.json({ FormDataEntry }, { status: 201 });
+      return Response.json(
+        {
+          success: true,
+          message: messages.success,
+        },
+        { status: 201 }
+      );
     }
   } catch (error) {
-    return Response.json({ error }, { status: 400 });
+    console.log(error);
+    return Response.json(
+      {
+        success: false,
+        message: "Failed to Save",
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+      },
+      { status: 400 }
+    );
   }
 }
 
@@ -67,7 +89,10 @@ export async function PUT(request: Request) {
 
     const { userId, cityName, origin, destination, mode } = parsedBody;
 
-    const editForm = await prisma.formData.update({
+    const weatherData = cityName ? await getWeather(cityName) : null;
+    const trafficData = origin && destination && mode ? await getTraffic(origin, destination, mode) : null;
+
+    await prisma.formData.update({
       where: {
         userId: Number(userId),
       },
@@ -79,8 +104,20 @@ export async function PUT(request: Request) {
       },
     });
 
-    return Response.json({ editForm }, { status: 200 });
+    return Response.json(
+      {
+        success: true,
+        message: messages.success,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return Response.json({ error: `error editing form: ${error}` }, { status: 400 });
+    return Response.json(
+      {
+        success: false,
+        message: "Failed to Save",
+      },
+      { status: 400 }
+    );
   }
 }

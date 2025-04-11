@@ -6,6 +6,7 @@ import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 import MessageList from "./message/MessageList";
+import { showToastResponse } from "@/lib/toast";
 
 interface EmailProp {
   userId: string | null;
@@ -90,21 +91,17 @@ const Email = ({ userId }: EmailProp) => {
   }
 
   const handleLoginSuccess = async (response: { code: string }) => {
-    //this is just an authorization code, not an access token
-    //need to exchange auth code for access token
-    // console.log("authorization code: ", response.code);
-
-    const data = {
+    const tokenData = {
       code: response.code,
       userId: userId ? parseInt(userId) : null,
     };
-
     try {
-      const tokenResponse = await axios.post("/api/email", data);
-      console.log("email api response", tokenResponse);
-      const accessToken = tokenResponse.data.accessToken;
+      const { data } = await axios.post("/api/email", tokenData);
+      const accessToken = data.accessToken;
+
       setAccessToken(accessToken);
       setHasRefreshToken(true);
+      showToastResponse(data);
     } catch (error) {
       console.log("error exchanging auth code", error);
     }
