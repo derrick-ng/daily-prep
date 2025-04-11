@@ -97,7 +97,6 @@ const Form = ({ userId }: FormProps) => {
           <option value="driving">driving</option>
           <option value="walking">walking</option>
           <option value="bicycling">biking</option>
-          <option value="transit">transit</option>
         </select>
         <br />
 
