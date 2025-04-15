@@ -92,30 +92,33 @@ export async function PUT(request: Request) {
     const weatherData = cityName ? await getWeather(cityName) : null;
     const trafficData = origin && destination && mode ? await getTraffic(origin, destination, mode) : null;
 
-    await prisma.formData.update({
-      where: {
-        userId: Number(userId),
-      },
-      data: {
-        city: cityName,
-        traffic_start: origin,
-        traffic_end: destination,
-        traffic_transportation: mode,
-      },
-    });
+    if (weatherData || trafficData) {
+      await prisma.formData.update({
+        where: {
+          userId: Number(userId),
+        },
+        data: {
+          city: cityName,
+          traffic_start: origin,
+          traffic_end: destination,
+          traffic_transportation: mode,
+        },
+      });
 
-    return Response.json(
-      {
-        success: true,
-        message: messages.success,
-      },
-      { status: 200 }
-    );
+      return Response.json(
+        {
+          success: true,
+          message: messages.success,
+        },
+        { status: 200 }
+      );
+    }
   } catch (error) {
     return Response.json(
       {
         success: false,
         message: "Failed to Save",
+        error: error,
       },
       { status: 400 }
     );

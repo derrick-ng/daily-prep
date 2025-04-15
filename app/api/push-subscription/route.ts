@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { userId, endpoint, p256dh, auth, enabled } = body;
     console.log(body);
-    const response = await prisma.pushSubscription.create({
+    await prisma.pushSubscription.create({
       data: {
         userId: parseInt(userId as string),
         endpoint,
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("POST, error adding adding notification to db", error);
     return Response.json(
       {
         success: false,
@@ -78,6 +79,7 @@ export async function PUT(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("PUT, error updating notifications", error);
     return Response.json(
       {
         success: false,

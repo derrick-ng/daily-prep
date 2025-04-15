@@ -59,6 +59,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message: messages.failure,
+        error: error
       },
       { status: 500 }
     );
