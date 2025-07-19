@@ -31,7 +31,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
         const subscription = await serviceWorker.pushManager.getSubscription();
 
         if (!subscription) {
-          console.error("no push subscription found in useEffect");
+          console.log("no push subscription found in useEffect");
           setPushSubscription(null);
           return;
         }

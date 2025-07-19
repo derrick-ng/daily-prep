@@ -4,7 +4,6 @@ import React from "react";
 import axios from "axios";
 
 const SampleButton = ({ userId }: { userId: number | null }) => {
-
   const handleSampleClick = async () => {
     if (!userId) {
       console.error("need to be logged in to see a sample of the data");
