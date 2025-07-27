@@ -28,3 +28,19 @@ self.addEventListener("push", async (event) => {
     console.error(error);
   }
 });
+
+self.addEventListener("notificationclick", (event) => {
+  // event.preventDefault();
+  // window.open("http://localhost:3000/", "_blank");
+  event.notification.close();
+
+  const newDate = new Date();
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const year = newDate.getFullYear();
+
+  const date = `${year}/${month}/${day}`;
+
+  // clients.openWindow(`http://localhost:3000/summary/${date}`);
+  clients.openWindow(`http://localhost:3000/summary`);
+});

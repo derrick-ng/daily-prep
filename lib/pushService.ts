@@ -52,6 +52,7 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     try {
       // await webPush.sendNotification(pushSubscription, payload);
       await webpush.sendNotification(pushSubscription, payload);
+      return { success: true, message: "notification sent" };
     } catch (error) {
       console.error("notification did not send", error);
     }
