@@ -30,7 +30,7 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
       throw new Error("Push notification details are missing");
     }
 
-    const tasksDisplay = tasks?.map((task) => `${task.task}`).join("\n");
+    const taskList = tasks?.map((task) => task.task);
 
     const dbEndpoint = pushSubscriptionDetails.endpoint;
     const { p256dh, auth } = pushSubscriptionDetails;
@@ -45,8 +45,11 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
 
     const payload = JSON.stringify({
       title: "Daily Prep Message",
-      body: `Weather: ${weather.temp}°F, ${weather.tempMin}-${weather.tempMax}°F\nTraffic: ${traffic.duration} mins to travel ${traffic.distance} miles\nTasks for the day:\n${tasksDisplay}
-      `,
+      data: {
+        weather: { temp: weather.temp, tempMin: weather.tempMin, tempMax: weather.tempMax },
+        traffic: { duration: traffic.duration, distance: traffic.distance },
+        tasks: { taskList },
+      },
     });
 
     try {

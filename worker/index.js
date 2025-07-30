@@ -7,20 +7,18 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("push", async (event) => {
-  const data = event.data ? event.data.json() : {};
-  const title = data.title;
+  const payload = event.data ? event.data.json() : {};
+
+  const { weather, traffic, tasks } = payload.data;
+  const tasksFormatted = tasks.taskList.join("\n");
+
+  const title = payload.title;
+  const message = `Weather: ${weather.temp}°F, ${weather.tempMin}-${weather.tempMax}°F\nTraffic: ${traffic.duration} mins to travel ${traffic.distance} miles\nTasks for the day:\n${tasksFormatted}`;
+
   const options = {
-    body: data.body,
-    data: data,
+    body: message,
+    data: payload.data,
   };
-  self.registration
-    .showNotification(title, options)
-    .then(() => {
-      console.log("notif displayed");
-    })
-    .catch((err) => {
-      console.error(err);
-    });
 
   try {
     event.waitUntil(self.registration.showNotification(title, options));
@@ -30,8 +28,7 @@ self.addEventListener("push", async (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-  // event.preventDefault();
-  // window.open("http://localhost:3000/", "_blank");
+  const data = event.notification.data;
   event.notification.close();
 
   const newDate = new Date();
@@ -41,6 +38,10 @@ self.addEventListener("notificationclick", (event) => {
 
   const date = `${year}/${month}/${day}`;
 
-  // clients.openWindow(`http://localhost:3000/summary/${date}`);
-  clients.openWindow(`http://localhost:3000/summary`);
+  // set a 1 second delay before sending the message to allow time for summary page to be ready to receive data
+  clients.openWindow(`http://localhost:3000/summary/${date}`).then((windowClient) => {
+    setTimeout(() => {
+      windowClient?.postMessage(data);
+    }, 1000);
+  });
 });
