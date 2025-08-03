@@ -1,15 +1,13 @@
+import SummaryClient from "@/app/components/summary/SummaryClient";
+
 // dynamic page rendering with catch-all segments is similar to passing the values in the url query
 interface Props {
-  params: {
-    date: string[];
-  };
+  params: Promise<{ date: string[] }>;
 }
 
 export default async function Summary({ params }: Props) {
-
   //params is async, must await before accessing properties
-  const dateParam = await params;
-  const date = dateParam.date;
+  const { date } = await params;
 
   if (date.length === 3) {
     const [year, month, day] = date;
@@ -23,15 +21,14 @@ export default async function Summary({ params }: Props) {
         </div>
       );
     }
-
     return (
       <div>
-        <div>
-          valid date: {year}/{month}/{day}
-        </div>
+        <div>above summary client</div>
+        <SummaryClient date={date} />
       </div>
     );
   }
+
   return (
     <div>
       <div>Incorrect url format, should be /year/month/day (no 0 in front of month or day)</div>

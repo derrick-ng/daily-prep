@@ -42,6 +42,6 @@ self.addEventListener("notificationclick", (event) => {
   clients.openWindow(`http://localhost:3000/summary/${date}`).then((windowClient) => {
     setTimeout(() => {
       windowClient?.postMessage(data);
-    }, 1000);
+    }, 2500);
   });
 });
