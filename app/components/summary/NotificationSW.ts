@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-interface NotificationDataProp {
-  tasks?: string[];
-  weather: { temp: number; tempMin: number; tempMax: number };
-  traffic: { duration: number; distance: number };
-}
+import { NotificationDataProp } from "@/app/types/Notification";
 
 interface NotificationSWProps {
   onSuccess: (data: NotificationDataProp) => void;

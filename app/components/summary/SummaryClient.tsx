@@ -1,13 +1,8 @@
 "use client";
 
 import NotificationSW from "./NotificationSW";
-import { useState } from "react";
-
-interface NotificationDataProp {
-  tasks?: string[];
-  weather: { temp: number; tempMin: number; tempMax: number };
-  traffic: { duration: number; distance: number };
-}
+import { useEffect, useState } from "react";
+import { NotificationDataProp } from "@/app/types/Notification";
 
 interface SummaryClientProps {
   date: string[];
@@ -17,10 +12,15 @@ export default function SummaryClient({ date }: SummaryClientProps) {
   const [notificationData, setNotificationData] = useState<NotificationDataProp>();
   const [year, month, day] = date;
 
+  // still need to figure out diff btwn sample button noti and "normal/scheduled" noti
+    useEffect(() => {
+
+    },[notificationData])
+
   return (
     <div>
       <div>
-        valid date: {year}/{month}/{day}
+        Daily Prep: {year}/{month}/{day}
         <NotificationSW onSuccess={setNotificationData} />
       </div>
 
