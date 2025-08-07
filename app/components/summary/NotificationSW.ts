@@ -13,9 +13,7 @@ export default function NotificationSW({ onSuccess }: NotificationSWProps) {
     navigator.serviceWorker.addEventListener("message", (event) => {
       const data = event.data;
 
-      console.log("pre setting data");
       onSuccess(data);
-      console.log("post setting data", data);
     });
   }, []);
 

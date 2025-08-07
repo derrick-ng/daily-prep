@@ -3,19 +3,34 @@
 import NotificationSW from "./NotificationSW";
 import { useEffect, useState } from "react";
 import { NotificationDataProp } from "@/app/types/Notification";
+import { loadNotificationDataFromStorage, saveNotificationDataToStorage } from "@/lib/notificationStorage";
 
 interface SummaryClientProps {
   date: string[];
 }
 
 export default function SummaryClient({ date }: SummaryClientProps) {
-  const [notificationData, setNotificationData] = useState<NotificationDataProp>();
+  const [notificationData, setNotificationData] = useState<NotificationDataProp | null>(null);
+  const [storedNotificationData, setStoredNotificationData] = useState<NotificationDataProp>();
   const [year, month, day] = date;
 
-  // still need to figure out diff btwn sample button noti and "normal/scheduled" noti
-    useEffect(() => {
+  // still need to figure out diff implementations for sample button noti and "normal/scheduled" noti
+  useEffect(() => {
+    if (!notificationData) {
+      return;
+    }
+    saveNotificationDataToStorage({ date, notificationData });
+  }, [notificationData]);
 
-    },[notificationData])
+  useEffect(() => {
+    const storedData = loadNotificationDataFromStorage({ date });
+
+    if (!storedData) {
+      console.log("could not find notification data in localStorage");
+    }
+
+    setStoredNotificationData(storedData);
+  }, []);
 
   return (
     <div>
@@ -24,16 +39,19 @@ export default function SummaryClient({ date }: SummaryClientProps) {
         <NotificationSW onSuccess={setNotificationData} />
       </div>
 
-      {notificationData && (
+      {storedNotificationData && (
         <div>
           <div>data grabbed from notification post message</div>
           <div>
-            {notificationData.traffic.distance} miles in {notificationData.traffic.duration} minutes
+            {storedNotificationData.traffic.distance} miles in {storedNotificationData.traffic.duration} minutes
           </div>
-          <div>{notificationData.weather.temp}° now</div>
+          <div>{storedNotificationData.weather.temp}° now</div>
           <div>
-            {notificationData.weather.tempMin} - {notificationData.weather.tempMax}°
+            {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
           </div>
+          {storedNotificationData.tasks.taskList.map((task) => (
+            <div key={task}>{task} </div>
+          ))}
         </div>
       )}
     </div>
