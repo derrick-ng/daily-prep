@@ -23,7 +23,6 @@ export default async function Summary({ params }: Props) {
     }
     return (
       <div>
-        <div>above summary client</div>
         <SummaryClient date={date} />
       </div>
     );

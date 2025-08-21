@@ -12,6 +12,7 @@ interface SummaryClientProps {
 export default function SummaryClient({ date }: SummaryClientProps) {
   const [notificationData, setNotificationData] = useState<NotificationDataProp | null>(null);
   const [storedNotificationData, setStoredNotificationData] = useState<NotificationDataProp>();
+  const [notificationDataSaved, setNotificationDataSaved] = useState<boolean>(false);
   const [year, month, day] = date;
 
   // still need to figure out diff implementations for sample button noti and "normal/scheduled" noti
@@ -20,6 +21,7 @@ export default function SummaryClient({ date }: SummaryClientProps) {
       return;
     }
     saveNotificationDataToStorage({ date, notificationData });
+    setNotificationDataSaved(true);
   }, [notificationData]);
 
   useEffect(() => {
@@ -30,12 +32,12 @@ export default function SummaryClient({ date }: SummaryClientProps) {
     }
 
     setStoredNotificationData(storedData);
-  }, []);
+  }, [notificationDataSaved]);
 
   return (
     <div>
       <div>
-        Daily Prep: {year}/{month}/{day}
+        Daily Prep Summary: {year}/{month}/{day}
         <NotificationSW onSuccess={setNotificationData} />
       </div>
 
