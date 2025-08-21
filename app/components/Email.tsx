@@ -29,8 +29,6 @@ const Email = ({ userId }: EmailProp) => {
         const data = await response.data;
         setClientId(data.clientId);
         setgapiKey(data.apiKey);
-        // setClientSecret(data.clientSecret);
-        // setredirect_uri(data.redirect_uri);
       } catch (error) {
         console.log("error fetching client id: ", error);
       }
@@ -82,7 +80,6 @@ const Email = ({ userId }: EmailProp) => {
         return;
       }
       const accessToken = tokenResponse.data.newAccessToken;
-      console.log("access token retrieved");
       // setAccessToken(accessToken);
       return accessToken;
     } catch (error) {
@@ -126,16 +123,14 @@ const Email = ({ userId }: EmailProp) => {
       userId: "me",
       maxResults: 5,
       access_token: accessToken,
-      // q = query
       // follows the same format as the gmail search box, space separated parameters
       // (add later) labels:unread
-      q: "category:primary",
+      q: "category:primary is:unread newer_than:10h",
     });
 
     // || is variable version of a fallback function
     // if response.results.messages fails, null, etc, will fallback to []
     const messages = response.result.messages || [];
-
     const allMessages = await Promise.all(
       messages.map(async (msg: { id: string }) => {
         const message = await gapi.client.gmail.users.messages.get({
@@ -157,7 +152,6 @@ const Email = ({ userId }: EmailProp) => {
 
   return (
     <div>
-      <h3>Gmail API & OAuth2 Test</h3>
       <div>
         {!hasRefreshToken && clientId ? (
           <GoogleOAuthProvider clientId={clientId}>
@@ -165,7 +159,6 @@ const Email = ({ userId }: EmailProp) => {
           </GoogleOAuthProvider>
         ) : (
           <div>
-            {/* <p>logged in</p> */}
             <MessageList messages={messages} openMessage={openMessage} />
           </div>
         )}
