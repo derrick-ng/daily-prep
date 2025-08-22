@@ -19,5 +19,5 @@ export interface NotificationDataProp {
     subject: string;
     sender: string;
     date: string;
-  };
+  }[];
 }
