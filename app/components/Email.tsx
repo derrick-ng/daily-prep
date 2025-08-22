@@ -159,7 +159,8 @@ const Email = ({ userId }: EmailProp) => {
           </GoogleOAuthProvider>
         ) : (
           <div>
-            <MessageList messages={messages} openMessage={openMessage} />
+            {/* <MessageList messages={messages} openMessage={openMessage} /> */}
+            Logged in to Gmail
           </div>
         )}
       </div>

@@ -4,6 +4,7 @@ import NotificationSW from "./NotificationSW";
 import { useEffect, useState } from "react";
 import { NotificationDataProp } from "@/app/types/Notification";
 import { loadNotificationDataFromStorage, saveNotificationDataToStorage } from "@/lib/notificationStorage";
+import MessageList from "../message/MessageList";
 
 interface SummaryClientProps {
   date: string[];
@@ -34,6 +35,11 @@ export default function SummaryClient({ date }: SummaryClientProps) {
     setStoredNotificationData(storedData);
   }, [notificationDataSaved]);
 
+  const openMessage = (messageId: string) => {
+    const url = `https://mail.google.com/mail/u/0/#all/${messageId}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div>
       <div>
@@ -43,14 +49,19 @@ export default function SummaryClient({ date }: SummaryClientProps) {
 
       {storedNotificationData && (
         <div>
-          <div>data grabbed from notification post message</div>
           <div>
-            {storedNotificationData.traffic.distance} miles in {storedNotificationData.traffic.duration} minutes
+            {storedNotificationData.traffic.distance} miles to travel {storedNotificationData.traffic.duration} minutes
           </div>
           <div>{storedNotificationData.weather.temp}° now</div>
           <div>
             {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
           </div>
+
+          <br />
+          <div>Unread Emails in the last 10 hours:</div>
+          <MessageList messages={storedNotificationData.emails} openMessage={openMessage} />
+          <br />
+          <div>Tasks for today:</div>
           {storedNotificationData.tasks.taskList.map((task) => (
             <div key={task}>{task} </div>
           ))}

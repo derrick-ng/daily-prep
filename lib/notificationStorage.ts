@@ -13,6 +13,7 @@ export function saveNotificationDataToStorage({ date, notificationData }: saveNo
     weather: notificationData.weather,
     traffic: notificationData.traffic,
     tasks: notificationData.tasks,
+    emails: notificationData.emails
   };
   localStorage.setItem(`${dateString}-notification`, JSON.stringify(storedData));
 }

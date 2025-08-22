@@ -4,13 +4,12 @@ import { JSX } from "react";
 
 interface MessageListProps {
   messages: {
-    id: number;
-    payload: {
-      headers: { name: string; value: string }[];
-    };
-    [key: string]: unknown;
+    id: string;
+    subject: string;
+    sender: string;
+    date: string;
   }[];
-  openMessage: (messageId: number) => void;
+  openMessage: (messageId: string) => void;
 }
 
 function MessageList({ messages, openMessage }: MessageListProps): JSX.Element {
