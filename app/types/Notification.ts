@@ -13,4 +13,11 @@ export interface NotificationDataProp {
     duration: number;
     distance: number;
   };
+
+  emails: {
+    id: string;
+    subject: string;
+    sender: string;
+    date: string;
+  };
 }

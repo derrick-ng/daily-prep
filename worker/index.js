@@ -9,11 +9,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("push", async (event) => {
   const payload = event.data ? event.data.json() : {};
 
-  const { weather, traffic, tasks } = payload.data;
+  const { weather, traffic, tasks, emails } = payload.data;
   const tasksFormatted = tasks.taskList.join("\n");
+  const emailList = emails.map((email) => `From: ${email.sender}\nSubject: ${email.subject}\nDate: ${email.date}\n`).join("\n");
 
   const title = payload.title;
-  const message = `Weather: ${weather.temp}°F, ${weather.tempMin}-${weather.tempMax}°F\nTraffic: ${traffic.duration} mins to travel ${traffic.distance} miles\nTasks for the day:\n${tasksFormatted}`;
+  const message = `Weather: ${weather.temp}°F, ${weather.tempMin}-${weather.tempMax}°F\nTraffic: ${traffic.duration} mins to travel ${traffic.distance} miles\nUnread Emails:\n\n${emailList}\n\nTasks for the day:\n${tasksFormatted}`;
 
   const options = {
     body: message,
@@ -42,6 +43,6 @@ self.addEventListener("notificationclick", (event) => {
   clients.openWindow(`http://localhost:3000/summary/${date}`).then((windowClient) => {
     setTimeout(() => {
       windowClient?.postMessage(data);
-    }, 2500);
+    }, 500);
   });
 });

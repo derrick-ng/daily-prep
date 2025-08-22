@@ -108,7 +108,6 @@ const Form = ({ userId }: FormProps) => {
 
       <br />
       <br />
-      <p>saved</p>
       <div>
         <Email userId={userId} />
       </div>

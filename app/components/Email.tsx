@@ -125,7 +125,7 @@ const Email = ({ userId }: EmailProp) => {
       access_token: accessToken,
       // follows the same format as the gmail search box, space separated parameters
       // (add later) labels:unread
-      q: "category:primary is:unread newer_than:10h",
+      q: "category:primary",
     });
 
     // || is variable version of a fallback function

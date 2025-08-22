@@ -1,6 +1,6 @@
 // import webPush from "web-push";
 import webpush from "web-push";
-import { getFormData, getPushSubscriptions, getTodos, getTraffic, getWeather } from "./apiHelper";
+import { getFormData, getPushSubscriptions, getTodos, getTraffic, getWeather, getEmailMessages } from "./apiHelper";
 
 interface sendPushNotificationToUserProp {
   userId: number;
@@ -19,18 +19,20 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     webpush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
 
     const formResponse = await getFormData(userId);
-    const { cityName, origin, destination, mode } = formResponse;
+    const { cityName, origin, destination, mode, refreshToken } = formResponse;
 
     const weather = await getWeather(cityName);
     const traffic = await getTraffic(origin, destination, mode);
+    const emails = await getEmailMessages(refreshToken)
+
     const tasks = await getTodos(userId);
+    const taskList = tasks?.map((task) => task.task);
+
     const pushSubscriptionDetails = await getPushSubscriptions(endpoint);
 
     if (!pushSubscriptionDetails) {
       throw new Error("Push notification details are missing");
     }
-
-    const taskList = tasks?.map((task) => task.task);
 
     const dbEndpoint = pushSubscriptionDetails.endpoint;
     const { p256dh, auth } = pushSubscriptionDetails;
@@ -49,6 +51,7 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
         weather: { temp: weather.temp, tempMin: weather.tempMin, tempMax: weather.tempMax },
         traffic: { duration: traffic.duration, distance: traffic.distance },
         tasks: { taskList },
+        emails: emails
       },
     });
 

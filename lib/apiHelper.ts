@@ -2,6 +2,7 @@ import axios from "axios";
 import { WeatherData } from "@/app/types/Weather";
 import { TrafficData } from "@/app/types/Traffic";
 import prisma from "./prismaClient";
+import { google } from "googleapis";
 
 export async function getWeather(cityName: string | null): Promise<WeatherData> {
   const apiKey = process.env.OPENWEATHERMAP_KEY;
@@ -91,4 +92,53 @@ export async function getPushSubscriptions(endpoint: string) {
   } catch (error) {
     console.error("either found another user with same endpoint or no match", error);
   }
+}
+
+export async function getEmailMessages(refreshToken: string | null) {
+  const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID;
+  const CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+  const OAuth2Client = new google.auth.OAuth2(OAUTH_CLIENT_ID, CLIENT_SECRET);
+  OAuth2Client.setCredentials({ refresh_token: refreshToken });
+
+  const gmail = google.gmail({ version: "v1", auth: OAuth2Client });
+
+  const response = await gmail.users.messages.list({
+    userId: "me",
+    q: "category:primary is:unread newer_than:15d",
+  });
+
+  const messages = response.data.messages || [];
+
+  const allMessages = await Promise.all(
+    messages.map(async (msg) => {
+      const message = await gmail.users.messages.get({
+        userId: "me",
+        id: msg.id!,
+        format: "metadata",
+        metadataHeaders: ["Subject", "From", "Date"],
+      });
+      return message.data;
+    })
+  );
+
+  const emails = allMessages.map((msg) => {
+    const headers = msg.payload?.headers || [];
+
+    const subject = headers.find((header) => header.name === "Subject")?.value || "No Subject Found";
+    const from = headers.find((header) => header.name === "From")?.value || "No Sender Found";
+    const date = headers.find((header) => header.name === "Date")?.value || "No Date Found";
+
+    const senderMatch = from.match(/<(.+)>/);
+    const sender = senderMatch ? senderMatch[1].trim() : from;
+
+    return {
+      id: msg.id,
+      subject,
+      sender,
+      date,
+    };
+  });
+
+  return emails;
 }
