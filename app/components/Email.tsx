@@ -5,7 +5,6 @@ import LoginComponent from "./GoogleLogin";
 import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { gapi } from "gapi-script";
-import MessageList from "./message/MessageList";
 import { showToastResponse } from "@/lib/toast";
 
 interface EmailProp {
@@ -20,7 +19,6 @@ const Email = ({ userId }: EmailProp) => {
   const [accessToken, setAccessToken] = useState("");
   const [clientId, setClientId] = useState("");
   const [gapiKey, setgapiKey] = useState("");
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     async function fetchCredentials() {
@@ -34,24 +32,8 @@ const Email = ({ userId }: EmailProp) => {
       }
     }
     fetchCredentials();
-
-    //might be a bad idea to call this function here
-    //maybe create, then call this in another useEffect
-    // ***honestly not even sure if this is needed***
     gapiLoaded();
-
-    // the point of the [] is to tell nextjs when to run this effect
-    // an empty array means it is called only once
-    // adding a variable would tell next that this effect *depends* on that variable
-    // [hasRefreshToken] would mean this is called every time the hasRefreshToken changes
   }, []);
-
-  //on accessToken value change, fetch messages
-  useEffect(() => {
-    if (accessToken) {
-      fetchMessages(accessToken);
-    }
-  }, [accessToken]);
 
   useEffect(() => {
     async function initAccessToken() {
@@ -80,7 +62,6 @@ const Email = ({ userId }: EmailProp) => {
         return;
       }
       const accessToken = tokenResponse.data.newAccessToken;
-      // setAccessToken(accessToken);
       return accessToken;
     } catch (error) {
       console.error("fail getting new access token", error);
@@ -104,7 +85,7 @@ const Email = ({ userId }: EmailProp) => {
     }
   };
 
-  // not sure how to implement this yet
+  //implement in the future
   const handleLoginFailure = () => {};
 
   function gapiLoaded() {
@@ -118,38 +99,6 @@ const Email = ({ userId }: EmailProp) => {
     });
   }
 
-  async function fetchMessages(accessToken: string) {
-    const response = await gapi.client.gmail.users.messages.list({
-      userId: "me",
-      maxResults: 5,
-      access_token: accessToken,
-      // follows the same format as the gmail search box, space separated parameters
-      // (add later) labels:unread
-      q: "category:primary",
-    });
-
-    // || is variable version of a fallback function
-    // if response.results.messages fails, null, etc, will fallback to []
-    const messages = response.result.messages || [];
-    const allMessages = await Promise.all(
-      messages.map(async (msg: { id: string }) => {
-        const message = await gapi.client.gmail.users.messages.get({
-          userId: "me",
-          id: msg.id,
-          access_token: accessToken,
-        });
-        return message.result;
-      })
-    );
-    // console.log(allMessages);
-    setMessages(allMessages);
-  }
-
-  const openMessage = (messageId: number) => {
-    const url = `https://mail.google.com/mail/u/0/#all/${messageId}`;
-    window.open(url, "_blank");
-  };
-
   return (
     <div>
       <div>
@@ -158,10 +107,7 @@ const Email = ({ userId }: EmailProp) => {
             <LoginComponent onSuccess={handleLoginSuccess} onError={handleLoginFailure} />
           </GoogleOAuthProvider>
         ) : (
-          <div>
-            {/* <MessageList messages={messages} openMessage={openMessage} /> */}
-            Logged in to Gmail
-          </div>
+          <div>Logged in to Gmail</div>
         )}
       </div>
     </div>
