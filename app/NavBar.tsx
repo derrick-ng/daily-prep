@@ -7,14 +7,14 @@ const NavBar = async () => {
   const session = await getSession();
 
   return (
-    <div className="flex">
-      <div className="flex-1 flex justify-center">
+    <div className="relative flex items-center">
+      <div className="absolute left-1/2 transform -translate-x-1/2">
         <Link href="/" className="text-black no-underline">
-          <h1>Daily Prep</h1>
+          <div className="text-3xl text-gray-900 font-bold">Daily Prep</div>
         </Link>
       </div>
 
-      <div className="flex">
+      <div className="ml-auto flex">
         {!session ? (
           <div>
             <a href="https://www.linkedin.com/in/derrick-ng-b3768527b/" target="_blank">
