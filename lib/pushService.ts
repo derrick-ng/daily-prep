@@ -48,8 +48,8 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     const payload = JSON.stringify({
       title: "Daily Prep Message",
       data: {
-        weather: { temp: weather.temp, tempMin: weather.tempMin, tempMax: weather.tempMax },
-        traffic: { duration: traffic.duration, distance: traffic.distance },
+        weather: { temp: weather.temp, tempMin: weather.tempMin, tempMax: weather.tempMax, cityName },
+        traffic: { duration: traffic.duration, distance: traffic.distance, origin, destination, mode },
         tasks: { taskList },
         emails: emails
       },

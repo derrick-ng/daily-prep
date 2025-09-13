@@ -53,11 +53,16 @@ export default function SummaryClient({ date }: SummaryClientProps) {
             <div className="font-semibold">Traffic and Weather</div>
             <div>
               <div>
-                {storedNotificationData.traffic.distance} miles to travel {storedNotificationData.traffic.duration} minutes
+                {storedNotificationData.traffic.mode} {storedNotificationData.traffic.origin} to {storedNotificationData.traffic.destination}
+                <br />
+                {storedNotificationData.traffic.duration} minutes to travel {storedNotificationData.traffic.distance} miles
               </div>
-              <div>{storedNotificationData.weather.temp}° now</div>
+              <br />
               <div>
-                {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
+                {storedNotificationData.weather.temp}°F now in {storedNotificationData.weather.cityName}
+              </div>
+              <div>
+                ranging from {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
               </div>
             </div>
 

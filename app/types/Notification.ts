@@ -7,11 +7,15 @@ export interface NotificationDataProp {
     temp: number;
     tempMin: number;
     tempMax: number;
+    cityName: string;
   };
 
   traffic: {
     duration: number;
     distance: number;
+    origin: string;
+    destination: string;
+    mode: string;
   };
 
   emails: {
