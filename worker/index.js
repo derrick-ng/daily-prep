@@ -37,10 +37,12 @@ self.addEventListener("notificationclick", (event) => {
   const month = newDate.getMonth() + 1;
   const year = newDate.getFullYear();
 
+  const baseUrl = self.location.origin
   const date = `${year}/${month}/${day}`;
+  const url = `${baseUrl}/summary/${date}`
 
   // set a 1 second delay before sending the message to allow time for summary page to be ready to receive data
-  clients.openWindow(`http://localhost:3000/summary/${date}`).then((windowClient) => {
+  clients.openWindow(url).then((windowClient) => {
     setTimeout(() => {
       windowClient?.postMessage(data);
     }, 500);
