@@ -42,29 +42,36 @@ export default function SummaryClient({ date }: SummaryClientProps) {
 
   return (
     <div>
-      <div>
+      <div className="text-center text-lg font-semibold my-8">
         Daily Prep Summary: {year}/{month}/{day}
         <NotificationSW onSuccess={setNotificationData} />
       </div>
 
       {storedNotificationData && (
-        <div>
-          <div>
-            {storedNotificationData.traffic.distance} miles to travel {storedNotificationData.traffic.duration} minutes
-          </div>
-          <div>{storedNotificationData.weather.temp}° now</div>
-          <div>
-            {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col items-center text-center space-y-4 px-6">
+            <div className="font-semibold">Traffic and Weather</div>
+            <div>
+              <div>
+                {storedNotificationData.traffic.distance} miles to travel {storedNotificationData.traffic.duration} minutes
+              </div>
+              <div>{storedNotificationData.weather.temp}° now</div>
+              <div>
+                {storedNotificationData.weather.tempMin} - {storedNotificationData.weather.tempMax}°
+              </div>
+            </div>
+
+            <br />
+            <div className="font-semibold">Tasks for today:</div>
+            {storedNotificationData.tasks.taskList.map((task) => (
+              <div key={task}>{task} </div>
+            ))}
           </div>
 
-          <br />
-          <div>Unread Emails in the last 10 hours:</div>
-          <MessageList messages={storedNotificationData.emails} openMessage={openMessage} />
-          <br />
-          <div>Tasks for today:</div>
-          {storedNotificationData.tasks.taskList.map((task) => (
-            <div key={task}>{task} </div>
-          ))}
+          <div className="space-y-4 px-6">
+            <div className="font-semibold">Unread Emails in the last 10 hours:</div>
+            <MessageList messages={storedNotificationData.emails} openMessage={openMessage} />
+          </div>
         </div>
       )}
     </div>
