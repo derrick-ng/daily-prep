@@ -17,6 +17,9 @@ const NavBar = async () => {
       <div className="ml-auto flex">
         {!session ? (
           <div>
+            <Link href="/instructions">
+              <button>Instructions</button>
+            </Link>
             <a href="https://www.linkedin.com/in/derrick-ng-b3768527b/" target="_blank">
               <button>LinkedIn</button>
             </a>
@@ -26,13 +29,15 @@ const NavBar = async () => {
             <Link href="/auth/register">
               <button>Register</button>
             </Link>
-
             <Link href="/auth/login">
               <button>Login</button>
             </Link>
           </div>
         ) : (
           <div className="flex">
+            <Link href="/instructions">
+              <button>Instructions</button>
+            </Link>
             <a href="https://www.linkedin.com/in/derrick-ng-b3768527b/" target="_blank">
               <button>LinkedIn</button>
             </a>

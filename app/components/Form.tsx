@@ -101,7 +101,7 @@ const Form = ({ userId }: FormProps) => {
         <br />
 
         <div className="flex items-center gap-2 mt-2">
-          <button type="submit">save</button>
+          <button type="submit">Save</button>
         </div>
       </form>
       <NotificationBell userId={userId} />
