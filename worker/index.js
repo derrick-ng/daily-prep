@@ -45,6 +45,6 @@ self.addEventListener("notificationclick", (event) => {
   clients.openWindow(url).then((windowClient) => {
     setTimeout(() => {
       windowClient?.postMessage(data);
-    }, 500);
+    }, 3000);
   });
 });
