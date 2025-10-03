@@ -95,6 +95,10 @@ export async function getPushSubscriptions(endpoint: string) {
 }
 
 export async function getEmailMessages(refreshToken: string | null) {
+  if (!refreshToken) {
+    return [];
+  }
+
   const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID;
   const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
