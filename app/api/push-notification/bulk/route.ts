@@ -19,6 +19,16 @@ export async function GET() {
       subscribedUsers.map((user) => sendPushNotificationToUser({ userId: user.userId, endpoint: user.endpoint }))
     );
 
+    results.forEach((result, index) => {
+      const user = subscribedUsers[index];
+
+      if (result.status == "fulfilled") {
+        console.log(`Successful push to: ${user.userId}`);
+      } else {
+        console.error(`Fail push to: ${user.userId}\nreason: `, result.reason);
+      }
+    });
+
     return Response.json({ successfullySentPushNotifications: true }, { status: 200 });
   } catch (error) {
     return Response.json({ error }, { status: 400 });
