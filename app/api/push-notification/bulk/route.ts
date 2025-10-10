@@ -3,16 +3,20 @@ import { sendPushNotificationToUser } from "@/lib/pushService";
 
 export async function GET() {
   try {
-    const allUsers = await prisma.pushSubscription.findMany({
+    const subscribedUsers = await prisma.pushSubscription.findMany({
       where: {
         enabled: true,
       },
     });
 
-    await Promise.all(
-      allUsers.map(({ userId, endpoint }) => {
-        sendPushNotificationToUser({ userId, endpoint });
-      })
+    // await Promise.all(
+    //   allUsers.map(({ userId, endpoint }) => {
+    //     sendPushNotificationToUser({ userId, endpoint });
+    //   })
+    // );
+
+    const results = await Promise.allSettled(
+      subscribedUsers.map((user) => sendPushNotificationToUser({ userId: user.userId, endpoint: user.endpoint }))
     );
 
     return Response.json({ successfullySentPushNotifications: true }, { status: 200 });

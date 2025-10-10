@@ -15,7 +15,6 @@ export async function sendPushNotificationToUser({ userId, endpoint }: sendPushN
     if (!vapidPublicKey || !vapidPrivateKey) {
       throw new Error("vapid keys are not defined in the environment variables");
     }
-    // webPush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
     webpush.setVapidDetails("mailto:dailyprep.app@gmail.com", vapidPublicKey, vapidPrivateKey);
 
     const formResponse = await getFormData(userId);
