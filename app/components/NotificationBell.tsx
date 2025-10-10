@@ -66,10 +66,21 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
     enabled: enabled,
   });
 
+  const requestNotification = async () => {
+    if (Notification.permission === "default") {
+      const permission = await Notification.requestPermission();
+
+      if (permission !== "granted") {
+        console.error("Notification permission not granted");
+        return;
+      }
+    }
+  };
+
   const handleAllowNotificationClick = async () => {
     try {
       if (!pushSubscription) {
-        //this might break PWA tho....
+        requestNotification();
         const serviceWorker = await navigator.serviceWorker.ready;
         const subscription = await serviceWorker.pushManager.subscribe({
           userVisibleOnly: true,
@@ -82,6 +93,7 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
 
           if (data.success) {
             toast.success(data.message);
+            setNotificationEnabled(true);
           } else {
             toast.error(data.message);
           }

@@ -3,7 +3,6 @@ import { getSession } from "@/lib/session";
 import ToDoArea from "./components/todo/ToDoArea";
 import SampleButton from "./components/sample/SampleButton";
 import { SessionData } from "./types/Session";
-import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
@@ -22,7 +21,6 @@ export default async function Home() {
         <p>
           user: {username}
         </p>
-        <ServiceWorkerRegister userId={userId} />
       </div>
       <div className="border border-black">
         <div className="flex gap-8">
