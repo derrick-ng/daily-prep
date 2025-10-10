@@ -26,10 +26,10 @@ const NavBar = async () => {
             <a href="https://github.com/derrick-ng/daily-prep" target="_blank">
               <button>GitHub</button>
             </a>
-            <Link href="/auth/register">
+            <Link href="/register">
               <button>Register</button>
             </Link>
-            <Link href="/auth/login">
+            <Link href="/login">
               <button>Login</button>
             </Link>
           </div>
