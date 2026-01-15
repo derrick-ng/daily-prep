@@ -4,9 +4,10 @@ export default function Welcome() {
   return (
     <div className="flex flex-col items-center">
       <div className="text-center mb-2 mt-10">Daily Prep is a tool that helps users get ready faster by automating their morning routine</div>
-      <div className="text-center mb-8">
-        It delivers a daily notification with real time weather data, traffic updates, unread emails, and personal notes
+      <div className="text-center mb-2">
+        It delivers a daily notification with real time weather data, commute times, unread emails, and personal notes
       </div>
+      <div className="mb-4">Create an Account to get started</div>
 
       <div className="mb-6 w-full max-w-2xl text-center">
         <div className="font-semibold mb-2">Sample Summary</div>
