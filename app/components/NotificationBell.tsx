@@ -5,16 +5,15 @@ import { toast } from "sonner";
 import { showToastResponse } from "@/lib/toast";
 
 interface NotificationBellProp {
-  userId: string | null;
+  userId: string;
 }
 
 //icon that allows users to opt in to notifications
 const NotificationBell = ({ userId }: NotificationBellProp) => {
   const vapidPublicKey = "BMkhm6OeZ9YvaDJF6o807Ms2x8yl65cgcGJwvX5BfTQ75j_qcErzZRgyJwypKjPH9hC5iSMxf56hWQc1joUgs_Y";
   const [notificationEnabled, setNotificationEnabled] = useState<boolean>(false);
-  const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>();
+  const [pushSubscription, setPushSubscription] = useState<PushSubscription | null>(null);
   const [existingSubscription, setExistingSubscription] = useState<boolean>(false);
-  // const [sub, setsub] = useState<PushSubscription | null>(null);
 
   //registers service workers, checks if notification bell is on or off
   useEffect(() => {
@@ -27,7 +26,6 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
         const serviceWorker = await navigator.serviceWorker.register("/sw.js", {
           scope: "/",
         });
-
         const subscription = await serviceWorker.pushManager.getSubscription();
 
         if (!subscription) {
@@ -42,8 +40,6 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
           },
         });
 
-        //there if is a subscription not saved in db,
-        //axios always returns an object unless it throws, so have to check the response value
         if (!dbSubscription.data.response) {
           setExistingSubscription(false);
         } else {
@@ -69,18 +65,25 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
   const requestNotification = async () => {
     if (Notification.permission === "default") {
       const permission = await Notification.requestPermission();
-
-      if (permission !== "granted") {
-        console.error("Notification permission not granted");
-        return;
+      if (permission === "granted") {
+        return true;
       }
+      return false;
+    }
+
+    if (Notification.permission === "denied") {
+      return false;
     }
   };
 
   const handleAllowNotificationClick = async () => {
     try {
       if (!pushSubscription) {
-        requestNotification();
+        const allowed = await requestNotification();
+        if (!allowed) {
+          return;
+        }
+
         const serviceWorker = await navigator.serviceWorker.ready;
         const subscription = await serviceWorker.pushManager.subscribe({
           userVisibleOnly: true,
@@ -113,7 +116,9 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
         showToastResponse(data);
       }
 
+      setExistingSubscription(true);
       setNotificationEnabled(true);
+
       return;
     } catch (error) {
       console.log("user blocked notifications", error);
@@ -134,13 +139,9 @@ const NotificationBell = ({ userId }: NotificationBellProp) => {
       console.error("error disabling notifications", error);
     }
   };
+
   return (
     <div>
-      {/* <p>
-        {sub
-          ? `ENDPOINT: ${sub?.endpoint} AUTH: ${bufferToBase64(sub?.getKey("auth") || null)} P256DH: ${bufferToBase64(sub?.getKey("p256dh") || null)}`
-          : "not subscribed"}
-      </p> */}
       {notificationEnabled ? (
         <button onClick={handleDisableNotificationClick}>Disable Notification</button>
       ) : (
